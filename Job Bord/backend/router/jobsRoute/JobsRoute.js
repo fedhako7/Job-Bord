@@ -1,9 +1,9 @@
 const route = require('express').Router()
-const {postJob, getJobs, myPosts, applyJob} = require('../../controller/jobController/JobController')
+const {postJob, getAllJobs, myPosts, applyJob} = require('../../controller/jobController/JobController')
 
 
 route.post('/', postJob)
-route.get('/', getJobs)
+route.get('/', getAllJobs)
 route.get('/myposts', myPosts)
 route.post('/apply', applyJob)
 
