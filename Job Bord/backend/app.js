@@ -1,4 +1,5 @@
 require('dotenv').config()
+const cors = require('cors')
 const express = require("express")
 const db = require('./database/database')
 
@@ -10,6 +11,7 @@ const applicationsRoute = require('./router/applicationsRoute/ApplicationsRoute'
 const app = express()
 const port = 5500
 
+app.use(cors())
 app.use(express.json())
 app.use('/auth', authRoute)
 app.use('/users', usersRoute)
