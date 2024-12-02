@@ -7,7 +7,7 @@ const register = async (req, res) => {
     const { fname, lname, email, role, password } = req.body
 
     if (!fname || !lname || !email || !role || !password) {
-        return res.status(statCodes.BAD_REQUEST).json({ msg: "Incomplete information" })
+        return res.status(statCodes.BAD_REQUEST).json({ msg: "Fill all requered fields" })
     }
     if (password.length < 6) {
         return res.status(statCodes.BAD_REQUEST).json({ msg: "Password must not be less than 6 characters" })
@@ -34,17 +34,17 @@ const register = async (req, res) => {
 const login = async (req, res) => {
     const {email, password} = req.body
     if (!email || !password){
-        return res.status(statCodes.BAD_REQUEST).json({msg: "Incomplete information"})
+        return res.status(statCodes.BAD_REQUEST).json({msg: "Fill all requered fields."})
     }
 
     try {
         const [user] = await db.query("SELECT user_id, fname, password FROM users WHERE email=?", [email])
         if (user.length !== 1){
-            return res.status(statCodes.UNAUTHORIZED).json({msg: "Invalid credentials"})
+            return res.status(statCodes.UNAUTHORIZED).json({msg: "Wrong password/ email."})
         }
         const isMatch = await bcrypt.compare(password, user[0].password)
         if (!isMatch){
-            return res.status(statCodes.UNAUTHORIZED).json({msg: "Invalid credentials"})
+            return res.status(statCodes.UNAUTHORIZED).json({msg: "Wrong password/ email"})
         }
 
         const fname = user[0].fname

@@ -2,8 +2,11 @@ import React, { useRef, useState } from 'react';
 import axios from '../../axios/Axios'
 import { ClipLoader } from 'react-spinners'
 import { Link, useNavigate } from 'react-router-dom';
+import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 
 function Register() {
+  const [showPass, setShowPass] = useState(false)
   const navigate = useNavigate()
   const [fieldError, setFieldError] = useState('')
   const [termsError, setTermsError] = useState('')
@@ -50,7 +53,7 @@ function Register() {
 
     } catch (error) {
       setIsLoading(false)
-      setDbError(error.message)
+      setDbError(error.response?.data?.msg || error.message)
       console.log(error)
     }
   }
@@ -91,12 +94,20 @@ function Register() {
             ref={email}
             className="p-2 border rounded-md focus:ring-2 focus:ring-blue-400 outline-none"
           />
-          <input
-            type="password"
-            placeholder="Password"
-            ref={password}
-            className="p-2 border rounded-md focus:ring-2 focus:ring-blue-400 outline-none"
-          />
+          <div className='flex'>
+              <input
+              type={ showPass ? "text" : "password"}
+
+              placeholder="Password"
+              ref={password}
+              className="h-14 w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-400 outline-none"
+              />
+              <button type="button" onClick={() => {setShowPass(prev => !prev)}} className='-ml-8'>
+              { showPass ?
+                < VisibilityOutlinedIcon /> : < VisibilityOffOutlinedIcon />
+              }
+              </button>
+            </div>
           {/* Role Selection */}
           <select
             name="role"
