@@ -34,7 +34,7 @@ function JobList() {
                 <div>Fetching...</div>
             ) : (
                 <>
-                    <div className='w-screen h-screen bg-gray-300 p-1 '>
+                    <div >
                         {dbError && <div>Error: {dbError}</div>}
 
                         {jobs.length > 0 ? (

@@ -11,7 +11,7 @@ function Landing({children}) {
         <div>
             {children}
         </div>
-        <div>
+        <div className='mt-8'>
             <Footer/>
         </div>
     </>

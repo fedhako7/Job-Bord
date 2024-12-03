@@ -24,9 +24,9 @@ function Header() {
               </div>
             </Link>
             <Link to="/" className='lg:ml-18'>Home</Link>
-            <Link to="/job">Job</Link>
+            <Link to="/job">Jobs</Link>
             <Link to="/myapplications">My Applications</Link>
-            <button onClick={handleLogout} className='w-40 h-12 bg-blue-800 rounded-md mt-2 pb-1 lg:ml-18'>
+            <button onClick={handleLogout} className='w-32 h-10 bg-blue-800 rounded-md mt-2 pb-1 font-semibold lg:ml-18 lg:w-36 lg-h-12 '>
               Log Out
             </button>
             <Link className='flex flex-col items-center pl-1 text-lg text-emerald-400' to="/profile">
