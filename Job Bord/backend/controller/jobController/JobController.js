@@ -28,7 +28,11 @@ const postJob = async (req, res) => {
 const getAllJobs = async (req, res) => {
     
     try {
-        const [jobsData] = await db.query("SELECT * FROM jobs")
+        const [jobsData] = await db.query(
+            `SELECT jobs.*, users.fname, users.lname 
+            FROM jobs JOIN users ON users.user_id = jobs.employer_id;`
+        );
+        
         res.status(statCodes.OK).json({msg: "Jobs data fetched successfully", jobsData})
         
     } catch (error) {

@@ -1,10 +1,10 @@
 import React from 'react'
-import Header from "../../components/header/Header"
+import JobList from '../job/JobList'
 
 function Home() {
   return (
     <>
-      <Header />
+    <JobList />
     </>
   )
 }

@@ -13,7 +13,7 @@ function Header() {
   
   return (
     <section>
-      <header className="h-36 w-screen sticky top-0 text-white bg-gray-800">
+      <header className="h-36 w-screen text-white bg-gray-800 shadow-gray-400 shadow-lg">
         <nav className=" ">
           <ul className='flex justify-between items-center text-2xl font-bold pl-5 pr-5 pt-5 lg:w-5/6 lg:mr-auto lg:ml-auto'>
             <Link className='hidden lg:flex text-base text-yellow-300' to="/">
