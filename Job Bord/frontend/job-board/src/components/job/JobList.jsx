@@ -24,27 +24,22 @@ function JobList() {
         fetchJobs();
     }, []);
 
-    useEffect(() => {
-        console.log('Updated jobs:', jobs);
-    }, [jobs]);
-
     return (
         <>
             {fetching ? ( 
                 <div>Fetching...</div>
-            ) : (
-                <>
-                    <div >
-                        {dbError && <div>Error: {dbError}</div>}
+            ) : (<>
+                <div >
+                    {dbError && <div>Error: {dbError}</div>}
 
-                        {jobs.length > 0 ? (
-                            jobs.map((job) => (
-                                <JobCard job={job} key={job.job_id} />
-                            ))
-                        ) : (
-                            <div>No jobs available</div>
-                        )}
-                    </div>
+                    {jobs.length > 0 ? (
+                        jobs.map((job) => (
+                            <JobCard job={job} key={job.job_id} />
+                        ))
+                    ) : (
+                        <div>No jobs available</div>
+                    )}
+                </div>
                 </>
             )}
         </>

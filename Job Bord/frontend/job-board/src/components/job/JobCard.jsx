@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 function JobCard({ job }) {
+    const navigate = useNavigate()
     const { title, fname, lname, description, location, salary, created_at } = job
     const editedSal = Math.trunc(salary)
     const date = new Date(created_at);
@@ -11,6 +13,7 @@ function JobCard({ job }) {
 
     // #TODO
     const handleApplication = () => {
+        navigate("/application/apply")
     }
     return (
         <section className=' '>
@@ -28,8 +31,8 @@ function JobCard({ job }) {
                     <p className='text-lg font-mono font-bold self-center lg:text-xl'>{`$${editedSal}`}</p>
                     <p className='text-xl font-mono font-bold self-center lg:text-2xl'>{formattedDate}</p>
                     <div className='flex flex-col h-32 relative bottom-3 gap-5 lg:flex-row lg:gap-8 lg:pt-8 '>
-                        <button onClick={handleApplication} className=' min-w-28 h-10 bg-blue-600 rounded-md lg:w-36 lg:h-12 '>Apply</button>
-                        <button onClick={() => { setShow((prev) => (!prev)) }} className=' min-w-28 h-10 bg-blue-600 rounded-md lg:w-36 lg:h-12 '>
+                        <button onClick={handleApplication} className=' min-w-28 h-10 bg-blue-800 rounded-md lg:w-36 lg:h-12 '>Apply</button>
+                        <button onClick={() => { setShow((prev) => (!prev)) }} className=' min-w-28 h-10 bg-blue-800 rounded-md lg:w-36 lg:h-12 '>
                             {show ? "Show Less" : "Detail"}
                         </button>
                     </div>
