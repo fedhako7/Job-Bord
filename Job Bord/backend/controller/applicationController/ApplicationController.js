@@ -9,11 +9,17 @@ const myApplications = async (req, res) => {
     }
 
     try {
-        const [ seeker_applications ] = await db.query("SELECT * FROM applications WHERE seeker_id=?", [seeker_id])
-        if ( !seeker_applications || seeker_applications?.length === 0) {
+        const [appData] = await db.query(`
+            SELECT applications.*, jobs.*, users.* 
+            FROM applications 
+            JOIN jobs ON jobs.job_id = applications.job_id 
+            JOIN users ON users.user_id = jobs.employer_id 
+            WHERE applications.seeker_id = ?`, [seeker_id]);
+          
+        if ( !appData || appData?.length === 0) {
             return res.status(statCodes.NOT_FOUND).json({msg: "No applications found for this user."})
         }
-        res.status(statCodes.OK).json({msg: "User applications data fetched successfully", seeker_applications})
+        res.status(statCodes.OK).json({msg: "User applications data fetched successfully", appData})
         
     } catch (error) {
         console.log(error)

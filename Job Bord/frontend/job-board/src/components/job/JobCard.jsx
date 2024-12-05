@@ -3,22 +3,20 @@ import { useNavigate } from 'react-router-dom';
 
 function JobCard({ job }) {
     const navigate = useNavigate()
-    const { title, fname, lname, description, location, salary, created_at } = job
+    const { title, fname, lname, description, location, salary, created_at, job_id } = job
     const editedSal = Math.trunc(salary)
     const date = new Date(created_at);
     const month = date.toLocaleString('default', { month: 'short' });
     const formattedDate = `${month}-${date.getDate()}`;
     const [show, setShow] = useState(false)
 
-
-    // #TODO
-    const handleApplication = () => {
-        navigate("/application/apply")
+    const handleApplication = (e) => {
+        navigate("/apply", {state: {job_id, }})
     }
     return (
         <section className=' '>
                 <div className={`flex w-5/6 h-36 justify-between bg-white ml-auto mr-auto mt-8 p-8
-                    border-gray-400 border-2 rounded-md shadow-[3px_3px_7px_blue] text-xl 
+                    border-gray-400 border-2 rounded-md ${!show && 'shadow-[3px_3px_7px_blue]'} text-xl 
                     ${show && "shadow-[1px_0px_0px_blue] rounded-bl-none rounded-br-none border-b-0"} lg:w-3/4 `
                 }>
 

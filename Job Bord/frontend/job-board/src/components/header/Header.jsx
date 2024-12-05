@@ -25,7 +25,7 @@ function Header() {
             </Link>
             <Link to="/" className='lg:ml-18'>Home</Link>
             <Link to="/job">Jobs</Link>
-            <Link to="/application">My Applications</Link>
+            <Link to="/apply/my">My Applications</Link>
             <button onClick={handleLogout} className='w-32 h-10 bg-blue-800 rounded-lg mt-2 pb-1 font-semibold lg:ml-18 lg:w-36 lg-h-12 '>
               Log Out
             </button>

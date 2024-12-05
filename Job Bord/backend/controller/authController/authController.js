@@ -48,9 +48,9 @@ const login = async (req, res) => {
         }
 
         const fname = user[0].fname
-        const userId = user[0].user_id
-        const token = jwt.sign({fname, userId}, process.env.JWT_SECRET, {expiresIn: '1d'}) 
-        res.status(statCodes.OK).json({msg: "Logged in", token})
+        const user_id = user[0].user_id
+        const token = jwt.sign({fname, user_id}, process.env.JWT_SECRET, {expiresIn: '1d'}) 
+        res.status(statCodes.OK).json({msg: "Logged in", token, user_id})
 
     } catch (error) {
         console.log(error)

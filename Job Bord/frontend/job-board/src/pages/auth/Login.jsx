@@ -15,7 +15,7 @@ function Login() {
   const password = useRef('')
   const terms = useRef(false)
   
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault()
     setDbError(''), setFieldError('')
     const currEmail = email.current.value
@@ -36,6 +36,7 @@ function Login() {
         password: currPassword,
       })
       localStorage.setItem("token", data.token)
+      localStorage.setItem("user_id", data.user_id)
       setIsLoading(false)
       navigate("/")
 
@@ -62,7 +63,7 @@ function Login() {
         </p>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="flex flex-col gap-6 w-full">
+        <form onSubmit={handleLogin} className="flex flex-col gap-6 w-full">
           {/* Email and Password */}
           <input
             type="email"
