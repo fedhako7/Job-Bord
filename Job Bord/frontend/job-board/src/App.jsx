@@ -5,8 +5,9 @@ import Login from './pages/auth/Login'
 import Home from './components/home/Home'
 import Landing from './pages/landing/Landing'
 import Jobs from './pages/jobs/Jobs'
-import Applications from './pages/applications/Applications'
+import Apply from './pages/applyJob/ApplyJob'
 import ApplicationList from './components/application/ApplicationList'
+import Post from './pages/postJob/PostJob'
 
 function App() {
 
@@ -17,8 +18,9 @@ function App() {
         {/* <Route path='/' element={<Home/>} /> */}
         <Route path="/" element={<Landing children={<Home/>}/>}></Route>
         <Route path="/apply/my" element={<Landing children={<ApplicationList/>}/>}></Route>
-        <Route path="/apply" element={<Landing children={<Applications/>}/>}></Route>
+        <Route path="/apply" element={<Landing children={<Apply/>}/>}></Route>
         <Route path="/job" element={<Landing children={<Jobs/>}/>}></Route>
+        <Route path="/job/post" element={<Landing children={<Post/>}/>}></Route>
         <Route path="/register" element={<Register/>}></Route>
         <Route path="/login" element={<Login/>}></Route>
       </Routes>
