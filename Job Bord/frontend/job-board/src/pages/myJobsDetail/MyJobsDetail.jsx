@@ -1,38 +1,19 @@
-import React, { useEffect, useState } from 'react'
-import axiosInstance from '../../axios/Axios'
+import React from 'react'
+import ApplicantsList from '../../components/applicants/ApplicantsList'
 import { useLocation } from 'react-router-dom'
-import ApplicationList from '../../components/application/ApplicationList'
 
 function MyJobsDetail() {
     const location = useLocation()
-    const job_id = location?.state?.job_id
-    const [applicants, setApplicants] = useState([])
-    const [dbError, setDbError] = useState('')
-    const [fetching, setFetching] = useState(true)
-
-    const fetchApplicants = async () => {
-        try {
-            const response = await axiosInstance.get("/applications/myapplicants", { params: { job_id } })
-            setApplicants(response?.data?.app_data)
-
-        } catch (error) {
-            console.log(error)
-            setDbError(error?.response?.data?.msg || error.message)
-        } finally {
-            setFetching(false)
-        }
-
-
-    }
-    useEffect(() => {
-        fetchApplicants()
-    }, [])
-    return (
-        <div>
-            <ApplicationList applicants={applicants} />
-
+    const title = location?.state?.title
+  return (
+    <div>
+        <div className='flex w-5/6 ml-auto mr-auto mt-8 justify-between font-semibold lg:w-3/4 lg:mt-14 '>
+            <p className='w-full text-center pr-6 text-4xl'> My Job Posts: { title }</p>
         </div>
-    )
+        <hr className='h-1 w-5/6 ml-auto mr-auto mt-3 mb-3 bg-black lg:w-3/4'/>
+        <ApplicantsList />
+    </div>
+  )
 }
 
 export default MyJobsDetail

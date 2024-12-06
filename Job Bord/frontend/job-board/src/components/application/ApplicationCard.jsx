@@ -25,10 +25,10 @@ function ApplicationCard({ app }) {
                     <p className="text-lg font-bold font-mono lg:text-xl">{fname}</p>
                 </div>
 
-                <p className="text-lg font-mono font-bold self-center lg:text-xl">{location}</p>
+                <p className=" hidden text-lg font-mono font-bold self-center lg:text-xl lg:inline-flex">{location}</p>
                 <p className="text-lg font-mono font-bold self-center lg:text-xl">{status}</p>
-                <p className="text-lg font-mono font-bold self-center lg:text-xl">{formattedAppliedAt}</p>
-                <p className="text-lg font-mono font-bold self-center lg:text-xl">{email}</p>
+                <p className=" hidden text-lg font-mono font-bold self-center lg:text-xl lg:inline-flex">{formattedAppliedAt}</p>
+                <p className=" hidden text-lg font-mono font-bold self-center lg:text-xl lg:inline-flex">{email}</p>
 
                 {/* Buttons */}
                 <div className="flex flex-col h-32 relative bottom-3 gap-5 lg:flex-row lg:gap-8 lg:pt-8 ">
@@ -46,6 +46,16 @@ function ApplicationCard({ app }) {
                 className={`w-5/6 bg-white ml-auto mr-auto -mt-1 p-8 border-gray-400 border-2 border-t-0
                     rounded-bl-md rounded-br-md shadow-[1px_1px_0px_blue] ${!show && 'hidden'} text-xl lg:w-3/4`}
             >
+                {/* <p className="text-lg font-mono font-bold self-center lg:text-xl">{email}</p> */}
+                <p className="text-xl font-mono mb-3 lg:hidden">
+                    <strong>Location:</strong> {location}
+                </p>
+                <p className="text-xl font-mono mb-3 lg:hidden">
+                    <strong>Date:</strong> {formattedAppliedAt}
+                </p>
+                <p className="text-xl font-mono mb-3 lg:hidden">
+                    <strong>Email:</strong> {email}
+                </p>
                 <p className="text-xl font-mono mb-3">
                     <strong>Salary:</strong> ${salary}
                 </p>

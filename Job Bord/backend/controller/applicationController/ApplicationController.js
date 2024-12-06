@@ -32,7 +32,7 @@ const myApplications = async (req, res) => {
 const myApplicants = async (req, res) => {
     const { job_id } = req.query
     if ( !job_id ){
-        return res.status(statCodes.BAD_REQUEST).json({msg: "Seeker and job Id requered."})
+        return res.status(statCodes.BAD_REQUEST).json({msg: "Job Id requered."})
     }
 
     try {

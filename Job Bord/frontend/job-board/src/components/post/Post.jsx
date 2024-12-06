@@ -67,7 +67,7 @@ function Post() {
             <div>
                 <span className="text-red-600 text-xl font-bold">*</span>
                 <textarea
-                    className="w-80 h-32 border-2 border-gray-400 rounded-xl focus:h-40 focus:w-96 lg:w-96"
+                    className="w-80 h-32 p-3 border-2 border-gray-400 rounded-xl focus:h-40 focus:w-96 lg:w-96"
                     placeholder="Job Description"
                     ref={descriptionRef}
                 ></textarea>

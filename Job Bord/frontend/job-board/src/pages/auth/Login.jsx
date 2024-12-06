@@ -90,7 +90,7 @@ function Login() {
 
           {/* Remember me and Forgot password */}
           <div className='flex items-center gap-4 justify-center'>
-            <p className="lg:text-xl text-gray-600"> <input type="checkbox" ref={terms} className="mr-2" />Remember me </p>
+            <p className="lg:text-2xl text-gray-600"> <input type="checkbox" ref={terms} className="mr-2" />Remember me </p>
             <button
               onClick={forgotPassword}
               type='button'

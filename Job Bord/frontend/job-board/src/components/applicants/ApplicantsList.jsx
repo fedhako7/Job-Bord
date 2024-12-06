@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import ApplicationCard from './ApplicationCard';
 import axiosInstance from '../../axios/Axios';
+import { useLocation } from 'react-router-dom';
+import ApplicantsCard from './ApplicantsCard';
 
-function ApplicationList() {
-    const seeker_id = parseInt(localStorage.getItem("user_id"));
-    const [apps, setApplications] = useState([]);
+function ApplicantsList() {
+    const location = useLocation()
+    const job_id = location?.state?.job_id
+    const [applicants, setApplicants] = useState([]);
     const [dbError, setDbError] = useState('');
     const [fetching, setFetching] = useState(true);
 
     const fetchApplications = async () => {
         try {
             setFetching(true);
-            const response = await axiosInstance.get("/applications/my", { params: { seeker_id } });
-            setApplications(response?.data?.appData || []);
+            const response = await axiosInstance.get("/applications/myapplicants", { params: { job_id } })
+            setApplicants(response?.data?.app_data || []);
         } catch (error) {
             console.error(error);
             setDbError(error.response?.data?.msg || error.message);
@@ -24,7 +26,6 @@ function ApplicationList() {
     useEffect(() => {
         fetchApplications();
     }, []);
-
     return (
         <>
             {fetching ? (
@@ -34,9 +35,9 @@ function ApplicationList() {
                     <div>
                         {dbError && <div>Error: {dbError}</div>}
 
-                        {apps.length > 0 ? (
-                            apps.map((app) => (
-                                <ApplicationCard app={app} key={app.application_id} />
+                        {applicants.length > 0 ? (
+                            applicants.map((app) => (
+                                <ApplicantsCard applicant={app} key={app.application_id} />
                             ))
                         ) : (
                             <div>No applications available</div>
@@ -48,5 +49,4 @@ function ApplicationList() {
     );
 }
 
-export default ApplicationList;
-
+export default ApplicantsList;
