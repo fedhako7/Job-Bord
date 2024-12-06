@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 function ApplicationCard({ app }) {
-    const { title, fname, location, status, applied_at, email, salary, created_at, cv } = app;
+    const { title, fname, location, status, applied_at, email, salary, created_at, cover_letter: cv } = app;
     const dateApplied = new Date(applied_at);
     const datePosted = new Date(created_at);
     const formattedAppliedAt = `${dateApplied.toLocaleString('default', { month: 'short' })}-${dateApplied.getDate()}`;

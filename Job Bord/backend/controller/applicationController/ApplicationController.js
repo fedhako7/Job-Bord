@@ -27,4 +27,30 @@ const myApplications = async (req, res) => {
     }
 }
 
-module.exports = { myApplications }
+
+
+const myApplicants = async (req, res) => {
+    const { job_id } = req.query
+    if ( !job_id ){
+        return res.status(statCodes.BAD_REQUEST).json({msg: "Seeker and job Id requered."})
+    }
+
+    try {
+        const [app_data] = await db.query(`
+            SELECT applications.*, users.* 
+            FROM applications  
+            JOIN users ON users.user_id = applications.seeker_id 
+            WHERE applications.job_id = ?`, [job_id]);
+          
+        if ( !app_data || app_data?.length === 0) {
+            return res.status(statCodes.NOT_FOUND).json({msg: "No applicants found for this question."})
+        }
+        res.status(statCodes.OK).json({msg: "User applications data fetched successfully", app_data})
+        
+    } catch (error) {
+        console.log(error)
+        res.status(statCodes.INTERNAL_SERVER_ERROR).json({msg: "Something went wrong, while fetching user applications data."})
+    }
+}
+
+module.exports = { myApplications, myApplicants }

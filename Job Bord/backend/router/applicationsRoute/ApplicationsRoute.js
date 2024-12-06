@@ -1,8 +1,9 @@
 const route = require('express').Router()
-const {myApplications} = require('../../controller/applicationController/ApplicationController')
+const {myApplications, myApplicants} = require('../../controller/applicationController/ApplicationController')
 
 
 route.get('/my', myApplications)
+route.get('/myapplicants', myApplicants)
 
 
 module.exports = route

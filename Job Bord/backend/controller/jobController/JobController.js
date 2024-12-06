@@ -51,13 +51,17 @@ const myPosts = async (req, res) => {
     }
 
     try {
-        const [ userJobs ] = await db.query("SELECT * FROM jobs WHERE employer_id=?", [employeeId])
+        const [user_jobs] = await db.query(
+            `SELECT jobs.*, users.fname, users.lname 
+            FROM jobs JOIN users ON users.user_id = jobs.employer_id
+            WHERE employer_id=?;`, [employeeId]
+        );
 
-        if (!userJobs){
+        if (!user_jobs){
             return res.status(statCodes.NOT_FOUND).json({msg: "No jobs posted by this user found."})
         }
 
-        res.status(statCodes.OK).json({msg: "Jobs posted by user fetched succefully.", userJobs})
+        res.status(statCodes.OK).json({msg: "Jobs posted by user fetched succefully.", user_jobs})
 
     } catch (error) {
         console.log(error)

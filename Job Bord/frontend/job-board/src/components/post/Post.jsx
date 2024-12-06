@@ -39,7 +39,7 @@ function Post() {
             setTimeout(() => {
                 alert('Job posted successfully!');
             }, 350);
-            navigate('/jobs/my'); // Redirect to the job listings page after posting
+            navigate('/job/my');
         } catch (error) {
             console.log(error);
             setDbError(error.response?.data?.msg || error.message);

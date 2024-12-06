@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import { useLocation, useNavigate } from "react-router-dom"
 import axiosInstance from '../../axios/Axios'
 
-function Applications() {
+function Apply() {
   const [fieldError, setFieldError] = useState('')
   const [dbError, setDbError] = useState('')
   const emailRef = useRef()
@@ -55,4 +55,4 @@ const handleSubmit = async (e) => {
   )
 }
 
-export default Applications
+export default Apply
