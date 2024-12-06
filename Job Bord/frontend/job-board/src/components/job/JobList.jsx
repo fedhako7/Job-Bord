@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axiosInstance from '../../axios/Axios';
 import JobCard from './JobCard';
 
-function JobList({emp}) {
+function JobList({ emp }) {
+    const token = localStorage.getItem("token")
     const employee_id = parseInt(localStorage.getItem('user_id'))
     const [dbError, setDbError] = useState('');
     const [jobs, setJobs] = useState([]);
@@ -13,7 +14,10 @@ function JobList({emp}) {
             setFetching(true);
             const response = await axiosInstance.get(
               !emp ? "/jobs" : "/jobs/myposts",
-              emp ? { params: { employee_id } } : {}
+              {
+                  params: emp ? { employee_id } : {},
+                  headers: { authorization: "Bearer " + token },
+              }
             );
             setJobs(response?.data?.user_jobs);
 
@@ -31,7 +35,7 @@ function JobList({emp}) {
 
     return (
         <>
-            {fetching ? ( 
+            {fetching ? (
                 <div>Fetching...</div>
             ) : (<>
                 <div >
@@ -39,13 +43,13 @@ function JobList({emp}) {
 
                     {jobs.length > 0 ? (
                         jobs.map((job) => (
-                            <JobCard job={job} key={job.job_id} emp={emp}/>
+                            <JobCard job={job} key={job.job_id} emp={emp} />
                         ))
                     ) : (
                         <div>No jobs available</div>
                     )}
                 </div>
-                </>
+            </>
             )}
         </>
     );

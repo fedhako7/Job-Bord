@@ -59,4 +59,10 @@ const login = async (req, res) => {
 }
 
 
-module.exports = { register, login }
+const checkUser = async (req, res) => {
+    const user = req.user
+    return res.status(statCodes.OK).json({msg: "Valid user"})
+
+}
+
+module.exports = { register, login, checkUser }

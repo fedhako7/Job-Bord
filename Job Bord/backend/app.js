@@ -7,16 +7,17 @@ const authRoute = require('./router/authRoute/AuthRoute')
 const usersRoute = require('./router/usersRoute/UsersRoute')
 const jobsRoute = require('./router/jobsRoute/JobsRoute')
 const applicationsRoute = require('./router/applicationsRoute/ApplicationsRoute')
+const authenticateToken = require('./middleWare/MiddleWare')
 
 const app = express()
 const port = 5500
 
 app.use(cors())
 app.use(express.json())
-app.use('/auth', authRoute)
-app.use('/users', usersRoute)
-app.use('/jobs', jobsRoute)
-app.use('/applications', applicationsRoute)
+app.use('/auth',  authRoute)
+app.use('/users', authenticateToken,  usersRoute)
+app.use('/jobs',  authenticateToken, jobsRoute)
+app.use('/applications',  authenticateToken, applicationsRoute)
 
 async function start() {
 
