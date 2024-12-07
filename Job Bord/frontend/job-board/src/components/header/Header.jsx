@@ -1,13 +1,17 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link, useNavigate } from "react-router-dom"
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import Logo from "../../assets/logo.webp"
+import { frequentDatas } from '../../contextProvider/ContextProvider'
 
 function Header() {
   const navigate = useNavigate()
+  const { setUserId } = useContext(frequentDatas)
 
   const handleLogout = () => {
     localStorage.removeItem("token")
+    localStorage.removeItem("user_id")
+    setUserId(null)
     navigate('/login')
   }
   

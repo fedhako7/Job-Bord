@@ -1,11 +1,13 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import axios from '../../axios/Axios'
 import { ClipLoader } from 'react-spinners'
 import { Link, useNavigate } from 'react-router-dom';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import { frequentDatas } from '../../contextProvider/ContextProvider'
 
 function Login() {
+  const { setUserId } = useContext(frequentDatas)
   const navigate = useNavigate()
   const [showPass, setShowPass] = useState(false)
   const [fieldError, setFieldError] = useState('')
@@ -37,6 +39,7 @@ function Login() {
       })
       localStorage.setItem("token", data.token)
       localStorage.setItem("user_id", data.user_id)
+      setUserId(data.user_id)
       setIsLoading(false)
       navigate("/")
 

@@ -10,14 +10,21 @@ import MyJobs from './pages/myJobs/MyJobs'
 import MyJobsDetail from './pages/myJobsDetail/MyJobsDetail'
 import MyApplications from './pages/myApplications/MyApplications'
 import Apply from './components/apply/Apply'
+import ContextProvider from './contextProvider/ContextProvider'
+import RouteComponent from './routes/RouteComponent'
 
 function App() {
 
   return (
     <>
       <Router>
-        <Routes>
-          {/* <Route path='/' element={<Home/>} /> */}
+
+        <ContextProvider>
+          <RouteComponent />
+        </ContextProvider>
+
+
+        {/* <Routes>
           <Route path="/" element={<Landing children={<Home />} />}></Route>
           <Route path="/apply/my" element={<Landing children={<MyApplications />} />}></Route>
           <Route path="/apply" element={<Landing children={<Apply />} />}></Route>
@@ -27,7 +34,7 @@ function App() {
           <Route path="/job/post" element={<Landing children={<Post />} />}></Route>
           <Route path="/register" element={<Register />}></Route>
           <Route path="/login" element={<Login />}></Route>
-        </Routes>
+        </Routes> */}
       </Router>
     </>
   )
