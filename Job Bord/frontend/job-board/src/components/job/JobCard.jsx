@@ -74,19 +74,3 @@ function JobCard({ job, emp }) {
 
 export default JobCard
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

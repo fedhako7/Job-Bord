@@ -26,8 +26,8 @@ const profile = async (req, res) => {
 
 
 const profileUpdate = async (req, res) => {
-    const {user_id, fname: newFname, lname: newLname, email: newEmail, role: newRole} = req.body
-    if (!user_id || !newFname || !newLname || !newEmail || !newRole){
+    const {user_id, fname: newFname, lname: newLname, email: newEmail} = req.body
+    if (!user_id || !newFname || !newLname || !newEmail){
         return res.status(statCodes.BAD_REQUEST).json({msg: "All fields are requered."})
     }
 
@@ -37,12 +37,12 @@ const profileUpdate = async (req, res) => {
         if (!user && user?.length === 0){
             return res.status(statCodes.NOT_FOUND).json({msg: "User not found"})
         }
-        const {fname, lname, email, role, created_at} = user
-        if (newFname == fname && newLname == lname && newEmail == email && newRole == role){
+        const {fname, lname, email, created_at} = user
+        if (newFname == fname && newLname == lname && newEmail == email){
             return res.status(statCodes.BAD_REQUEST).json({msg: "No update, the same data"})
         }
         
-        db.query("UPDATE users SET fname=?, lname=?, email=?, role=?, updated_at = NOW() WHERE user_id=?", [newFname, newLname, newEmail, newRole, user_id])
+        db.query("UPDATE users SET fname=?, lname=?, email=?, updated_at = NOW() WHERE user_id=?", [newFname, newLname, newEmail, user_id])
         res.status(statCodes.CREATED).json({msg: "Profile updated successfully"})
         
     } catch (error) {

@@ -12,6 +12,10 @@ import MyApplications from '../pages/myApplications/MyApplications'
 import { Route, Routes } from 'react-router-dom'
 import ProtectedRoutes from '../protectedRoutes/ProtectedRoutes'
 import NotFound from '../pages/notFound/NotFound'
+import Profile from '../components/profile/Profile'
+import Dashboard from '../components/dashboard/Dashboard'
+import UpdateProfile from '../components/profile/UpdateProfile'
+import ProfileData from '../components/profile/ProfileData'
 
 function RouteComponent() {
   return (
@@ -62,7 +66,13 @@ function RouteComponent() {
           <Landing children={<MyApplications />} />
         </ProtectedRoutes>
       }></Route>
-      <Route path="*" element={<NotFound />} />
+
+      <Route path="/profile" element={
+        <ProtectedRoutes>
+          <Landing children={<Profile />} />
+        </ProtectedRoutes>
+      }></Route>
+
     </Routes>
   </>
   )
