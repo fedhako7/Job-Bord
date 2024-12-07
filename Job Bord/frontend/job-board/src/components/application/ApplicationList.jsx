@@ -3,6 +3,7 @@ import ApplicationCard from './ApplicationCard';
 import axiosInstance from '../../axios/Axios';
 
 function ApplicationList() {
+    const token = localStorage.getItem("token")
     const seeker_id = parseInt(localStorage.getItem("user_id"));
     const [apps, setApplications] = useState([]);
     const [dbError, setDbError] = useState('');
@@ -11,7 +12,7 @@ function ApplicationList() {
     const fetchApplications = async () => {
         try {
             setFetching(true);
-            const response = await axiosInstance.get("/applications/my", { params: { seeker_id } });
+            const response = await axiosInstance.get("/applications/my", { params: { seeker_id }, headers: { authorization: "Bearer " + token }});
             setApplications(response?.data?.appData || []);
         } catch (error) {
             console.error(error);

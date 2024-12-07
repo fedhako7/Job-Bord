@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import ApplicantsCard from './ApplicantsCard';
 
 function ApplicantsList() {
+    const token = localStorage.getItem("token")
     const location = useLocation()
     const job_id = location?.state?.job_id
     const [applicants, setApplicants] = useState([]);
@@ -13,7 +14,7 @@ function ApplicantsList() {
     const fetchApplications = async () => {
         try {
             setFetching(true);
-            const response = await axiosInstance.get("/applications/myapplicants", { params: { job_id } })
+            const response = await axiosInstance.get("/applications/myapplicants", { params: { job_id }, headers: { authorization: "Bearer " + token } })
             setApplicants(response?.data?.app_data || []);
         } catch (error) {
             console.error(error);

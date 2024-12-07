@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom"
 import axiosInstance from '../../axios/Axios'
 
 function Apply() {
+  const token = localStorage.getItem("token")
   const [fieldError, setFieldError] = useState('')
   const [dbError, setDbError] = useState('')
   const emailRef = useRef()
@@ -23,7 +24,7 @@ const handleSubmit = async (e) => {
   }
 
   try {
-    await axiosInstance.post("jobs/apply", { job_id, seeker_id, email, phone, cover_letter: letter })
+    await axiosInstance.post("jobs/apply", { job_id, seeker_id, email, phone, cover_letter: letter}, {headers: { authorization: "Bearer " + token }})
     setTimeout(() => {
       alert("Application sent successfully!")
 

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../axios/Axios';
 
 function Post() {
+    const token = localStorage.getItem("token")
     const [fieldError, setFieldError] = useState('');
     const [dbError, setDbError] = useState('');
     const titleRef = useRef();
@@ -34,7 +35,7 @@ function Post() {
                 location,
                 salary,
                 company,
-            });
+            }, {headers: { authorization: "Bearer " + token }});
 
             setTimeout(() => {
                 alert('Job posted successfully!');
