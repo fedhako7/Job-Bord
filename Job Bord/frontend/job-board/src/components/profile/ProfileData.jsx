@@ -19,7 +19,6 @@ const ProfileData = () => {
         u.company = "Astu tia"
         setProfile(u)
         setIsFetching(false)
-        console.log(u)
 
     } catch (error) {
       setIsFetching(false)
@@ -57,7 +56,10 @@ const ProfileData = () => {
 
         <div className="flex gap-4 justify-around">
           <button onClick={() => { setUpdateMode((p) => !p)}} className="w-36 h-12 bg-blue-800 rounded-md">
-            Update
+            Update Profile
+          </button>
+          <button className="w-36 h-12 bg-blue-800 rounded-md">
+            Change password
           </button>
         </div>
 

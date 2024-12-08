@@ -37,6 +37,8 @@ function Register() {
     }else if( !currTerms ){
       return setTermsError("Agree to the terms to continue.")
     }
+    console.log("role", role)
+    console.log("Crole", currRole)
 
 
     try {

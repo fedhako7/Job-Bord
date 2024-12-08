@@ -1,5 +1,6 @@
 const statCodes = require("http-status-codes")
 const db = require("../../database/database")
+const nodemailer = require('nodemailer');
 
 
 const postJob = async (req, res) => {
@@ -73,25 +74,58 @@ const myPosts = async (req, res) => {
 
 
 const applyJob = async (req, res) => {
-    const { job_id, seeker_id, resume, cover_letter } = req.body
-    if (!job_id || !seeker_id){
-        return res.status(statCodes.BAD_REQUEST).json({msg: "Incomplet data, fill all requered fields."})
+    const { job_id, title, seeker_id, resume, cover_letter } = req.body;
+    if (!job_id || !seeker_id) {
+        return res.status(statCodes.BAD_REQUEST).json({msg: "Incomplete data, fill all required fields."});
     }
 
     try {
+        // Save application in the database
         await db.query(
             "INSERT INTO applications (job_id, seeker_id, resume, cover_letter) VALUES (?,?,?,?)",
             [job_id, seeker_id, resume, cover_letter]
-        )
+        );
+        const [seeker] = await db.query("SELECT email FROM users WHERE user_id = ?", [seeker_id]);
+        const seekerEmail = seeker[0]?.email;
 
-        res.status(statCodes.CREATED).json({msg: "Application sent successfully"})
+        if (!seekerEmail) {
+            return res.status(statCodes.BAD_REQUEST).json({msg: "Seeker email not found."});
+        }
+        const transporter = nodemailer.createTransport({
+            host: "74.125.143.109", 
+            port: 587,             
+            secure: false,
+            auth: {
+                user: "fedesayelmachew75@gmail.com",
+                pass: process.env.EMAIL_PASSWORD
+            },
+            tls: {
+                rejectUnauthorized: false
+            }
+        });
+
+
+        const mailOptions = {
+            from: "Fedho_developer", 
+            to: seekerEmail,
+            subject: "Job Application Confirmation",
+            text: `Thank you for applying for the job (Title: ${title}). Your application has sent to employer.`
+        };
+
+        transporter.sendMail(mailOptions, (err, info) => {
+            if (err) {
+                console.log("Error sending email:", err);
+            } else {
+                console.log("Email sent:", info.response);
+            }
+        });
+
+        res.status(statCodes.CREATED).json({msg: "Application sent successfully and email notification sent."});
         
     } catch (error) {
-        console.log(error)
-        res.status(statCodes.INTERNAL_SERVER_ERROR).json({msg: "Something went wrong, while applying for job."})
+        console.log(error);
+        res.status(statCodes.INTERNAL_SERVER_ERROR).json({msg: "Something went wrong while applying for the job."});
     }
-    
-}
-
+};
 
 module.exports = {postJob, getAllJobs, myPosts, applyJob}

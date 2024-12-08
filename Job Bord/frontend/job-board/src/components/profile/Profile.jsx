@@ -10,6 +10,13 @@ const Profile = () => {
 
   return (
     <section >
+      <div className='flex w-5/6 ml-auto mr-auto mt-8 justify-between font-semibold lg:w-3/4 lg:mt-14 '>
+          <p className='w-full text-center text-4xl  pr-6'>
+            {
+              updateMode ? <>Update Profile</> : <>My Profile</>
+            }
+          </p>
+      </div>
       <profileMode.Provider value={{updateMode, setUpdateMode, profile, setProfile}}>
       {
         updateMode ? <UpdateProfile prevs={prevs} /> : <ProfileData />

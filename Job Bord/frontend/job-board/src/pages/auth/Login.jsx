@@ -39,6 +39,7 @@ function Login() {
       })
       localStorage.setItem("token", data.token)
       localStorage.setItem("user_id", data.user_id)
+      localStorage.setItem("role", data.role)
       setUserId(data.user_id)
       setIsLoading(false)
       navigate("/")

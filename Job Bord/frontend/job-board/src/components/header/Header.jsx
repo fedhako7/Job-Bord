@@ -7,6 +7,9 @@ import { frequentDatas } from '../../contextProvider/ContextProvider'
 function Header() {
   const navigate = useNavigate()
   const { setUserId } = useContext(frequentDatas)
+  const role = localStorage.getItem("role")
+  const E = role === "Employer"
+  const S = role === "Job Seeker"
 
   const handleLogout = () => {
     localStorage.removeItem("token")
@@ -28,12 +31,17 @@ function Header() {
               </div>
             </Link>
             <Link to="/" className='lg:ml-18'>Home</Link>
-            <Link to="/job">Jobs</Link>
-            <Link to="/apply/my">My Applications</Link>
-            <Link to="/job/my">Posted Jobs</Link>
+
+            { S && <Link to="/job">Jobs</Link> }
+            { S && <Link to="/apply/my">My Applications</Link> }
+
+            { E && <Link to="/job/my">Posted Jobs</Link> }
+            { E && <Link to="/job/post">Add Job</Link> }
+
             <button onClick={handleLogout} className='w-32 h-10 bg-blue-800 rounded-lg mt-2 pb-1 font-semibold lg:ml-18 lg:w-36 lg-h-12 '>
               logout
             </button>
+
             <Link className='flex flex-col items-center pl-1 text-lg text-emerald-400' to="/profile">
               <AccountCircleOutlinedIcon fontSize='large' /> Fedhasa
             </Link>

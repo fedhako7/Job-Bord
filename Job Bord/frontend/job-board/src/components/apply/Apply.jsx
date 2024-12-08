@@ -12,6 +12,7 @@ function Apply() {
   const navigate = useNavigate()
   const location = useLocation()
   const job_id = location?.state?.job_id
+  const title = location?.state?.title
   const seeker_id = parseInt(localStorage.getItem('user_id'))
 
 const handleSubmit = async (e) => {
@@ -24,7 +25,7 @@ const handleSubmit = async (e) => {
   }
 
   try {
-    await axiosInstance.post("jobs/apply", { job_id, seeker_id, email, phone, cover_letter: letter}, {headers: { authorization: "Bearer " + token }})
+    await axiosInstance.post("jobs/apply", { job_id, title , seeker_id, email, phone, cover_letter: letter}, {headers: { authorization: "Bearer " + token }})
     setTimeout(() => {
       alert("Application sent successfully!")
 
@@ -33,7 +34,7 @@ const handleSubmit = async (e) => {
 
   } catch (error) {
     console.log(error)
-    setDbError(err.response?.data?.msg || error.message)
+    setDbError(error.response?.data?.msg || error.message)
   }
 }
 

@@ -9,6 +9,7 @@ function JobCard({ job, emp }) {
     const month = date.toLocaleString('default', { month: 'short' });
     const formattedDate = `${month}-${date.getDate()}`;
     const [show, setShow] = useState(false)
+    console.log("cartitle", title)
 
     const handleApply = (e) => {
         navigate(

@@ -13,69 +13,103 @@ import { Route, Routes } from 'react-router-dom'
 import ProtectedRoutes from '../protectedRoutes/ProtectedRoutes'
 import NotFound from '../pages/notFound/NotFound'
 import Profile from '../components/profile/Profile'
-import Dashboard from '../components/dashboard/Dashboard'
-import UpdateProfile from '../components/profile/UpdateProfile'
-import ProfileData from '../components/profile/ProfileData'
+
 
 function RouteComponent() {
   return (
-  <>
-    <Routes>
-      <Route path="/login" element={<Login />}></Route>
-      <Route path="/register" element={<Register />}></Route>
+    <>
+      <Routes>
+        {/* Public pages */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
-      <Route path="/" element={
-        <ProtectedRoutes>
-          <Landing children={<Home />} />
-        </ProtectedRoutes>
-      }></Route>
+        {/* Mutual pages */}
+        <Route
+          path="/"
+          element={
+            <ProtectedRoutes allowedRoles={["Employer", "Job Seeker"]}>
+              <Landing children={<Home />} />
+            </ProtectedRoutes>
+          }
+        />
 
-      <Route path="/job" element={
-        <ProtectedRoutes>
-          <Landing children={<Jobs />} />
-        </ProtectedRoutes>
-      }></Route>
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoutes allowedRoles={["Employer", "Job Seeker"]}>
+              <Landing children={<Profile />} />
+            </ProtectedRoutes>
+          }
+        />
 
+        {/* Employer Only pages */}
+        <Route
+          path="/job/my"
+          element={
+            <ProtectedRoutes allowedRoles={["Employer"]}>
+              <Landing children={<MyJobs />} />
+            </ProtectedRoutes>
+          }
+        />
 
-      <Route path="/job/my" element={
-        <ProtectedRoutes>
-          <Landing children={<MyJobs />} />
-        </ProtectedRoutes>
-      }></Route>
+        <Route
+          path="/job/detail"
+          element={
+            <ProtectedRoutes allowedRoles={["Employer"]}>
+              <Landing children={<MyJobsDetail />} />
+            </ProtectedRoutes>
+          }
+        />
 
-      <Route path="/job/detail" element={
-        <ProtectedRoutes>
-          <Landing children={<MyJobsDetail />} />
-        </ProtectedRoutes>
-      }></Route>
+        <Route
+          path="/job/post"
+          element={
+            <ProtectedRoutes allowedRoles={["Employer"]}>
+              <Landing children={<Post />} />
+            </ProtectedRoutes>
+          }
+        />
 
-      <Route path="/job/post" element={
-        <ProtectedRoutes>
-          <Landing children={<Post />} />
-        </ProtectedRoutes>
-      }></Route>
+        {/* Job Seeker Only pages */}
+        <Route
+          path="/apply"
+          element={
+            <ProtectedRoutes allowedRoles={["Job Seeker"]}>
+              <Landing children={<Apply />} />
+            </ProtectedRoutes>
+          }
+        />
 
-      <Route path="/apply" element={
-        <ProtectedRoutes>
-          <Landing children={<Apply />} />
-        </ProtectedRoutes>
-      }></Route>
+        <Route
+          path="/apply/my"
+          element={
+            <ProtectedRoutes allowedRoles={["Job Seeker"]}>
+              <Landing children={<MyApplications />} />
+            </ProtectedRoutes>
+          }
+        />
 
-      <Route path="/apply/my" element={
-        <ProtectedRoutes>
-          <Landing children={<MyApplications />} />
-        </ProtectedRoutes>
-      }></Route>
+        <Route
+          path="/job"
+          element={
+            <ProtectedRoutes allowedRoles={["Job Seeker"]}>
+              <Landing children={<Jobs />} />
+            </ProtectedRoutes>
+          }
+        />
 
-      <Route path="/profile" element={
-        <ProtectedRoutes>
-          <Landing children={<Profile />} />
-        </ProtectedRoutes>
-      }></Route>
-
-    </Routes>
-  </>
-  )
+        {/* Not Found */}
+        <Route
+          path="*"
+          element={
+            <ProtectedRoutes allowedRoles={["Employer", "Job Seeker"]}>
+              <Landing children={<NotFound />} />
+            </ProtectedRoutes>
+          }
+        />
+      </Routes>
+    </>
+  );
 }
 
-export default RouteComponent
+export default RouteComponent;
