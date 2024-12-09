@@ -11,6 +11,9 @@ function Post() {
     const locationRef = useRef();
     const salaryRef = useRef();
     const companyRef = useRef();
+    const respRef = useRef();
+    const reqrRef = useRef();
+    const deadlRef = useRef();
     const navigate = useNavigate();
     const empl_id = parseInt(localStorage.getItem('user_id')); // Get empl_id from local storage
 
@@ -22,6 +25,9 @@ function Post() {
         const location = locationRef.current.value || '';
         const salary = salaryRef.current.value || '';
         const company = companyRef.current.value || '';
+        const resp = respRef.current.value || '';
+        const reqr = reqrRef.current.value || '';
+        const deadl = deadlRef.current.value || '';
 
         if (!title || !description) {
             return setFieldError('Title and Description are required fields.');
@@ -34,6 +40,9 @@ function Post() {
                 description,
                 location,
                 salary,
+                resp,
+                reqr,
+                deadl,
                 company,
             }, {headers: { authorization: "Bearer " + token }});
 
@@ -65,14 +74,6 @@ function Post() {
                 />
             </div>
 
-            <div>
-                <span className="text-red-600 text-xl font-bold">*</span>
-                <textarea
-                    className="w-80 h-32 p-3 border-2 border-gray-400 rounded-xl focus:h-40 focus:w-96 lg:w-96"
-                    placeholder="Job Description"
-                    ref={descriptionRef}
-                ></textarea>
-            </div>
 
             <div>
                 <input
@@ -99,6 +100,40 @@ function Post() {
                     placeholder="Company (Optional)"
                     ref={companyRef}
                 />
+            </div>
+
+            <div>
+                <input
+                    className="w-72 h-12 ml-1 border-2 border-gray-400 rounded-md pl-3 lg:w-80 lg:h-14"
+                    type="text"
+                    placeholder="Deadline (Optional)"
+                    ref={ deadlRef }
+                />
+            </div>
+
+            <div>
+                <span className="text-red-600 text-xl font-bold">*</span>
+                <textarea
+                    className="w-80 h-32 p-3 border-2 border-gray-400 rounded-xl focus:h-40 focus:w-96 lg:w-96"
+                    placeholder="Job Description"
+                    ref={descriptionRef}
+                ></textarea>
+            </div>
+
+            <div>
+                <textarea
+                    className="w-80 h-32 p-3 border-2 border-gray-400 rounded-xl focus:h-40 focus:w-96 lg:w-96"
+                    placeholder="Responsibilities (Optional)"
+                    ref={respRef}
+                ></textarea>
+            </div>
+
+            <div>
+                <textarea
+                    className="w-80 h-32 p-3 border-2 border-gray-400 rounded-xl focus:h-40 focus:w-96 lg:w-96"
+                    placeholder="Requerements (Optional)"
+                    ref={ reqrRef }
+                ></textarea>
             </div>
 
             {fieldError && <p className="text-red-600 italic animate-bounce">{fieldError}</p>}

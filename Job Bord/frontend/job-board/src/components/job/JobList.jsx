@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axiosInstance from '../../axios/Axios';
 import JobCard from './JobCard';
-import { frequentDatas } from '../../contextProvider/ContextProvider';
 
 function JobList({ emp }) {
     const token = localStorage.getItem("token")

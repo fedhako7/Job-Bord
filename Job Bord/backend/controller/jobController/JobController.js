@@ -74,13 +74,16 @@ const myPosts = async (req, res) => {
 
 
 const applyJob = async (req, res) => {
-    const { job_id, title, seeker_id, resume, cover_letter } = req.body;
-    if (!job_id || !seeker_id) {
-        return res.status(statCodes.BAD_REQUEST).json({msg: "Incomplete data, fill all required fields."});
+    const { job_id, title, seeker_id, cover_letter, resume="resume" } = req.body;
+    if (!job_id) {
+        return res.status(statCodes.BAD_REQUEST).json({msg: "Incomplete data, jobId not provided."});
+    }else if( !seeker_id ) {
+        return res.status(statCodes.BAD_REQUEST).json({msg: "Incomplete data, seekerId not provided."});
+    }else if( !cover_letter ) {
+        return res.status(statCodes.BAD_REQUEST).json({msg: "Incomplete data, cover_letter not provided."});
     }
 
     try {
-        // Save application in the database
         await db.query(
             "INSERT INTO applications (job_id, seeker_id, resume, cover_letter) VALUES (?,?,?,?)",
             [job_id, seeker_id, resume, cover_letter]

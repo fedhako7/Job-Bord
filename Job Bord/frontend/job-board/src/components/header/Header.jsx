@@ -5,15 +5,18 @@ import Logo from "../../assets/logo.webp"
 import { frequentDatas } from '../../contextProvider/ContextProvider'
 
 function Header() {
+  const role = localStorage.getItem("role")
+  const fname = localStorage.getItem("fname")
   const navigate = useNavigate()
   const { setUserId } = useContext(frequentDatas)
-  const role = localStorage.getItem("role")
   const E = role === "Employer"
   const S = role === "Job Seeker"
 
   const handleLogout = () => {
     localStorage.removeItem("token")
     localStorage.removeItem("user_id")
+    localStorage.removeItem("role")
+    localStorage.removeItem("fname")
     setUserId(null)
     navigate('/login')
   }
@@ -43,7 +46,7 @@ function Header() {
             </button>
 
             <Link className='flex flex-col items-center pl-1 text-lg text-emerald-400' to="/profile">
-              <AccountCircleOutlinedIcon fontSize='large' /> Fedhasa
+              <AccountCircleOutlinedIcon fontSize='large' /> {fname}
             </Link>
           </ul>
         </nav>

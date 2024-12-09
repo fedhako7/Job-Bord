@@ -40,6 +40,7 @@ function Login() {
       localStorage.setItem("token", data.token)
       localStorage.setItem("user_id", data.user_id)
       localStorage.setItem("role", data.role)
+      localStorage.setItem("fname", data.fname)
       setUserId(data.user_id)
       setIsLoading(false)
       navigate("/")
