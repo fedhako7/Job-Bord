@@ -1,18 +1,28 @@
 import React, { useState } from 'react'
+import axiosInstance from '../../axios/Axios';
 
-function ApplicantsCard({ applicant }) {
-  const { fname, lname, email, status, applied_at, cover_letter: cv, note } = applicant
+function ApplicantsCard({ applicant, setRefresh }) {
+  const token = localStorage.getItem("token")
+  const { fname, lname, email, status, applied_at, cover_letter: cv, note, application_id:app_id } = applicant
   const date = new Date(applied_at);
   const month = date.toLocaleString('default', { month: 'short' });
   const formattedDate = `${month}-${date.getDate()}`;
+  const [dbError, setDbError] = useState('')
   const [show, setShow] = useState(false)
 
-  const handleAccept = async () => {
+  const handleStatus = async (e) => {
+    const new_st = e.target.name
+    try {
+      console.log("app_id", app_id)
+      await axiosInstance.put("applications/status", { app_id, status: new_st }, {headers: {authorization: "Bearer " + token}})
+      setRefresh((p) => !p)
+    } catch (error) {
+      console.log(error)
+      setDbError(error?.response?.data?.msg || error.message)
+    }
 
   }
-  const handleReject = async () => {
 
-  }
   return (
     <section >
       <div
@@ -32,8 +42,8 @@ function ApplicantsCard({ applicant }) {
               <button onClick={() => { setShow((prev) => (!prev)) }} className=' min-w-28 h-10 bg-blue-800 rounded-md lg:w-36 lg:h-12 '>
                   {show ? "Show Less" : "Show More"}
               </button>
-              <button onClick={handleAccept} className=' min-w-28 h-10 bg-blue-800 rounded-md lg:w-36 lg:h-12 '>Accept</button>
-              <button onClick={handleReject} className=' min-w-28 h-10 bg-blue-800 rounded-md lg:w-36 lg:h-12 '>Reject</button>
+              <button onClick={handleStatus} name="Accepted" className=' min-w-28 h-10 bg-blue-800 rounded-md lg:w-36 lg:h-12 '>Accept</button>
+              <button onClick={handleStatus} name="Rejected" className=' min-w-28 h-10 bg-blue-800 rounded-md lg:w-36 lg:h-12 '>Reject</button>
           </div>
       </div>
     </section>

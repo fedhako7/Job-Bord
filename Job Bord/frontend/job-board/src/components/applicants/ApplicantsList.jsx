@@ -9,6 +9,7 @@ function ApplicantsList() {
     const job_id = location?.state?.job_id
     const [applicants, setApplicants] = useState([]);
     const [dbError, setDbError] = useState('');
+    const [refresh, setRefresh] = useState(false)
     const [fetching, setFetching] = useState(true);
 
     const fetchApplications = async () => {
@@ -26,7 +27,7 @@ function ApplicantsList() {
 
     useEffect(() => {
         fetchApplications();
-    }, []);
+    }, [refresh]);
     return (
         <>
             {fetching ? (
@@ -38,7 +39,7 @@ function ApplicantsList() {
 
                         {applicants.length > 0 ? (
                             applicants.map((app) => (
-                                <ApplicantsCard applicant={app} key={app.application_id} />
+                                <ApplicantsCard applicant={app} key={app.application_id} setRefresh={setRefresh} />
                             ))
                         ) : (
                             <div>No applications available</div>

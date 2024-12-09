@@ -28,7 +28,6 @@ const myApplications = async (req, res) => {
 }
 
 
-
 const myApplicants = async (req, res) => {
     const { job_id } = req.query
     if ( !job_id ){
@@ -53,4 +52,23 @@ const myApplicants = async (req, res) => {
     }
 }
 
-module.exports = { myApplications, myApplicants }
+
+const changeStatus = async (req, res) => {
+    const { status, app_id } = req.body
+    if ( !app_id ){
+        return res.status(statCodes.BAD_REQUEST).json({msg: "Application Id not provided."})
+    }else if ( !status ){
+        return res.status(statCodes.BAD_REQUEST).json({msg: "Application status not provided."})
+    }
+
+    try {
+        await db.query(`UPDATE applications SET status=? WHERE application_id=? `, [status, app_id]);
+        res.status(statCodes.OK).json({msg: `Applications ${status}`})
+        
+    } catch (error) {
+        console.log(error)
+        res.status(statCodes.INTERNAL_SERVER_ERROR).json({msg: "Something went wrong, while fetching user applications data."})
+    }
+}
+
+module.exports = { myApplications, myApplicants, changeStatus }
