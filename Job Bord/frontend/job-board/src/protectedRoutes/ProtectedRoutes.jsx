@@ -33,7 +33,11 @@ function ProtectedRoutes({children, allowedRoles = []}) {
 
   useEffect(() => {
     if ( (authenticated === false) || (authenticated && !allowedRoles.includes(userRole))) {
-      navigate("/");
+      if (userRole){
+        navigate("/");
+      }else{
+        navigate("/login");
+      }
     }
   }, [authenticated, userRole, allowedRoles, navigate]);
 

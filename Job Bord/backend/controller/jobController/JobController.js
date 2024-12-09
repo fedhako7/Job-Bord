@@ -73,6 +73,32 @@ const myPosts = async (req, res) => {
 }
 
 
+const singleJob = async (req, res) => {
+    const { job_id } = req.query
+    console.log(job_id)
+
+    if (job_id !==0 && !job_id){
+        return res.status(statCodes.BAD_REQUEST).json({msg: "Job Id is requered"})
+    }
+
+    try {
+        const [job] = await db.query( `SELECT *  FROM jobs WHERE job_id=?;`, [ job_id ] );
+
+        if (!job){
+            return res.status(statCodes.NOT_FOUND).json({msg: "No job found."})
+        }
+
+        res.status(statCodes.OK).json({msg: "Job detail fetched succefully.", job:job[0]})
+
+    } catch (error) {
+        console.log(error)
+        res.status(statCodes.INTERNAL_SERVER_ERROR).json({msg: "Something went wrong, while fetching job data."})
+    }
+
+
+}
+
+
 const applyJob = async (req, res) => {
     const { job_id, title, seeker_id, cover_letter, resume="resume" } = req.body;
     if (!job_id) {
@@ -112,7 +138,7 @@ const applyJob = async (req, res) => {
             from: "Fedho_developer", 
             to: seekerEmail,
             subject: "Job Application Confirmation",
-            text: `Thank you for applying for the job (Title: ${title}). Your application has sent to employer.`
+            text: `"Thanks for applying for the job (Title: ${title})! Just a heads-up, this is a simulated application process for learning purposes only. The job posting and application are part of a project designed for learning and practice—no real employers are involved."`
         };
 
         transporter.sendMail(mailOptions, (err, info) => {
@@ -131,4 +157,4 @@ const applyJob = async (req, res) => {
     }
 };
 
-module.exports = {postJob, getAllJobs, myPosts, applyJob}
+module.exports = {postJob, getAllJobs, myPosts, applyJob, singleJob}

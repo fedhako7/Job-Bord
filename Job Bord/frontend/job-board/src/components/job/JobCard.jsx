@@ -1,21 +1,21 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
-function JobCard({ job, emp }) {
+function JobCard({ job, emp, from_detail }) {
     const navigate = useNavigate()
-    const { title, fname, lname, description, location, salary, created_at, job_id } = job
+    const { title, fname, lname, description, location, salary, created_at, job_id, resp="", reqr="",  } = job
     const editedSal = Math.trunc(salary)
     const date = new Date(created_at);
     const month = date.toLocaleString('default', { month: 'short' });
     const formattedDate = `${month}-${date.getDate()}`;
-    const [show, setShow] = useState(false)
+    const [show, setShow] = useState(from_detail)
 
     const handleApply = (e) => {
         navigate("/apply", { state: { job_id, title } } );
         
     }
-    const handleDetails = () => {
-        navigate("/job/detail", { state: { job, emp }});
+    const handleDetails = (e) => {
+        navigate("/job/detail", { state: { title, job_id, emp }});
     }
 
     return (
@@ -53,24 +53,11 @@ function JobCard({ job, emp }) {
 
                 <div className={` mt-5 ${!show && 'hidden'}`}>
                     <p className=' text-lg font-bold font-mono lg:text-xl lg:inline-flex '>Description</p>
-                    <p className='mb-3 lg:mb-5'>
-                        {description}
-                        Curabitur accumsan, sapien a commodo aliquet, urna nisi tempor lorem, at
-                        elementum neque justo ut nisi. Integer ac elit non turpis tincidunt suscipit.
-                        Pha
-                    </p>
+                    <p className='mb-3 lg:mb-5'> { description || "Description"} </p>
                     <p className=' text-lg font-bold font-mono lg:text-xl lg:inline-flex '>Responsibilities</p>
-                    <p className='mb-3 lg:mb-5'>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi.
-                        elementum neque justo ut nisi. Integer ac elit non turpis tincidunt suscipit.
-                        Phasellus vel lectus non nisl malesuada vehicula ut non risus.
-                    </p>
+                    <p className='mb-3 lg:mb-5'>{resp || "Responsibilities "}</p>
                     <p className=' text-lg font-bold font-mono lg:text-xl lg:inline-flex '>Criterias</p>
-                    <p className='mb-3 lg:mb-5'>
-                        Curabitur accumsan, sapien a commodo aliquet, urna nisi tempor lorem, at
-                        elementum neque justo ut nisi. Integer ac elit non turpis tincidunt suscipit.
-                        Pha
-                    </p>
+                    <p className='mb-3 lg:mb-5'>{reqr || "Criterias"} </p>
                 </div>
 
                 {
@@ -80,9 +67,13 @@ function JobCard({ job, emp }) {
                         <button onClick={() => { setShow((prev) => (!prev)) }} className=' min-w-28 h-10 bg-blue-800 rounded-md lg:w-36 lg:h-12 '>
                             {show ? "Show Less" : "Detail"}
                         </button>
-                    </div> :
-                    <button onClick={handleDetails} className=' min-w-28 h-10 bg-blue-800 rounded-md lg:w-36 lg:h-12 '>  Details </button>
-
+                    </div> : <>
+                    {
+                        !from_detail &&
+                        <div className='flex h-32 justify-around lg:pt-8 '>
+                            <button onClick={handleDetails} name={job_id} className=' min-w-28 h-10 bg-blue-800 rounded-md lg:w-36 lg:h-12 '> See Detail </button>
+                        </div>
+                    }</>
                 }
                 
             </div>
