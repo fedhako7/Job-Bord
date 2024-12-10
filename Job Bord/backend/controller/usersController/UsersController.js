@@ -26,7 +26,8 @@ const profile = async (req, res) => {
 
 
 const profileUpdate = async (req, res) => {
-    const {user_id, role, fname: newFname, lname: newLname, email: newEmail, company: newCompany } = req.body
+    const {user_id, role, fname: newFname, lname: newLname, email: newEmail } = req.body
+    let { company: newCompany } = req.body
     if (!user_id || !newFname || !newLname || !newEmail){
         return res.status(statCodes.BAD_REQUEST).json({msg: "All fields are requered."})
     }else if (role !== "Employer"){

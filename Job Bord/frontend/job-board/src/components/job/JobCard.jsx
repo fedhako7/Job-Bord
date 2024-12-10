@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
+
 function JobCard({ job, emp, from_detail }) {
     const navigate = useNavigate()
-    const { title, fname, lname, description, location, salary, company, created_at, job_id, resp="", reqr="",  } = job
-    const editedSal = Math.trunc(salary)
+    const { title, fname, lname, description, location, applicants: tot_app, salary, company, created_at, job_id, resp="", reqr="",  } = job
     const date = new Date(created_at);
     const month = date.toLocaleString('default', { month: 'short' });
     const formattedDate = `${month}-${date.getDate()}`;
@@ -32,7 +32,7 @@ function JobCard({ job, emp, from_detail }) {
 
                     <div className='flex flex-col gap-1'>
                         <p className=' text-lg font-bold font-mono lg:text-xl lg:inline-flex '>Company</p>
-                        <p className=' text-md font-serif pl-4 lg:text-xl lg:pl-0 '>{company}</p>
+                        <p className=' text-md font-serif pl-4 lg:text-xl lg:pl-0 '>{company || fname}</p>
                     </div>
 
                     <div className='flex flex-col gap-1'>
@@ -41,19 +41,21 @@ function JobCard({ job, emp, from_detail }) {
                     </div>
 
                     <div className='flex flex-col gap-1'>
-                        <p className=' text-lg font-bold font-mono lg:text-xl lg:inline-flex '>Salary</p>
-                        <p className=' text-md font-serif pl-4 lg:text-xl lg:pl-0 '>{`$${editedSal}`}</p>
+                        <p className=' text-lg font-bold font-mono lg:text-xl lg:inline-flex '>Posted on</p>
+                        <p className=' text-md font-serif pl-4 lg:text-xl lg:pl-0 '>{formattedDate}</p>
                     </div>
 
                     <div className='flex flex-col gap-1'>
-                        <p className=' text-lg font-bold font-mono lg:text-xl lg:inline-flex '>Deadline</p>
-                        <p className=' text-md font-serif pl-4 lg:text-xl lg:pl-0 '>{formattedDate}</p>
+                        <p className=' text-lg font-bold font-mono lg:text-xl lg:inline-flex '>Applicants</p>
+                        <p className=' text-md font-serif pl-4 lg:text-xl lg:pl-0 '>{tot_app}</p>
                     </div>
                 </div>
 
                 <div className={` mt-5 ${!show && 'hidden'}`}>
                     <p className=' text-lg font-bold font-mono lg:text-xl lg:inline-flex '>Employer Name</p>
                     <p className='mb-3 lg:mb-5'> {`${fname} ${lname}`} </p>
+                    <p className=' text-lg font-bold font-mono lg:text-xl lg:inline-flex '>Salary</p>
+                    <p className='mb-3 lg:mb-5'> ${salary} </p>
                     <p className=' text-lg font-bold font-mono lg:text-xl lg:inline-flex '>Description</p>
                     <p className='mb-3 lg:mb-5'> { description || "Description"} </p>
                     <p className=' text-lg font-bold font-mono lg:text-xl lg:inline-flex '>Responsibilities</p>

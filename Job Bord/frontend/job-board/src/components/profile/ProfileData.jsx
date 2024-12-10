@@ -7,6 +7,7 @@ const ProfileData = () => {
   const { child, setChild, profile, setProfile } = useContext( profileMode )
   const token = localStorage.getItem("token")
   const user_id = parseInt(localStorage.getItem("user_id"))
+  const role = parseInt(localStorage.getItem("role"))
   const [dbError, setDbError] = useState('')
   const [isFetching, setIsFetching] = useState(false)
 
@@ -46,11 +47,14 @@ const ProfileData = () => {
           <label className="text-lg text-gray-800 font-semibold">Email</label>
           <p className="pl-3 mt-2 text-lg text-blue-800 font-sarif font-medium">{ profile.email }</p>
         </div>
-
+        
+        {
+          role === "Employer" &&
         <div className='flex flex-col'>
           <label className="text-lg text-gray-800 font-semibold">Company</label>
           <p className="pl-3 mt-2 text-lg text-blue-800 font-sarif font-medium">{ profile.company }</p>
         </div>
+        }
 
         <div className="flex gap-4 justify-around">
           

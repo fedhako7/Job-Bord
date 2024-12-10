@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 function ApplicationCard({ app }) {
-    const { title, fname, lname, location, status, company, applied_at, salary, created_at, cover_letter: cv } = app;
+    const { title, fname, lname, location, status, company, applied_at, applicants: tot_app, salary, created_at, cover_letter: cv } = app;
     const dateApplied = new Date(applied_at);
     const datePosted = new Date(created_at);
     const formattedAppliedAt = `${dateApplied.toLocaleString('default', { month: 'short' })}-${dateApplied.getDate()}`;
@@ -45,6 +45,9 @@ function ApplicationCard({ app }) {
 
                     <p className=' text-lg font-bold font-mono lg:text-xl lg:inline-flex '>Applied Date</p>
                     <p className='mb-3 lg:mb-5'> {formattedAppliedAt} </p>
+
+                    <p className=' text-lg font-bold font-mono lg:text-xl lg:inline-flex '>Total Applications</p>
+                    <p className='mb-3 lg:mb-5'> {tot_app} </p>
 
                     <p className=' text-lg font-bold font-mono lg:text-xl lg:inline-flex '>CV</p>
                     <p className='mb-3 lg:mb-5'> {cv} </p>

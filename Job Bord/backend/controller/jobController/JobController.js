@@ -110,6 +110,31 @@ const singleJob = async (req, res) => {
 }
 
 
+const jobSearch = async (req, res) => {
+    const { title } = req.query;
+
+    if (!title) {
+        return res.status(statCodes.BAD_REQUEST).json({ msg: "Job title is required" });
+    }
+
+    try {
+        const [search_jobs] = await db.query(
+            "SELECT * FROM jobs WHERE title LIKE ? ORDER BY created_at DESC",
+            [`%${title}%`]
+        );
+
+        if (search_jobs.length === 0) {
+            return res.status(statCodes.NOT_FOUND).json({ msg: "No jobs found matching the title" });
+        }
+
+        res.status(statCodes.OK).json({ msg: "Jobs fetched successfully", search_jobs });
+    } catch (error) {
+        console.log(error);
+        res.status(statCodes.INTERNAL_SERVER_ERROR).json({ msg: "Something went wrong while fetching jobs" });
+    }
+};
+
+
 const applyJob = async (req, res) => {
     const { job_id, title, seeker_id, cover_letter, resume="resume" } = req.body;
     if (!job_id) {
@@ -124,7 +149,13 @@ const applyJob = async (req, res) => {
         await db.query(
             "INSERT INTO applications (job_id, seeker_id, resume, cover_letter) VALUES (?,?,?,?)",
             [job_id, seeker_id, resume, cover_letter]
-        );
+          )
+
+          await db.query(
+            "UPDATE jobs SET applicants = applicants + 1 WHERE job_id = ?",
+            [job_id]
+          )
+          
         const [seeker] = await db.query("SELECT email FROM users WHERE user_id = ?", [seeker_id]);
         const seekerEmail = seeker[0]?.email;
 
@@ -168,4 +199,4 @@ const applyJob = async (req, res) => {
     }
 };
 
-module.exports = {postJob, getAllJobs, myPosts, applyJob, singleJob}
+module.exports = {postJob, getAllJobs, myPosts, applyJob, singleJob, jobSearch}
