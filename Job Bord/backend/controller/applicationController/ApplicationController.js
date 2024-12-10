@@ -36,10 +36,22 @@ const myApplicants = async (req, res) => {
 
     try {
         const [app_data] = await db.query(`
-            SELECT applications.*, users.* 
-            FROM applications  
-            JOIN users ON users.user_id = applications.seeker_id 
-            WHERE applications.job_id = ?`, [job_id]);
+            SELECT 
+              applications.*, 
+              seeker.*, 
+              employer.company AS company
+            FROM 
+              applications
+            JOIN 
+              users AS seeker ON seeker.user_id = applications.seeker_id
+            JOIN 
+              jobs ON jobs.job_id = applications.job_id
+            JOIN 
+              users AS employer ON employer.user_id = jobs.employer_id
+            WHERE 
+              applications.job_id = ?
+          `, [job_id]);
+          
           
         if ( !app_data || app_data?.length === 0) {
             return res.status(statCodes.NOT_FOUND).json({msg: "No applicants found for this question."})

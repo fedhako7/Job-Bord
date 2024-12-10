@@ -15,9 +15,7 @@ const ProfileData = () => {
       const response = await axiosInstance.get("/users/profile", {
         params: {user_id},
         headers: {authorization: "Bearer " + token} })
-        const u = response?.data?.user
-        u.company = "Astu tia"
-        setProfile(u)
+        setProfile(response?.data?.user)
         setIsFetching(false)
 
     } catch (error) {

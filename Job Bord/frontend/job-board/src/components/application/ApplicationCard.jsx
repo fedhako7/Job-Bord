@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 function ApplicationCard({ app }) {
-    const { title, fname, location, status, applied_at, salary, created_at, cover_letter: cv } = app;
+    const { title, fname, lname, location, status, company, applied_at, salary, created_at, cover_letter: cv } = app;
     const dateApplied = new Date(applied_at);
     const datePosted = new Date(created_at);
     const formattedAppliedAt = `${dateApplied.toLocaleString('default', { month: 'short' })}-${dateApplied.getDate()}`;
@@ -22,7 +22,7 @@ function ApplicationCard({ app }) {
 
                     <div className='flex flex-col gap-1'>
                         <p className=' text-lg font-bold font-mono lg:text-xl lg:inline-flex '>Company</p>
-                        <p className=' text-md font-serif pl-4 lg:text-xl lg:pl-0 '>{`${fname}`}</p>
+                        <p className=' text-md font-serif pl-4 lg:text-xl lg:pl-0 '>{`${company}`}</p>
                     </div>
 
                     <div className='flex flex-col gap-1'>
@@ -37,6 +37,9 @@ function ApplicationCard({ app }) {
                 </div>
 
                 <div className={` mt-5 ${!show && 'hidden'}`}>
+                    <p className=' text-lg font-bold font-mono lg:text-xl lg:inline-flex '>Employer Name</p>
+                    <p className='mb-3 lg:mb-5'> {`${fname} ${lname}`} </p>
+
                     <p className=' text-lg font-bold font-mono lg:text-xl lg:inline-flex '>Salary</p>
                     <p className='mb-3 lg:mb-5'> ${salary} </p>
 

@@ -12,13 +12,15 @@ function Register() {
   const [termsError, setTermsError] = useState('')
   const [dbError, setDbError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [roleValue, setRoleValue] = useState("");
   const fname = useRef('')
   const lname = useRef('')
   const email = useRef('')
   const password = useRef('')
+  const company = useRef('')
   const role = useRef('')
   const terms = useRef(false)
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setDbError(''), setFieldError(''), setTermsError('')
@@ -27,14 +29,15 @@ function Register() {
     const currEmail = email.current.value
     const currPassword = password.current.value
     const currRole = role.current.value
+    const currCompany = currRole === "Employer" ? company?.current?.value || currFname : null
     const currTerms = terms.current.checked
 
     // Check fields
-    if (!currFname || !currLname || !currEmail || !currPassword || !currRole ){
+    if (!currFname || !currLname || !currEmail || !currPassword || !currRole) {
       return setFieldError('All fields are requered.')
-    }else if(currPassword && currPassword.length < 8){
+    } else if (currPassword && currPassword.length < 8) {
       return setFieldError("Password length can't be less than 8 characters.")
-    }else if( !currTerms ){
+    } else if (!currTerms) {
       return setTermsError("Agree to the terms to continue.")
     }
     console.log("role", role)
@@ -48,7 +51,8 @@ function Register() {
         lname: currLname,
         email: currEmail,
         password: currPassword,
-        role: currRole
+        role: currRole,
+        company: currCompany,
       })
       setIsLoading(false)
       navigate("/login")
@@ -63,7 +67,7 @@ function Register() {
   return (
     <section className="h-screen flex justify-center items-center bg-white">
       <div className="flex flex-col gap-6 items-center bg-gray-300 shadow-lg rounded-lg p-8 w-full max-w-md">
-        {/* Header */}
+        
         <h1 className="text-2xl font-bold text-gray-800">Create an Account</h1>
         <p className="text-sm text-gray-600">
           Already have an account?{' '}
@@ -72,9 +76,7 @@ function Register() {
           </Link>
         </p>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
-          {/* Name Input */}
           <div className="flex gap-3 sm:flex-col">
             <input
               type="text"
@@ -82,6 +84,7 @@ function Register() {
               ref={fname}
               className="flex-1 p-2 border rounded-md focus:ring-2 focus:ring-blue-400 outline-none"
             />
+
             <input
               type="text"
               placeholder="Last name"
@@ -89,7 +92,8 @@ function Register() {
               className="flex-1 p-2 border rounded-md focus:ring-2 focus:ring-blue-400 outline-none"
             />
           </div>
-          {/* Email and Password */}
+
+
           <input
             type="email"
             placeholder="Email"
@@ -97,32 +101,44 @@ function Register() {
             className="p-2 border rounded-md focus:ring-2 focus:ring-blue-400 outline-none"
           />
           <div className='flex'>
-              <input
-              type={ showPass ? "text" : "password"}
+            <input
+              type={showPass ? "text" : "password"}
 
               placeholder="Password"
               ref={password}
               className="h-14 w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-400 outline-none"
-              />
-              <button type="button" onClick={() => {setShowPass(prev => !prev)}} className='-ml-8'>
-              { showPass ?
+            />
+            <button type="button" onClick={() => { setShowPass(prev => !prev) }} className='-ml-8'>
+              {showPass ?
                 < VisibilityOutlinedIcon /> : < VisibilityOffOutlinedIcon />
               }
-              </button>
-            </div>
-          {/* Role Selection */}
+            </button>
+          </div>
+
+
           <select
             name="role"
             ref={role}
+            onChange={(e) => {setRoleValue(e.target.value);}}
             className="p-2 border rounded-md text-gray-500 focus:ring-2 focus:ring-blue-400 outline-none"
             defaultValue=""
           >
-            <option value= "" disabled>
+            <option value="" disabled>
               Register As
             </option>
             <option value="Employer">Employer</option>
             <option value="Job Seeker">Job Seeker</option>
           </select>
+
+          {roleValue === "Employer" && (
+            <input
+            ref={company}
+              type="text"
+              placeholder="Company"
+              className="p-2 border rounded-md focus:ring-2 focus:ring-blue-400 outline-none"
+            />
+          )}
+
           {fieldError && <p className='text-center bold italic text-red-600'>{fieldError}</p>}
 
           {/* Terms and Conditions */}
@@ -140,11 +156,10 @@ function Register() {
           {/* Submit Button */}
           <button
             type="submit"
-            className={`h-12 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-md transition ${
-              isLoading ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+            className={`h-12 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-md transition ${isLoading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
           >
-            {isLoading ? <><ClipLoader size={20} color='white'/> Please wait...</> : <>Create Account</>}
+            {isLoading ? <><ClipLoader size={20} color='white' /> Please wait...</> : <>Create Account</>}
 
           </button>
         </form>

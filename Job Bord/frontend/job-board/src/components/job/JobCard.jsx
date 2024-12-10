@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 function JobCard({ job, emp, from_detail }) {
     const navigate = useNavigate()
-    const { title, fname, lname, description, location, salary, created_at, job_id, resp="", reqr="",  } = job
+    const { title, fname, lname, description, location, salary, company, created_at, job_id, resp="", reqr="",  } = job
     const editedSal = Math.trunc(salary)
     const date = new Date(created_at);
     const month = date.toLocaleString('default', { month: 'short' });
@@ -32,7 +32,7 @@ function JobCard({ job, emp, from_detail }) {
 
                     <div className='flex flex-col gap-1'>
                         <p className=' text-lg font-bold font-mono lg:text-xl lg:inline-flex '>Company</p>
-                        <p className=' text-md font-serif pl-4 lg:text-xl lg:pl-0 '>{`${fname} ${lname}`}</p>
+                        <p className=' text-md font-serif pl-4 lg:text-xl lg:pl-0 '>{company}</p>
                     </div>
 
                     <div className='flex flex-col gap-1'>
@@ -52,6 +52,8 @@ function JobCard({ job, emp, from_detail }) {
                 </div>
 
                 <div className={` mt-5 ${!show && 'hidden'}`}>
+                    <p className=' text-lg font-bold font-mono lg:text-xl lg:inline-flex '>Employer Name</p>
+                    <p className='mb-3 lg:mb-5'> {`${fname} ${lname}`} </p>
                     <p className=' text-lg font-bold font-mono lg:text-xl lg:inline-flex '>Description</p>
                     <p className='mb-3 lg:mb-5'> { description || "Description"} </p>
                     <p className=' text-lg font-bold font-mono lg:text-xl lg:inline-flex '>Responsibilities</p>

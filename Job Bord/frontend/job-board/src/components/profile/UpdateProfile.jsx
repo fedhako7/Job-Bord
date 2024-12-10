@@ -7,6 +7,7 @@ import { childType } from "./childType";
 
 const UpdateProfile = () => {
     const token = localStorage.getItem("token")
+    const role = localStorage.getItem("role")
     const user_id = parseInt(localStorage.getItem("user_id"))
     const { setChild, profile } = useContext(profileMode)
     const fnameRef = useRef(profile.fname )
@@ -22,11 +23,14 @@ const UpdateProfile = () => {
         const fname = fnameRef.current.value
         const lname = lnameRef.current.value
         const email = emailRef.current.value
-        const company = companyRef.current.value
+        const company = companyRef?.current?.value || fname
     
         // Check fields
-        if (!fname || !lname || !email || !company ){
+        if (!fname || !lname || !email ){
           return setFieldError('All fields are requered.')
+        }else if(company === ''){
+          alert("Your company name updated to your first name")
+
         }else if (profile.fname == fname && profile.lname == lname && profile.email == email && profile.company == company){
             return alert("No update, the same data")
           }
@@ -35,13 +39,15 @@ const UpdateProfile = () => {
             setIsLoading(true)
             await axiosInstance.post("/users/profile/update", {
               user_id,
+              role,
               fname, 
               lname, 
               email, 
               company, 
             }, { headers: {authorization: "Bearer " + token} })
-          setIsLoading(false)
+
           alert("Profile updated successfully!")
+          setIsLoading(false)
           setChild(childType.PROFILE_DATA)
           
         } catch (error) {
@@ -70,10 +76,13 @@ const UpdateProfile = () => {
           <input type="email" defaultValue={profile.email} ref={emailRef} className="flex-1 p-2 border-2 border-gray-400 ml-2 rounded-md focus:ring-2 focus:ring-blue-400 outline-none" />
         </div>
 
+        {
+          role === "Employer" &&
         <div className='flex flex-col'>
           <label className="text-lg text-gray-800 font-semibold">Company</label>
           <input className="flex-1 p-2 border-2 border-gray-400 ml-2 rounded-md focus:ring-2 focus:ring-blue-400 outline-none" type="text" defaultValue={profile.company} ref={companyRef} />
         </div>
+        }
 
         {fieldError && <p className='text-center italic bold text-red-600'>{fieldError}</p>}
         {dbError && <p className='text-center italic bold text-red-600'>{dbError}</p>}

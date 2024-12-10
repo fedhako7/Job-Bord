@@ -10,7 +10,7 @@ const profile = async (req, res) => {
     }
 
     try {
-        const [ userData ] = await db.query("SELECT user_id, fname, lname, email, role, created_at FROM users WHERE user_id=?", [user_id])
+        const [ userData ] = await db.query("SELECT * FROM users WHERE user_id=?", [user_id])
         const user = userData[0]
         if (!user || user?.length === 0){
             return res.status(statCodes.NOT_FOUND).json({msg: "User not found"})
@@ -26,9 +26,11 @@ const profile = async (req, res) => {
 
 
 const profileUpdate = async (req, res) => {
-    const {user_id, fname: newFname, lname: newLname, email: newEmail} = req.body
+    const {user_id, role, fname: newFname, lname: newLname, email: newEmail, company: newCompany } = req.body
     if (!user_id || !newFname || !newLname || !newEmail){
         return res.status(statCodes.BAD_REQUEST).json({msg: "All fields are requered."})
+    }else if (role !== "Employer"){
+        newCompany = null
     }
 
     try {
@@ -37,12 +39,12 @@ const profileUpdate = async (req, res) => {
         if (!user && user?.length === 0){
             return res.status(statCodes.NOT_FOUND).json({msg: "User not found"})
         }
-        const {fname, lname, email, created_at} = user
-        if (newFname == fname && newLname == lname && newEmail == email){
+        const {fname, lname, email, company, created_at} = user
+        if (newFname == fname && newLname == lname && newEmail == email && newCompany == company){
             return res.status(statCodes.BAD_REQUEST).json({msg: "No update, the same data"})
         }
         
-        db.query("UPDATE users SET fname=?, lname=?, email=?, updated_at = NOW() WHERE user_id=?", [newFname, newLname, newEmail, user_id])
+        db.query("UPDATE users SET fname=?, lname=?, email=?, company=?, updated_at = NOW() WHERE user_id=?", [newFname, newLname, newEmail, newCompany, user_id])
         res.status(statCodes.CREATED).json({msg: "Profile updated successfully"})
         
     } catch (error) {

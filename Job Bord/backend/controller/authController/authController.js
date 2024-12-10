@@ -4,13 +4,13 @@ const bcrypt = require("bcrypt")
 const jwt = require('jsonwebtoken')
 
 const register = async (req, res) => {
-    const { fname, lname, email, role, password } = req.body
+    const { fname, lname, email, role, password, company } = req.body
 
     if (!fname || !lname || !email || !role || !password) {
         return res.status(statCodes.BAD_REQUEST).json({ msg: "Fill all requered fields" })
     }
-    if (password.length < 6) {
-        return res.status(statCodes.BAD_REQUEST).json({ msg: "Password must not be less than 6 characters" })
+    if (password.length < 8) {
+        return res.status(statCodes.BAD_REQUEST).json({ msg: "Password must not be less than 8 characters" })
     }
 
     try {
@@ -22,7 +22,7 @@ const register = async (req, res) => {
         const salt = await bcrypt.genSalt(10)
         const hash = await bcrypt.hash(password, salt)
 
-        const result = await db.query("INSERT INTO users (fname, lname, email, role, password) VALUES (?,?,?,?,?)", [fname, lname, email, role, hash])
+        const result = await db.query("INSERT INTO users (fname, lname, email, role, password, company) VALUES (?,?,?,?,?,?)", [fname, lname, email, role, hash, company])
         res.status(statCodes.OK).json({msg: "Registered successfully"})
 
     } catch (error) {

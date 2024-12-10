@@ -21,8 +21,6 @@ const postJob = async (req, res) => {
         res.status(statCodes.INTERNAL_SERVER_ERROR).json({msg: "Something went wrong while posting job, please ty later."})
         
     }
-
-    
 }
 
 
@@ -30,7 +28,7 @@ const getAllJobs = async (req, res) => {
     
     try {
         const [user_jobs] = await db.query(
-            `SELECT jobs.*, users.fname, users.lname 
+            `SELECT jobs.*, users.company, users.fname, users.lname 
             FROM jobs JOIN users ON users.user_id = jobs.employer_id;`
         );
         
@@ -53,7 +51,7 @@ const myPosts = async (req, res) => {
 
     try {
         const [user_jobs] = await db.query(
-            `SELECT jobs.*, users.fname, users.lname 
+            `SELECT jobs.*, users.company, users.fname, users.lname 
             FROM jobs JOIN users ON users.user_id = jobs.employer_id
             WHERE employer_id=?;`, [employeeId]
         );
@@ -82,7 +80,7 @@ const singleJob = async (req, res) => {
     }
 
     try {
-        const [job] = await db.query( `SELECT *  FROM jobs WHERE job_id=?;`, [ job_id ] );
+        const [job] = await db.query( `SELECT jobs.*, users.company, users.fname, users.lname  FROM jobs JOIN users ON users.user_id = jobs.employer_id WHERE job_id=?;`, [ job_id ] );
 
         if (!job){
             return res.status(statCodes.NOT_FOUND).json({msg: "No job found."})
