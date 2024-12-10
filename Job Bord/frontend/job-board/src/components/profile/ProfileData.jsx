@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { profileMode } from "./Profile";
 import axiosInstance from "../../axios/Axios";
+import { childType } from "./childType";
 
 const ProfileData = () => {
-  const { updateMode, setUpdateMode, profile, setProfile } = useContext( profileMode )
+  const { child, setChild, profile, setProfile } = useContext( profileMode )
   const token = localStorage.getItem("token")
   const user_id = parseInt(localStorage.getItem("user_id"))
   const [dbError, setDbError] = useState('')
   const [isFetching, setIsFetching] = useState(false)
-
 
   const fetchProfile = async () => {
     try {
@@ -29,7 +29,7 @@ const ProfileData = () => {
 
   useEffect(() => {
     fetchProfile()
-  }, [updateMode])
+  }, [child])
   return (
     <section className="flex w-full flex-grow bg-gray-200">
       <div className="flex flex-col w-5/6 bg-white ml-auto mr-auto mt-4 gap-4 p-5 border-2 border-gray-400">
@@ -55,12 +55,15 @@ const ProfileData = () => {
         </div>
 
         <div className="flex gap-4 justify-around">
-          <button onClick={() => { setUpdateMode((p) => !p)}} className="w-36 h-12 bg-blue-800 rounded-md">
+          
+          <button onClick={() => { setChild(childType.UPDATE_PROFILE)}} className="w-36 h-12 bg-blue-800 rounded-md">
             Update Profile
           </button>
-          <button className="w-36 h-12 bg-blue-800 rounded-md">
+
+          <button onClick={() => { setChild(childType.CHANGE_PASS)}} className="w-36 h-12 bg-blue-800 rounded-md">
             Change password
           </button>
+
         </div>
 
       </div>

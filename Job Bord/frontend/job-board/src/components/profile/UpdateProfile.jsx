@@ -2,12 +2,13 @@ import React, { useContext, useRef, useState } from "react";
 import { profileMode } from "./Profile";
 import axiosInstance from "../../axios/Axios";
 import { ClipLoader } from 'react-spinners'
+import { childType } from "./childType";
 
 
-const UpdateProfile = ({fname: prevFname, lname: prevLname, email: prevEmail, company: prevCompany}) => {
+const UpdateProfile = () => {
     const token = localStorage.getItem("token")
     const user_id = parseInt(localStorage.getItem("user_id"))
-    const { setUpdateMode, profile } = useContext(profileMode)
+    const { setChild, profile } = useContext(profileMode)
     const fnameRef = useRef(profile.fname )
     const lnameRef = useRef(profile.lname )
     const emailRef = useRef(profile.email )
@@ -26,21 +27,22 @@ const UpdateProfile = ({fname: prevFname, lname: prevLname, email: prevEmail, co
         // Check fields
         if (!fname || !lname || !email || !company ){
           return setFieldError('All fields are requered.')
-        }else if (prevFname == fname && prevLname == lname && prevEmail == email && prevCompany == company){
+        }else if (profile.fname == fname && profile.lname == lname && profile.email == email && profile.company == company){
             return alert("No update, the same data")
-        }
-    
-        try {
-          setIsLoading(true)
-          await axiosInstance.post("/users/profile/update", {
-            user_id,
-            fname, 
-            lname, 
-            email, 
-            company, 
-        }, { headers: {authorization: "Bearer " + token} })
+          }
+          
+          try {
+            setIsLoading(true)
+            await axiosInstance.post("/users/profile/update", {
+              user_id,
+              fname, 
+              lname, 
+              email, 
+              company, 
+            }, { headers: {authorization: "Bearer " + token} })
           setIsLoading(false)
-          setUpdateMode(false)
+          alert("Profile updated successfully!")
+          setChild(childType.PROFILE_DATA)
           
         } catch (error) {
           setIsLoading(false)
@@ -72,6 +74,7 @@ const UpdateProfile = ({fname: prevFname, lname: prevLname, email: prevEmail, co
           <label className="text-lg text-gray-800 font-semibold">Company</label>
           <input className="flex-1 p-2 border-2 border-gray-400 ml-2 rounded-md focus:ring-2 focus:ring-blue-400 outline-none" type="text" defaultValue={profile.company} ref={companyRef} />
         </div>
+
         {fieldError && <p className='text-center italic bold text-red-600'>{fieldError}</p>}
         {dbError && <p className='text-center italic bold text-red-600'>{dbError}</p>}
 
@@ -81,7 +84,7 @@ const UpdateProfile = ({fname: prevFname, lname: prevLname, email: prevEmail, co
               isLoading ? <> <ClipLoader size={20} color="white"/> Please wait...</> : <> Update </>
             }
           </button>
-          <button onClick={ () => { setUpdateMode((p) => !p)} } className="w-36 h-12 bg-blue-800 rounded-md"> Cancel </button>
+          <button onClick={ () => { setChild( childType.PROFILE_DATA )} } className="w-36 h-12 bg-blue-800 rounded-md"> Cancel </button>
         </div>
 
       </div>

@@ -84,4 +84,41 @@ const checkUser = async (req, res) => {
 
 }
 
-module.exports = { register, login, checkUser }
+
+const changePassword = async (req, res) => {
+    const { old_pass, new_pass, user_id} = req.body
+
+    if (!user_id){
+        return res.status(statCodes.BAD_REQUEST).json({msg: "Error: User Id not provided."})
+    }else if( !old_pass  ){
+        return res.status(statCodes.BAD_REQUEST).json({msg: "Error: old password not provided."})
+    }else if ( !new_pass ){
+        return res.status(statCodes.BAD_REQUEST).json({msg: "Error: new password not provided."})
+    }else if (new_pass.length < 6) {
+        return res.status(statCodes.BAD_REQUEST).json({ msg: "New password must not be less than 6 characters" })
+    }
+
+    try {
+        const [user] = await db.query("SELECT user_id, fname, password, role FROM users WHERE user_id=?", [ user_id ])
+        if (user.length !== 1){
+            return res.status(statCodes.NOT_FOUND).json({msg: "User not found."})
+        }
+        const isMatch = await bcrypt.compare(old_pass, user[0].password)
+        if (!isMatch){
+            return res.status(statCodes.UNAUTHORIZED).json({msg: "Wrong old password."})
+        }
+
+        const salt = await bcrypt.genSalt(10)
+        const hash = await bcrypt.hash(new_pass, salt)
+
+        await db.query("UPDATE users SET password = ? WHERE user_id = ?",
+            [hash, user_id]
+        );
+        res.status(statCodes.OK).json({ msg: "Password changed successfully" });
+
+    } catch (error) {
+        console.log(error)
+        return res.status(statCodes.INTERNAL_SERVER_ERROR).json({msg:"Something went wrong, please try again."})
+    }
+}
+module.exports = { register, login, checkUser, changePassword }

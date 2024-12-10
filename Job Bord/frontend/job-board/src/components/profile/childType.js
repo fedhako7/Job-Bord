@@ -1,0 +1,5 @@
+export const childType = {
+  CHANGE_PASS: "CHANGE_PASS",
+  UPDATE_PROFILE: "UPDATE_PROFILE",
+  PROFILE_DATA: "PROFILE_DATA",
+}
