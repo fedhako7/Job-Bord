@@ -25,14 +25,22 @@ const postJob = async (req, res) => {
 
 
 const getAllJobs = async (req, res) => {
+    const {top_5 = false} = req.query
     
     try {
         const [user_jobs] = await db.query(
             `SELECT jobs.*, users.company, users.fname, users.lname 
-            FROM jobs JOIN users ON users.user_id = jobs.employer_id;`
+            FROM jobs JOIN users ON users.user_id = jobs.employer_id
+             ORDER BY jobs.created_at DESC;`
         );
+
+        const result = top_5
+        ? user_jobs
+              .sort((a, b) => b.applicants - a.applicants) 
+              .slice(0, 5)
+        : user_jobs;
         
-        res.status(statCodes.OK).json({msg: "Jobs data fetched successfully", user_jobs})
+        res.status(statCodes.OK).json({msg: "Jobs data fetched successfully", user_jobs: result})
         
     } catch (error) {
         console.log(error)
@@ -42,38 +50,43 @@ const getAllJobs = async (req, res) => {
 
 
 const myPosts = async (req, res) => {
-    const {employee_id} = req.query
-    const employeeId = parseInt(employee_id)
+    const { employee_id, top_5 = false } = req.query;
+    const employeeId = parseInt(employee_id);
 
-    if (employeeId !==0 && !employeeId){
-        return res.status(statCodes.BAD_REQUEST).json({msg: "User_id is requered"})
+    if (employeeId !== 0 && !employeeId) {
+        return res.status(statCodes.BAD_REQUEST).json({ msg: "User_id is required" });
     }
 
     try {
-        const [user_jobs] = await db.query(
-            `SELECT jobs.*, users.company, users.fname, users.lname 
-            FROM jobs JOIN users ON users.user_id = jobs.employer_id
-            WHERE employer_id=?;`, [employeeId]
-        );
+        const query = `
+            SELECT jobs.*, users.company, users.fname, users.lname 
+            FROM jobs 
+            JOIN users ON users.user_id = jobs.employer_id
+            WHERE employer_id=? 
+            ORDER BY jobs.created_at DESC
+        `;
 
-        if (!user_jobs){
-            return res.status(statCodes.NOT_FOUND).json({msg: "No jobs posted by this user found."})
+        const [user_jobs] = await db.query(query, [employeeId]);
+
+        if (!user_jobs || user_jobs.length === 0) {
+            return res.status(statCodes.NOT_FOUND).json({ msg: "No jobs posted by this user found." });
         }
 
-        res.status(statCodes.OK).json({msg: "Jobs posted by user fetched succefully.", user_jobs})
-
+        const resultData = top_5
+            ? user_jobs
+                  .sort((a, b) => b.applicants - a.applicants) 
+                  .slice(0, 5) 
+            : user_jobs;
+        res.status(statCodes.OK).json({ msg: "Jobs posted by user fetched successfully.", user_jobs: resultData });
     } catch (error) {
-        console.log(error)
-        res.status(statCodes.INTERNAL_SERVER_ERROR).json({msg: "Something went wrong, while fetching user posts."})
+        console.error(error);
+        res.status(statCodes.INTERNAL_SERVER_ERROR).json({ msg: "Something went wrong while fetching user posts." });
     }
-
-
-}
+};
 
 
 const singleJob = async (req, res) => {
     const { job_id } = req.query
-    console.log(job_id)
 
     if (job_id !==0 && !job_id){
         return res.status(statCodes.BAD_REQUEST).json({msg: "Job Id is requered"})

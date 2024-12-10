@@ -16,13 +16,11 @@ function MyJobsDetail() {
 
   const fetchJob = async () => {
     try {
-      console.log("jobs id", job_id)
       const res = await axiosInstance.get("jobs/single", {
         params: { job_id },
         headers: { authorization: "Bearer " + token }
       })
       setJob(res?.data?.job)
-      console.log("jobdt", res?.data?.job)
     } catch (error) {
       console.log(error)
       setDbError(error?.response?.data?.msg || error.message)

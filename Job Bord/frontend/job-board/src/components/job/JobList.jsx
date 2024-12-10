@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import axiosInstance from '../../axios/Axios';
 import JobCard from './JobCard';
 
-function JobList({ emp }) {
+function JobList({ emp, top_5=false }) {
     const token = localStorage.getItem("token")
     const employee_id = parseInt(localStorage.getItem('user_id'))
     const [dbError, setDbError] = useState('');
@@ -15,7 +15,7 @@ function JobList({ emp }) {
             const response = await axiosInstance.get(
               !emp ? "/jobs" : "/jobs/myposts",
               {
-                  params: emp ? { employee_id } : {},
+                  params: emp ? { employee_id } : { top_5 },
                   headers: { authorization: "Bearer " + token },
               }
             );
