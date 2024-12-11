@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
+import axiosInstance from '../../axios/Axios';
 
 function ApplicationCard({ app }) {
-    const { title, fname, lname, location, status, company, applied_at, applicants: tot_app, salary, created_at, resume, cover_letter: cv } = app;
+    const { title, fname, lname, location, status, company, applicants: tot_app, } = app;
+    const { salary, applied_at, created_at, resume, cover_letter: cv } = app;
     const dateApplied = new Date(applied_at);
     const datePosted = new Date(created_at);
     const formattedAppliedAt = `${dateApplied.toLocaleString('default', { month: 'short' })}-${dateApplied.getDate()}`;
     const formattedPostedAt = `${datePosted.toLocaleString('default', { month: 'short' })}-${datePosted.getDate()}`;
     const [show, setShow] = useState(false);
+    const resumePath  = `${axiosInstance.defaults.baseURL}/${resume.replace(/\\/g, '/')}`;
 
     return (
         <section className=' '>
@@ -53,7 +56,18 @@ function ApplicationCard({ app }) {
                     <p className='mb-3 lg:mb-5'> {cv} </p>
 
                     <p className=' text-lg font-bold font-mono lg:text-xl lg:inline-flex '>Resume</p>
-                    <p className='mb-3 lg:mb-5'> {resume} </p>
+                    <p className='mb-3 lg:mb-5'>
+                        <a 
+                            href={resumePath} 
+                            download 
+                            className='text-lg text-blue-700 underline hover:text-blue-900'
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                        >
+                            Download Resume
+                        </a>
+                    </p>
+
                 </div>
 
                 <div className='flex h-32 justify-around lg:pt-8 '>

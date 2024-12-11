@@ -3,12 +3,15 @@ import axiosInstance from '../../axios/Axios';
 
 function ApplicantsCard({ applicant, setRefresh }) {
   const token = localStorage.getItem("token")
-  const { fname, lname, email, status, applied_at, cover_letter: cv, note, resume, application_id:app_id } = applicant
+  const { fname, lname, email, status, applied_at } = applicant
+  const { cover_letter: cv, note, resume, application_id:app_id } = applicant
+
   const date = new Date(applied_at);
   const month = date.toLocaleString('default', { month: 'short' });
   const formattedDate = `${month}-${date.getDate()}`;
   const [dbError, setDbError] = useState('')
   const [show, setShow] = useState(false)
+  const resumePath  = `${axiosInstance.defaults.baseURL}/${resume.replace(/\\/g, '/')}`;
 
   const handleStatus = async (e) => {
     const new_st = e.target.name
@@ -31,7 +34,17 @@ function ApplicantsCard({ applicant, setRefresh }) {
               ${show && "rounded-bl-none rounded-br-none border-b-0"} lg:w-3/4`}
       >
           <p> <strong className='pr-3' >Name:</strong> {`${fname} ${lname}`}</p>
-          <p> <strong className='pr-3' >{resume}:</strong> Resume</p>
+          <p> <strong className='pr-3' >Resume:</strong> 
+            <a 
+              href={resumePath} 
+              download 
+              className='text-lg text-blue-700 underline hover:text-blue-900'
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+               Download Resume
+            </a>
+          </p>
           <p> <strong className='pr-3' >Status:</strong> {status}</p>
           <p> <strong className='pr-3' >Email:</strong> {email}</p>
           <p> <strong className='pr-3' >Date:</strong> {formattedDate}</p>
