@@ -136,7 +136,14 @@ const jobSearch = async (req, res) => {
 
 
 const applyJob = async (req, res) => {
-    const { job_id, title, seeker_id, cover_letter, resume="resume" } = req.body;
+    const { job_id, title, seeker_id, cover_letter, } = req.body;
+    const resume = req?.file?.path || 'No resume uploaded.';
+    if ( req.file ) {
+        console.log('Uploaded Resume Path:', resume);
+      }else{
+        console.log(resume)
+      }
+
     if (!job_id) {
         return res.status(statCodes.BAD_REQUEST).json({msg: "Incomplete data, jobId not provided."});
     }else if( !seeker_id ) {

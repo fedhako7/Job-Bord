@@ -3,7 +3,7 @@ import axiosInstance from '../../axios/Axios';
 
 function ApplicantsCard({ applicant, setRefresh }) {
   const token = localStorage.getItem("token")
-  const { fname, lname, email, status, applied_at, cover_letter: cv, note, application_id:app_id } = applicant
+  const { fname, lname, email, status, applied_at, cover_letter: cv, note, resume, application_id:app_id } = applicant
   const date = new Date(applied_at);
   const month = date.toLocaleString('default', { month: 'short' });
   const formattedDate = `${month}-${date.getDate()}`;
@@ -31,7 +31,7 @@ function ApplicantsCard({ applicant, setRefresh }) {
               ${show && "rounded-bl-none rounded-br-none border-b-0"} lg:w-3/4`}
       >
           <p> <strong className='pr-3' >Name:</strong> {`${fname} ${lname}`}</p>
-          <p> <strong className='pr-3' >Resume:</strong> Resume</p>
+          <p> <strong className='pr-3' >{resume}:</strong> Resume</p>
           <p> <strong className='pr-3' >Status:</strong> {status}</p>
           <p> <strong className='pr-3' >Email:</strong> {email}</p>
           <p> <strong className='pr-3' >Date:</strong> {formattedDate}</p>
