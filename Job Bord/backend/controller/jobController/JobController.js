@@ -153,6 +153,17 @@ const applyJob = async (req, res) => {
     }
 
     try {
+        const [prev_app] = await db.query(
+            "SELECT application_id FROM applications WHERE job_id=? AND seeker_id=?",
+            [job_id, seeker_id]
+        );
+          
+        if (prev_app.length > 0) {
+           return res
+            .status(statCodes.BAD_REQUEST)
+            .json({ msg: "You have already applied to this job." });
+        }
+
         await db.query(
             "INSERT INTO applications (job_id, seeker_id, resume, cover_letter) VALUES (?,?,?,?)",
             [job_id, seeker_id, resume, cover_letter]

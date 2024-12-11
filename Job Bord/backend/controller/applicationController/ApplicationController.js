@@ -27,6 +27,30 @@ const myApplications = async (req, res) => {
     }
 }
 
+const isApplied = async (req, res) => {
+    const { seeker_id } = req.query
+    if (!seeker_id ){
+        return res.status(statCodes.BAD_REQUEST).json({msg: "Seeker Id requered."})
+    }
+
+    try {
+
+        const [ result ] = await db.query(
+            `SELECT job_id FROM applications WHERE seeker_id=?`,
+            [seeker_id]
+          );
+          
+          const applied_ids = result.map(row => row.job_id);
+        //   console.log(applied_ids)
+          
+        res.status(statCodes.OK).json({msg: "User applied jobs Id fetched successfully", applied_ids})
+        
+    } catch (error) {
+        console.log(error)
+        res.status(statCodes.INTERNAL_SERVER_ERROR).json({msg: "Something went wrong, while fetching user applied jobs..."})
+    }
+}
+
 
 const myApplicants = async (req, res) => {
     const { job_id } = req.query
@@ -83,4 +107,4 @@ const changeStatus = async (req, res) => {
     }
 }
 
-module.exports = { myApplications, myApplicants, changeStatus }
+module.exports = { myApplications, myApplicants, changeStatus, isApplied }

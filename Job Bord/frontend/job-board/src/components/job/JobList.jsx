@@ -5,12 +5,13 @@ import JobCard from './JobCard';
 
 function JobList({ emp, top_5 = false }) {
     const token = localStorage.getItem("token")
-    const employee_id = parseInt(localStorage.getItem('user_id'))
+    const user_id = parseInt(localStorage.getItem('user_id'))
     const [dbError, setDbError] = useState('');
     const [jobs, setJobs] = useState([]);
     const [fromSearch, setFromSearch] = useState(false)
     const [fetching, setFetching] = useState(true);
     const searchRef = useRef('')
+    const [appliedList, setAppliedList ] = useState(new Set())
 
     const fetchJobs = async () => {
         try {
@@ -18,7 +19,7 @@ function JobList({ emp, top_5 = false }) {
             const response = await axiosInstance.get(
                 !emp ? "/jobs" : "/jobs/myposts",
                 {
-                    params: emp ? { employee_id } : { top_5 },
+                    params: emp ? { employee_id: user_id } : { top_5 },
                     headers: { authorization: "Bearer " + token },
                 }
             );
@@ -39,7 +40,7 @@ function JobList({ emp, top_5 = false }) {
         }
         try {
             const response = await axiosInstance.get("jobs/search", {params: {title: search}, headers: {authorization: 'Bearer ' + token}})
-            setJobs((p) => response?.data?.search_jobs || p)
+            setJobs(response.data.search_jobs)
             setFromSearch(response?.data?.search_jobs ? true : false)
             
         } catch (error) {
@@ -48,10 +49,23 @@ function JobList({ emp, top_5 = false }) {
         }
     }
 
+    const fetchAppliedJobsId = async () => {
+        try {
+             const res = await axiosInstance.get('/applications/isapplied', {params: { seeker_id: user_id }, headers: {authorization: "Bearer " + token}})
+             const appliedIds = new Set(res?.data?.applied_ids || [])
+             setAppliedList(appliedIds)
+             console.log("data", res.data)
+        } catch (error) {
+         console.log(error)
+        }
+     }
+
     useEffect(() => {
         fetchJobs();
     }, []);
-
+    useEffect(() => {
+        if ( !emp ) fetchAppliedJobsId()
+    }, [])
     return (
         <>
             <div className='w-5/6 ml-auto mr-auto'>
@@ -84,7 +98,7 @@ function JobList({ emp, top_5 = false }) {
                 <div >
                     {jobs.length > 0 ? (
                         jobs.map((job) => (
-                            <JobCard job={job} key={job.job_id} emp={emp} />
+                            <JobCard job={job} key={job.job_id} emp={emp} has_applied={appliedList.has(job.job_id)} />
                         ))
                     ) : (
                         <div>No jobs available</div>
