@@ -7,11 +7,23 @@ const storage = multer.diskStorage({
     cb(null, './uploads');
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() +'--' + file.originalname);
-  },
+    cb(null, Date.now() + '--' + file.originalname);
+  }
 });
 
-const upload = multer({storage: storage})
+const upload = multer({
+  storage,
+
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+    if (!allowedTypes.includes(file.mimetype)) {
+      return cb(new Error('Only PDF and DOC files are allowed'), false);
+    }
+    cb(null, true);
+  },
+  limits: { fileSize: 10 * 1024 * 1024 } 
+});
+
 
 route.post('/', postJob)
 route.get('/', getAllJobs)
