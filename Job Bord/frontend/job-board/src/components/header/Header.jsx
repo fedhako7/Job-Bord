@@ -41,8 +41,8 @@ function Header() {
             { E && <Link to="/job/my">Posted Jobs</Link> }
             { E && <Link to="/job/post">Add Job</Link> }
 
-            <button onClick={handleLogout} className='w-32 h-10 bg-blue-800 rounded-lg mt-2 pb-1 font-semibold lg:ml-18 lg:w-36 lg-h-12 '>
-              logout
+            <button onClick={handleLogout} className='w-32 h-10 bg-blue-800 rounded-md mt-2 pb-1 font-medium text-black lg:ml-18 lg:w-36 lg-h-12 '>
+              Log out
             </button>
 
             <Link className='flex flex-col items-center pl-1 text-lg text-emerald-400' to="/profile">

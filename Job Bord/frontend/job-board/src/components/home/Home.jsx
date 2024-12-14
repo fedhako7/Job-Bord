@@ -6,32 +6,67 @@ import axiosInstance from '../../axios/Axios'
 function Home() {
   const fname = localStorage.getItem("fname")
   const role = localStorage.getItem("role")
-  const [topJobs, setTopJobs] = useState([])
+  const [empTopJobs, setEmpTopJobs] = useState([])
+  const [recentJobs, setRecentJobs] = useState([])
+  const [appliedList, setAppliedList ] = useState(new Set())
   const token = localStorage.getItem("token")
-  const employee_id = parseInt(localStorage.getItem('user_id'))
+  const user_id = parseInt(localStorage.getItem('user_id'))
   const [dbError, setDbError] = useState('')
   const [fetching, setFetching] = useState(true)
 
-  const fetchJobs = async () => {
+
+  const fetchAppliedJobsId = async () => {
+    try {
+         const res = await axiosInstance.get('/applications/isapplied', {params: { seeker_id: user_id }, headers: {authorization: "Bearer " + token}})
+         const appliedIds = new Set(res?.data?.applied_ids || [])
+         setAppliedList(appliedIds)
+    } catch (error) {
+     console.log(error)
+    }
+ }
+
+  const fetchEmpTopJobs = async () => {
     try {
       setFetching(true)
-      const response = await axiosInstance.get("/jobs/myposts", {
-        params: { employee_id, top_5: true },
+      // /myposts/top
+      const response = await axiosInstance.get("/jobs/myposts/top", {
+        params: { employee_id: user_id },
         headers: { authorization: "Bearer " + token },
       })
-      setTopJobs(response?.data?.user_jobs)
+      setEmpTopJobs(response?.data?.user_jobs)
     } catch (error) {
       setDbError(error.response?.data?.msg || error.message)
     } finally {
       setFetching(false)
     }
   }
-
+ 
+ const fetchRecentJobs = async () => {
+   try {
+     setFetching(true)
+     
+     const response = await axiosInstance.get("/jobs/recent", {
+       headers: { authorization: "Bearer " + token },
+      })
+      setRecentJobs(response?.data?.user_jobs)
+    } catch (error) {
+      setDbError(error.response?.data?.msg || error.message)
+    } finally {
+      setFetching(false)
+    }
+  }
+  
+  
   useEffect(() => {
-    if (role === "Employer") fetchJobs()
+    if (role === "Job Seeker") fetchAppliedJobsId()
   }, [])
 
-  return (
+  useEffect(() => {
+    if (role === "Employer") fetchEmpTopJobs()
+      else if (role === "Job Seeker") fetchRecentJobs()
+  }, [])
+
+return (
     <div>
       <div className='flex w-5/6 ml-auto mr-auto mt-5 font-semibold lg:w-3/4 lg:mt-14'>
         <p className='w-full text-left text-xl underline'>{role.toLocaleUpperCase()}</p>
@@ -44,7 +79,15 @@ function Home() {
             <p className='w-full text-center pr-6 text-4xl'>Recently Posted Jobs</p>
           </div>
           <hr className='h-1 w-5/6 ml-auto mr-auto mt-3 mb-3 bg-black lg:w-3/4' />
-          <JobList top_5={true} />
+
+          {
+
+                recentJobs.map((job) =>
+                <JobCard job={job} key={job.job_id} has_applied={appliedList.has(job.job_id)} />)
+
+
+          }
+
         </div>
       )}
 
@@ -59,8 +102,8 @@ function Home() {
             <hr className='h-1 w-5/6 ml-auto mr-auto mt-3 mb-3 bg-black lg:w-3/4' />
             <div>
               {dbError && <div>Error: {dbError}</div>}
-              {topJobs.length > 0 ? (
-                topJobs.map((job) => <JobCard job={job} key={job.job_id} emp={true} />)
+              {empTopJobs.length > 0 ? (
+                empTopJobs.map((job) => <JobCard job={job} key={job.job_id} emp={true} />)
               ) : (
                 <div>No jobs available</div>
               )}

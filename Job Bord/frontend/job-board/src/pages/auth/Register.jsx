@@ -142,7 +142,7 @@ function Register() {
           {fieldError && <p className='text-center bold italic text-red-600'>{fieldError}</p>}
 
           {/* Terms and Conditions */}
-          <p className="text-sm text-gray-600">
+          <p className=" mt-2 text-xl text-gray-600">
             <input type="checkbox" ref={terms} className="mr-2" />
             I agree to the{' '}
             <Link to="#" className="text-blue-500 hover:underline">
@@ -156,7 +156,7 @@ function Register() {
           {/* Submit Button */}
           <button
             type="submit"
-            className={`h-12 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-md transition ${isLoading ? "opacity-50 cursor-not-allowed" : ""
+            className={`h-12 bg-blue-500 mt-2 pb-4 hover:bg-blue-600 text-xl text-white font-medium py-2 rounded-md transition ${isLoading ? "opacity-50 cursor-not-allowed" : ""
               }`}
           >
             {isLoading ? <><ClipLoader size={20} color='white' /> Please wait...</> : <>Create Account</>}
@@ -164,22 +164,23 @@ function Register() {
           </button>
         </form>
 
+          {/* FUTURE TO DO */}
+
         {/* Divider */}
-        <div className="flex items-center w-full">
+        {/* <div className="flex items-center w-full">
           <hr className="flex-1 border-gray-300" />
           <span className="px-2 text-sm text-gray-500">Or register with</span>
           <hr className="flex-1 border-gray-300" />
-        </div>
-
+        </div> */}
         {/* Social Media Options */}
-        <div className="flex gap-4">
+        {/* <div className="flex gap-4">
           <button className="bg-gray-100 hover:bg-gray-200 flex items-center px-4 py-2 rounded-md">
             <span className="mr-2">🔵</span> Google
           </button>
           <button className="bg-gray-100 hover:bg-gray-200 flex items-center px-4 py-2 rounded-md">
             <span className="mr-2">🍎</span> Apple
           </button>
-        </div>
+        </div> */}
       </div>
     </section>
   );

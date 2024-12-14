@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import axiosInstance from '../../axios/Axios';
 import JobCard from './JobCard';
 
-function JobList({ emp, top_5 = false }) {
+function JobList({ emp, }) {
     const token = localStorage.getItem("token")
     const user_id = parseInt(localStorage.getItem('user_id'))
     const [dbError, setDbError] = useState('');
@@ -19,7 +19,7 @@ function JobList({ emp, top_5 = false }) {
             const response = await axiosInstance.get(
                 !emp ? "/jobs" : "/jobs/myposts",
                 {
-                    params: emp ? { employee_id: user_id } : { top_5 },
+                    params: !emp ? { } : {employee_id: user_id, },
                     headers: { authorization: "Bearer " + token },
                 }
             );
@@ -39,7 +39,7 @@ function JobList({ emp, top_5 = false }) {
             return
         }
         try {
-            const response = await axiosInstance.get("jobs/search", {params: {title: search}, headers: {authorization: 'Bearer ' + token}})
+            const response = await axiosInstance.get( !emp ? "jobs/search" : 'jobs/myposts/search', {params: !emp ? {title: search} : {title: search, employer_id: user_id} , headers: {authorization: 'Bearer ' + token}})
             setJobs(response.data.search_jobs)
             setFromSearch(response?.data?.search_jobs ? true : false)
             
@@ -54,7 +54,6 @@ function JobList({ emp, top_5 = false }) {
              const res = await axiosInstance.get('/applications/isapplied', {params: { seeker_id: user_id }, headers: {authorization: "Bearer " + token}})
              const appliedIds = new Set(res?.data?.applied_ids || [])
              setAppliedList(appliedIds)
-             console.log("data", res.data)
         } catch (error) {
          console.log(error)
         }
@@ -63,9 +62,11 @@ function JobList({ emp, top_5 = false }) {
     useEffect(() => {
         fetchJobs();
     }, []);
+    
     useEffect(() => {
         if ( !emp ) fetchAppliedJobsId()
     }, [])
+
     return (
         <>
             <div className='w-5/6 ml-auto mr-auto'>

@@ -78,7 +78,11 @@ const ChangePass = () => {
         <div className="flex gap-4 justify-around">
 
           <button onClick={ handlePass} className="w-36 h-12 bg-blue-800 rounded-md"> 
-            Change Password
+          {
+            isLoading ? 
+            <> <ClipLoader size={18} /> Please wait...</>
+            : <>Change Password</>
+          }
           </button>
           <button onClick={ () => { setChild(childType.PROFILE_DATA)} } className="w-36 h-12 bg-blue-800 rounded-md"> Cancel </button>
         </div>

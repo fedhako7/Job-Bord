@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react'
 import JobList from '../../components/job/JobList'
-import { useNavigate } from 'react-router-dom'
 
 function Jobs() {
-  const navigate = useNavigate()
 
   return (
     <>

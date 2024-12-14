@@ -35,8 +35,8 @@ const UpdateProfile = () => {
             return alert("No update, the same data")
           }
           
+          setIsLoading(true)
           try {
-            setIsLoading(true)
             await axiosInstance.post("/users/profile/update", {
               user_id,
               role,
@@ -46,9 +46,9 @@ const UpdateProfile = () => {
               company, 
             }, { headers: {authorization: "Bearer " + token} })
 
-          alert("Profile updated successfully!")
           setIsLoading(false)
           setChild(childType.PROFILE_DATA)
+          alert("Profile updated successfully!")
           
         } catch (error) {
           setIsLoading(false)
@@ -88,9 +88,9 @@ const UpdateProfile = () => {
         {dbError && <p className='text-center italic bold text-red-600'>{dbError}</p>}
 
         <div className="flex gap-4 justify-around">
-          <button onClick={handleUpdate} className="w-36 h-12 bg-blue-800 rounded-md"> 
+          <button onClick={handleUpdate} disabled={isLoading} className="w-36 h-12 bg-blue-800 rounded-md"> 
             {
-              isLoading ? <> <ClipLoader size={20} color="white"/> Please wait...</> : <> Update </>
+              isLoading ? <> <ClipLoader size={20} /> Please wait...</> : <> Update </>
             }
           </button>
           <button onClick={ () => { setChild( childType.PROFILE_DATA )} } className="w-36 h-12 bg-blue-800 rounded-md"> Cancel </button>

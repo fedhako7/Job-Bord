@@ -4,29 +4,28 @@ const nodemailer = require('nodemailer');
 
 
 const postJob = async (req, res) => {
-    const {title, description, location, salary, employer_id: employee_id} = req.body
-    if (!title || !description || !employee_id){
-        return res.status(statCodes.BAD_REQUEST).json({msg: "Incompelete info, fill all requered info."})
+    const { employer_id, title, description, location, deadline, salary, responsibilities, criteria } = req.body
+    if (!title || !description || !employer_id || !location || !deadline) {
+        return res.status(statCodes.BAD_REQUEST).json({ msg: "Incompelete info, fill all requered info." })
     }
 
     try {
         await db.query(
-            `INSERT INTO jobs (title, description, location, salary, employer_id) VALUES (?,?,?,?,?)`,
-            [title, description, location, salary, employee_id]
+            `INSERT INTO jobs (title, description, location, deadline, salary, responsibilities, criteria, employer_id) VALUES (?,?,?,?,?,?,?,?)`,
+            [title, description, location, deadline, salary, responsibilities, criteria, employer_id]
         )
-        res.status(statCodes.CREATED).json({msg: "New job created successfully"})
-        
+        res.status(statCodes.CREATED).json({ msg: "New job created successfully" })
+
     } catch (error) {
         console.log(error)
-        res.status(statCodes.INTERNAL_SERVER_ERROR).json({msg: "Something went wrong while posting job, please ty later."})
-        
+        res.status(statCodes.INTERNAL_SERVER_ERROR).json({ msg: "Something went wrong while posting job, please ty later." })
+
     }
 }
 
 
 const getAllJobs = async (req, res) => {
-    const {top_5 = false} = req.query
-    
+
     try {
         const [user_jobs] = await db.query(
             `SELECT jobs.*, users.company, users.fname, users.lname 
@@ -34,23 +33,34 @@ const getAllJobs = async (req, res) => {
              ORDER BY jobs.created_at DESC;`
         );
 
-        const result = top_5
-        ? user_jobs
-              .sort((a, b) => b.applicants - a.applicants) 
-              .slice(0, 5)
-        : user_jobs;
-        
-        res.status(statCodes.OK).json({msg: "Jobs data fetched successfully", user_jobs: result})
-        
+        res.status(statCodes.OK).json({ msg: "Jobs data fetched successfully", user_jobs })
+
     } catch (error) {
         console.log(error)
-        res.status(statCodes.INTERNAL_SERVER_ERROR).json({msg: "Something went wrong, while fetching jobs data."})
+        res.status(statCodes.INTERNAL_SERVER_ERROR).json({ msg: "Something went wrong, while fetching jobs data." })
+    }
+}
+
+const getRecentJobs = async (req, res) => {
+    try {
+        const [user_jobs] = await db.query(
+            `SELECT jobs.*, users.company, users.fname, users.lname 
+            FROM jobs JOIN users ON users.user_id = jobs.employer_id
+            ORDER BY jobs.created_at DESC
+            LIMIT 5;`
+        );
+
+        res.status(statCodes.OK).json({ msg: "Jobs data fetched successfully", user_jobs })
+
+    } catch (error) {
+        console.log(error)
+        res.status(statCodes.INTERNAL_SERVER_ERROR).json({ msg: "Something went wrong, while fetching jobs data." })
     }
 }
 
 
 const myPosts = async (req, res) => {
-    const { employee_id, top_5 = false } = req.query;
+    const { employee_id } = req.query;
     const employeeId = parseInt(employee_id);
 
     if (employeeId !== 0 && !employeeId) {
@@ -72,12 +82,8 @@ const myPosts = async (req, res) => {
             return res.status(statCodes.NOT_FOUND).json({ msg: "No jobs posted by this user found." });
         }
 
-        const resultData = top_5
-            ? user_jobs
-                  .sort((a, b) => b.applicants - a.applicants) 
-                  .slice(0, 5) 
-            : user_jobs;
-        res.status(statCodes.OK).json({ msg: "Jobs posted by user fetched successfully.", user_jobs: resultData });
+        res.status(statCodes.OK).json({ msg: "Jobs posted by user fetched successfully.", user_jobs });
+
     } catch (error) {
         console.error(error);
         res.status(statCodes.INTERNAL_SERVER_ERROR).json({ msg: "Something went wrong while fetching user posts." });
@@ -85,25 +91,84 @@ const myPosts = async (req, res) => {
 };
 
 
-const singleJob = async (req, res) => {
-    const { job_id } = req.query
+const topMyPost = async (req, res) => { 
+    const { employee_id } = req.query;
 
-    if (job_id !==0 && !job_id){
-        return res.status(statCodes.BAD_REQUEST).json({msg: "Job Id is requered"})
+    if (employee_id !== 0 && !employee_id) {
+        return res.status(statCodes.BAD_REQUEST).json({ msg: "User_id is required" });
     }
 
     try {
-        const [job] = await db.query( `SELECT jobs.*, users.company, users.fname, users.lname  FROM jobs JOIN users ON users.user_id = jobs.employer_id WHERE job_id=?;`, [ job_id ] );
+        const query = `
+            SELECT jobs.*, users.company, users.fname, users.lname 
+            FROM jobs 
+            JOIN users ON users.user_id = jobs.employer_id
+            WHERE employer_id=? 
+            ORDER BY jobs.applicants DESC, jobs.created_at DESC
+            LIMIT 5
+        `;
 
-        if (!job){
-            return res.status(statCodes.NOT_FOUND).json({msg: "No job found."})
+        const [user_jobs] = await db.query(query, [employee_id]);
+
+        if (!user_jobs || user_jobs.length === 0) {
+            return res.status(statCodes.NOT_FOUND).json({ msg: "No jobs posted by this user found." });
         }
 
-        res.status(statCodes.OK).json({msg: "Job detail fetched succefully.", job:job[0]})
+        res.status(statCodes.OK).json({ msg: "Jobs posted by user fetched successfully.", user_jobs });
+
+    } catch (error) {
+        console.error(error);
+        res.status(statCodes.INTERNAL_SERVER_ERROR).json({ msg: "Something went wrong while fetching user posts." });
+    }
+};
+
+
+const searchMyPost = async (req, res) => {
+    const { title, employer_id } = req.query;
+
+    if (!title) {
+        return res.status(statCodes.BAD_REQUEST).json({ msg: "Job title is required" });
+    } else if (!employer_id) {
+        return res.status(statCodes.BAD_REQUEST).json({ msg: "Employer Id is required" });
+    }
+
+    try {
+        const [search_jobs] = await db.query(
+            "SELECT * FROM jobs WHERE title LIKE ? AND employer_id=? ORDER BY created_at DESC",
+            [`%${title}%`, employer_id]
+        );
+
+        if (search_jobs.length === 0) {
+            return res.status(statCodes.NOT_FOUND).json({ msg: "No jobs found matching the title" });
+        }
+
+        res.status(statCodes.OK).json({ msg: "Jobs fetched successfully", search_jobs });
+    } catch (error) {
+        console.log(error);
+        res.status(statCodes.INTERNAL_SERVER_ERROR).json({ msg: "Something went wrong while fetching jobs" });
+    }
+};
+
+
+const singleJob = async (req, res) => {
+    const { job_id } = req.query
+
+    if (job_id !== 0 && !job_id) {
+        return res.status(statCodes.BAD_REQUEST).json({ msg: "Job Id is requered" })
+    }
+
+    try {
+        const [job] = await db.query(`SELECT jobs.*, users.company, users.fname, users.lname  FROM jobs JOIN users ON users.user_id = jobs.employer_id WHERE job_id=?;`, [job_id]);
+
+        if (!job) {
+            return res.status(statCodes.NOT_FOUND).json({ msg: "No job found." })
+        }
+
+        res.status(statCodes.OK).json({ msg: "Job detail fetched succefully.", job: job[0] })
 
     } catch (error) {
         console.log(error)
-        res.status(statCodes.INTERNAL_SERVER_ERROR).json({msg: "Something went wrong, while fetching job data."})
+        res.status(statCodes.INTERNAL_SERVER_ERROR).json({ msg: "Something went wrong, while fetching job data." })
     }
 
 
@@ -138,18 +203,18 @@ const jobSearch = async (req, res) => {
 const applyJob = async (req, res) => {
     const { job_id, title, seeker_id, cover_letter, } = req.body;
     const resume = req?.file?.path || 'No resume uploaded.';
-    if ( req.file ) {
+    if (req.file) {
         console.log('Uploaded Resume Path:', resume);
-      }else{
+    } else {
         console.log(resume)
-      }
+    }
 
     if (!job_id) {
-        return res.status(statCodes.BAD_REQUEST).json({msg: "Incomplete data, jobId not provided."});
-    }else if( !seeker_id ) {
-        return res.status(statCodes.BAD_REQUEST).json({msg: "Incomplete data, seekerId not provided."});
-    }else if( !cover_letter ) {
-        return res.status(statCodes.BAD_REQUEST).json({msg: "Incomplete data, cover_letter not provided."});
+        return res.status(statCodes.BAD_REQUEST).json({ msg: "Incomplete data, jobId not provided." });
+    } else if (!seeker_id) {
+        return res.status(statCodes.BAD_REQUEST).json({ msg: "Incomplete data, seekerId not provided." });
+    } else if (!cover_letter) {
+        return res.status(statCodes.BAD_REQUEST).json({ msg: "Incomplete data, cover_letter not provided." });
     }
 
     try {
@@ -157,32 +222,32 @@ const applyJob = async (req, res) => {
             "SELECT application_id FROM applications WHERE job_id=? AND seeker_id=?",
             [job_id, seeker_id]
         );
-          
+
         if (prev_app.length > 0) {
-           return res
-            .status(statCodes.BAD_REQUEST)
-            .json({ msg: "You have already applied to this job." });
+            return res
+                .status(statCodes.BAD_REQUEST)
+                .json({ msg: "You have already applied to this job." });
         }
 
         await db.query(
             "INSERT INTO applications (job_id, seeker_id, resume, cover_letter) VALUES (?,?,?,?)",
             [job_id, seeker_id, resume, cover_letter]
-          )
+        )
 
-          await db.query(
+        await db.query(
             "UPDATE jobs SET applicants = applicants + 1 WHERE job_id = ?",
             [job_id]
-          )
-          
+        )
+
         const [seeker] = await db.query("SELECT email FROM users WHERE user_id = ?", [seeker_id]);
         const seekerEmail = seeker[0]?.email;
 
         if (!seekerEmail) {
-            return res.status(statCodes.BAD_REQUEST).json({msg: "Seeker email not found."});
+            return res.status(statCodes.BAD_REQUEST).json({ msg: "Seeker email not found." });
         }
         const transporter = nodemailer.createTransport({
-            host: "74.125.143.109", 
-            port: 587,             
+            host: "74.125.143.109",
+            port: 587,
             secure: false,
             auth: {
                 user: "fedesayelmachew75@gmail.com",
@@ -195,7 +260,7 @@ const applyJob = async (req, res) => {
 
 
         const mailOptions = {
-            from: "Fedho_developer", 
+            from: "Fedho_developer",
             to: seekerEmail,
             subject: "Job Application Confirmation",
             text: `"Thanks for applying for the job (Title: ${title})! Just a heads-up, this is a simulated application process for learning purposes only. The job posting and application are part of a project designed for learning and practice—no real employers are involved."`
@@ -209,12 +274,12 @@ const applyJob = async (req, res) => {
             }
         });
 
-        res.status(statCodes.CREATED).json({msg: "Application sent successfully and email notification sent."});
-        
+        res.status(statCodes.CREATED).json({ msg: "Application sent successfully and email notification sent." });
+
     } catch (error) {
         console.log(error);
-        res.status(statCodes.INTERNAL_SERVER_ERROR).json({msg: "Something went wrong while applying for the job."});
+        res.status(statCodes.INTERNAL_SERVER_ERROR).json({ msg: "Something went wrong while applying for the job." });
     }
 };
 
-module.exports = {postJob, getAllJobs, myPosts, applyJob, singleJob, jobSearch}
+module.exports = { postJob, getAllJobs, myPosts, applyJob, singleJob, jobSearch, searchMyPost, topMyPost, getRecentJobs }

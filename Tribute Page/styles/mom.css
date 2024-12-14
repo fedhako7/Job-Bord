@@ -91,6 +91,7 @@ body {
 
   footer div {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-around;
   }
   
