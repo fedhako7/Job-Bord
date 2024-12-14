@@ -7,4 +7,14 @@ export default defineConfig({
   css: {
     postcss: './postcss.config.cjs',
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://fedho.gezueshetu.com',
+        changeOrigin: true,
+        secure: false, // Set to true if you're using HTTPS in the backend
+        rewrite: (path) => path.replace(/^\/api/, '') // Remove /api prefix when proxying
+      }
+    }
+  }
 })
