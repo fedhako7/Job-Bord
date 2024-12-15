@@ -139,7 +139,7 @@ function Post() {
             {fieldError && <p className="text-red-600 italic animate-bounce">{fieldError}</p>}
             {dbError && <p className="text-red-600 italic animate-bounce">{dbError}</p>}
 
-            <button className="w-32 h-10 bg-blue-800 rounded-md ">
+            <button className="w-40 h-10 bg-blue-800 rounded-md ">
                 {
                     isLoading ?
                     <> <ClipLoader size={20} /> Please wait...</>
