@@ -59,7 +59,7 @@ const handleSubmit = async (e) => {
           <input ref={resumeRef} name='resume' className={`w-52 mb-12 lg:w-60 `} type="file" />
         </div>
         {fieldError && <p className='text-red-600 italic animate-bounce'>{fieldError}</p>}
-        <button disabled={isLoading} className={`w-32 h-10 bg-blue-800 rounded-md `}>
+        <button disabled={isLoading} className={`w-40 h-10 bg-blue-800 rounded-md `}>
           {
             isLoading ? 
             <> <ClipLoader size={20} /> Please wait... </>
