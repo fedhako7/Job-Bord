@@ -53,7 +53,7 @@ const handleSubmit = async (e) => {
         <p className={` text-red-600 font-medium italic pr-28 lg:text-xl`}>* Requered field</p>
         <div className={`flex `}>
           <span className={`text-red-600 text-xl font-bold `}>*</span>
-          <textarea ref={letterRef} className={`w-80 h-32  border-2 border-gray-400 rounded-xl focus:h-40 focus:w-96 lg:w-96`} name="" id="" placeholder='Cover Letter'></textarea></div>
+          <textarea ref={letterRef} className={`w-80 h-32 p-2 border-2 border-gray-400 rounded-xl focus:h-40 focus:w-96 lg:w-96`} name="" id="" placeholder='Cover Letter'></textarea></div>
         <div className={`flex flex-col w-96 gap-4 items-center mt-3 lg:w-96 lg:font-semibold `}>
           <label className='mt-4' htmlFor="">Upload Your Resume</label>
           <input ref={resumeRef} name='resume' className={`w-52 mb-12 lg:w-60 `} type="file" />

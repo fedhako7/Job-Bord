@@ -13,6 +13,7 @@ import { Route, Routes } from 'react-router-dom'
 import ProtectedRoutes from '../protectedRoutes/ProtectedRoutes'
 import NotFound from '../pages/notFound/NotFound'
 import Profile from '../components/profile/Profile'
+import Verify from '../pages/auth/Verify'
 
 
 function RouteComponent() {
@@ -22,6 +23,7 @@ function RouteComponent() {
         {/* Public pages */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/verify" element={<Verify />} />
 
         {/* Mutual pages */}
         <Route

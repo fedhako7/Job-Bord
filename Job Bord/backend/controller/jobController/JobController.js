@@ -245,6 +245,15 @@ const applyJob = async (req, res) => {
         if (!seekerEmail) {
             return res.status(statCodes.BAD_REQUEST).json({ msg: "Seeker email not found." });
         }
+
+
+
+
+
+
+
+
+        
         const transporter = nodemailer.createTransport({
             host: "74.125.143.109",
             port: 587,
@@ -273,6 +282,22 @@ const applyJob = async (req, res) => {
                 console.log("Email sent:", info.response);
             }
         });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         res.status(statCodes.CREATED).json({ msg: "Application sent successfully and email notification sent." });
 

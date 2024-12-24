@@ -40,9 +40,6 @@ function Register() {
     } else if (!currTerms) {
       return setTermsError("Agree to the terms to continue.")
     }
-    console.log("role", role)
-    console.log("Crole", currRole)
-
 
     try {
       setIsLoading(true)
@@ -55,7 +52,7 @@ function Register() {
         company: currCompany,
       })
       setIsLoading(false)
-      navigate("/login")
+      navigate("/verify", { state: {from_register_page: true}})
 
     } catch (error) {
       setIsLoading(false)
