@@ -52,7 +52,7 @@ function Register() {
         company: currCompany,
       })
       setIsLoading(false)
-      navigate("/verify", { state: {from_register_page: true}})
+      navigate("/login")
 
     } catch (error) {
       setIsLoading(false)

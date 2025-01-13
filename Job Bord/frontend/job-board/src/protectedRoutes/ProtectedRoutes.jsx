@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../axios/Axios'
 import { useNavigate } from 'react-router-dom'
-import Verify from '../pages/auth/Verify'
 import Register from '../pages/auth/Register'
 
 function ProtectedRoutes({children, allowedRoles = []}) {
@@ -24,7 +23,7 @@ function ProtectedRoutes({children, allowedRoles = []}) {
   }
 
   useEffect(() => {
-    if (children?.type === Register || children?.type === Verify) {
+    if (children?.type === Register ) {
       setAuthenticated(true);
       return;
     }

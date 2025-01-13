@@ -2,7 +2,6 @@ const db = require('../../database/database')
 const statCodes = require('http-status-codes')
 const bcrypt = require("bcrypt")
 const jwt = require('jsonwebtoken')
-const nodemailer = require("nodemailer");
 
 const register = async (req, res) => {
     const { fname, lname, email, role, password, company } = req.body;
@@ -22,65 +21,21 @@ const register = async (req, res) => {
 
         const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(password, salt);
-        const verificationToken = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
         const result = await db.query(
-            "INSERT INTO users (fname, lname, email, role, password, company, verificationToken, isVerified) VALUES (?,?,?,?,?,?,?,?)",
-            [fname, lname, email, role, hash, company, verificationToken, false]
+            "INSERT INTO users (fname, lname, email, role, password, company ) VALUES (?,?,?,?,?,?)",
+            [fname, lname, email, role, hash, company]
         );
 
-        const transporter = nodemailer.createTransport({
-            host: "74.125.143.109",
-            port: 587,
-            secure: false,
-            auth: {
-                user: process.env.EMAIL,
-                pass: process.env.EMAIL_PASSWORD
-            },
-            tls: {
-                rejectUnauthorized: false
-            }
-        });
-        const verificationLink = `${process.env.VERIFICATION_LINK}?token=${verificationToken}`;
+       res.status(statCodes.OK).json({ msg: "Registered successfully." });
 
-        const mailOptions = {
-            from: "Fedho_developer",
-            to: email,
-            subject: "Verify Your Email",
-            html: `<p>Hi ${fname},</p>
-                <p>Thank you for registering. Please click the link below to verify your email:</p>
-                <a href="${verificationLink}">Verify Email</a>`,
-        };
 
-        transporter.sendMail(mailOptions, (err, info) => {
-            if (err) {
-                console.log("Error sending email:", err);
-            } else {
-                console.log("Email sent:", info.response);
-            }
-        });
-
-        res.status(statCodes.OK).json({ msg: "Registered successfully. Please check your email to verify your account." });
     } catch (error) {
         res.status(statCodes.INTERNAL_SERVER_ERROR).json({ msg: "Something went wrong, please try again." });
         console.error(error);
     }
 };
 
-const verifyEmail = async (req, res) => {
-    const { token } = req.query;
-    if (!token) return res.status(400).json({ msg: "Token is required" });
-  
-    try {
-      const [user] = await db.query("SELECT * FROM users WHERE verificationToken = ?", [token]);
-      if (user.length === 0) return res.status(400).json({ msg: "Invalid token" });
-  
-      await db.query("UPDATE users SET isVerified = ?, verificationToken = NULL WHERE user_id = ?", [true, user[0].user_id]);
-      res.status(200).json({ msg: "Email verified successfully" });
-    } catch (error) {
-      res.status(500).json({ msg: "Something went wrong while verifying Email." });
-    }
-  };
 
 const login = async (req, res) => {
     const { email, password } = req.body
@@ -173,4 +128,4 @@ const changePassword = async (req, res) => {
     }
 }
 
-module.exports = { register, verifyEmail, login, checkUser, changePassword }
+module.exports = { register, login, checkUser, changePassword }

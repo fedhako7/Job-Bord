@@ -14,7 +14,6 @@ const port = 5500
 
 app.use(cors())
 app.use(express.json())
-app.use('/uploads', express.static('uploads'));
 
 app.use('/auth',  authRoute)
 app.use('/users', authenticateToken,  usersRoute)
