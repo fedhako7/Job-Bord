@@ -36,15 +36,15 @@ function ProtectedRoutes({children, allowedRoles = []}) {
     }
   }, [token])
 
-  useEffect(() => {
-    if ( (authenticated === false) || (authenticated && !allowedRoles.includes(userRole))) {
-      if (userRole){
-        navigate("/");
-      }else{
-        navigate("/login");
-      }
-    }
-  }, [authenticated, userRole, allowedRoles, navigate]);
+  // useEffect(() => {
+  //   if ( (authenticated === false) || (authenticated && !allowedRoles.includes(userRole))) {
+  //     if (userRole){
+  //       navigate("/");
+  //     }else{
+  //       navigate("/landing");
+  //     }
+  //   }
+  // }, [authenticated, userRole, allowedRoles, navigate]);
 
   if (authenticated === null){
     return <div>Loading...</div>

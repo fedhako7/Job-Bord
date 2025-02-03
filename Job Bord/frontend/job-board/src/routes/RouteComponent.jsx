@@ -2,7 +2,7 @@ import React from 'react'
 import Login from '../pages/auth/Login'
 import Register from '../pages/auth/Register'
 import Home from '../components/home/Home'
-import Landing from '../pages/landing/Landing'
+import Layout from '../components/layout/Layout'
 import Jobs from '../pages/jobs/Jobs'
 import MyJobs from '../pages/myJobs/MyJobs'
 import MyJobsDetail from '../pages/myJobsDetail/MyJobsDetail'
@@ -13,6 +13,10 @@ import { Route, Routes } from 'react-router-dom'
 import ProtectedRoutes from '../protectedRoutes/ProtectedRoutes'
 import NotFound from '../pages/notFound/NotFound'
 import Profile from '../components/profile/Profile'
+import Landing from '../pages/landing/Landing'
+import Header from '../components/header/Header'
+import Navbar from '../pages/landing/Landing'
+import Notifications from '../components/notifications/Notifications'
 
 
 function RouteComponent() {
@@ -22,13 +26,14 @@ function RouteComponent() {
         {/* Public pages */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/landing" element={<Header />} />
 
         {/* Mutual pages */}
         <Route
           path="/"
           element={
             <ProtectedRoutes allowedRoles={["Employer", "Job Seeker"]}>
-              <Landing children={<Home />} />
+              <Layout children={<Home />} />
             </ProtectedRoutes>
           }
         />
@@ -37,7 +42,16 @@ function RouteComponent() {
           path="/profile"
           element={
             <ProtectedRoutes allowedRoles={["Employer", "Job Seeker"]}>
-              <Landing children={<Profile />} />
+              <Layout children={<Profile />} />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
+          path="/notification"
+          element={
+            <ProtectedRoutes allowedRoles={["Employer", "Job Seeker"]}>
+              <Layout children={<Notifications />} />
             </ProtectedRoutes>
           }
         />
@@ -47,7 +61,7 @@ function RouteComponent() {
           path="/job/my"
           element={
             <ProtectedRoutes allowedRoles={["Employer"]}>
-              <Landing children={<MyJobs />} />
+              <Layout children={<MyJobs />} />
             </ProtectedRoutes>
           }
         />
@@ -56,7 +70,7 @@ function RouteComponent() {
           path="/job/detail"
           element={
             <ProtectedRoutes allowedRoles={["Employer"]}>
-              <Landing children={<MyJobsDetail />} />
+              <Layout children={<MyJobsDetail />} />
             </ProtectedRoutes>
           }
         />
@@ -65,7 +79,7 @@ function RouteComponent() {
           path="/job/post"
           element={
             <ProtectedRoutes allowedRoles={["Employer"]}>
-              <Landing children={<Post />} />
+              <Layout children={<Post />} />
             </ProtectedRoutes>
           }
         />
@@ -75,7 +89,7 @@ function RouteComponent() {
           path="/apply"
           element={
             <ProtectedRoutes allowedRoles={["Job Seeker"]}>
-              <Landing children={<Apply />} />
+              <Layout children={<Apply />} />
             </ProtectedRoutes>
           }
         />
@@ -84,7 +98,7 @@ function RouteComponent() {
           path="/apply/my"
           element={
             <ProtectedRoutes allowedRoles={["Job Seeker"]}>
-              <Landing children={<MyApplications />} />
+              <Layout children={<MyApplications />} />
             </ProtectedRoutes>
           }
         />
@@ -93,7 +107,7 @@ function RouteComponent() {
           path="/job"
           element={
             <ProtectedRoutes allowedRoles={["Job Seeker"]}>
-              <Landing children={<Jobs />} />
+              <Layout children={<Jobs />} />
             </ProtectedRoutes>
           }
         />
@@ -103,7 +117,7 @@ function RouteComponent() {
           path="*"
           element={
             <ProtectedRoutes allowedRoles={["Employer", "Job Seeker"]}>
-              <Landing children={<NotFound />} />
+              <Layout children={<NotFound />} />
             </ProtectedRoutes>
           }
         />
