@@ -66,12 +66,12 @@ export const employerNavData = [
   mutualData[0],
   {
     name: "Posted Jobs",
-    logo: QueueIcon,
+    logo: LibraryAddCheckIcon,
     link: "/job/my"
   },
   {
     name: "Add Job",
-    logo: LibraryAddCheckIcon,
+    logo: QueueIcon,
     link: "/job/post"
   },
   mutualData[1],
