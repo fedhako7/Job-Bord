@@ -26,7 +26,7 @@ function RouteComponent() {
         {/* Public pages */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/landing" element={<Header />} />
+        <Route path="/landing" element={<Layout children={<Landing/>}/>} />
 
         {/* Mutual pages */}
         <Route
