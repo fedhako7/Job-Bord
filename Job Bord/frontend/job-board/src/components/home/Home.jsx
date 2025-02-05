@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import JobList from '../job/JobList'
 import JobCard from '../job/JobCard'
 import axiosInstance from '../../axios/Axios'
 
@@ -67,8 +66,8 @@ function Home() {
   }, [])
 
 return (
-    <div>
-      <div className='flex w-5/6 ml-auto mr-auto mt-5 font-semibold lg:w-3/4 lg:mt-14'>
+    <div className=' pb-8'>
+      <div className='flex w-5/6 ml-auto mr-auto pt-4 font-semibold lg:w-3/4 lg:mt-14'>
         <p className='w-full text-left text-xl underline'>{role.toLocaleUpperCase()}</p>
         <p className='w-full text-right text-xl text-pink-800'>Welcome {fname}!</p>
       </div>

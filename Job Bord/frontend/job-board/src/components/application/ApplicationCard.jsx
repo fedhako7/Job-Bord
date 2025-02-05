@@ -82,3 +82,4 @@ function ApplicationCard({ app }) {
 }
 
 export default ApplicationCard;
+ 
