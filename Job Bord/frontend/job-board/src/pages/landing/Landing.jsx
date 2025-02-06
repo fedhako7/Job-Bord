@@ -3,6 +3,7 @@ import hero_image from '../../assets/hero_image.webp'
 import { sectionTexts } from './sectionTexts'
 import Buttons from './buttons'
 import SearchComponent from './SearchComponent'
+import FeaturedJobs from '../../components/job/FeaturedJobs'
 
 function Landing() {
   return (
@@ -46,7 +47,16 @@ function Landing() {
       <Break />
 
       {/* Featured Jobs */}
-      <section></section>
+      <section>
+        <SectionsText section={sectionTexts.featuredJobs} />
+        <div className='  bg-blue-00'>
+          <FeaturedJobs />
+
+        </div>
+        <Buttons buttonName={`Login & See More`} />
+      </section>
+      <Break />
+
 
       {/* How it works */}
       <section>
@@ -54,8 +64,24 @@ function Landing() {
       </section>
       <Break />
 
-      {/* CTO */}
-      <section> </section>
+      {/* Auths */}
+      <section>
+        <SectionsText section={sectionTexts.auth} />
+        <div className=' flex flex-col md:flex-row md:justify-around md:items-end md:gap-5'>
+          <div>
+            <Buttons buttonName={`Get Started`} />
+          </div>
+          <div className=' mt-4 '>
+            <p className=' -mb-2 italic  text-center '>
+              Already have an account?
+            </p>
+            <Buttons buttonName={`Log In`} />
+          </div>
+
+        </div>
+
+      </section>
+      <Break />
 
       {/* Feedback */}
       <section> </section>
@@ -79,7 +105,7 @@ function Landing() {
 const SectionsText = ({ section }) => {
   return (
     <div className={` flex-grow ml-4 pl-4 pr-4  text-center `}>
-      <h1 className='flx flex-grow text-5xl mb-3 xl:mb-5 '> {section?.title} </h1>
+      <h1 className='flx flex-grow text-4xl mb-3 xl:mb-5 sm:text-5xl'> {section?.title} </h1>
       <p className=' flex flex-grow text-start text-lg xl:text-2xl whitespace-pre-line md:pl-6 pmd:pr-6'>
         {section?.text}
       </p>
