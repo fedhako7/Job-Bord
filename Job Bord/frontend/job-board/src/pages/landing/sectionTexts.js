@@ -3,6 +3,10 @@ export const sectionTexts = {
     title: 'Find your dream job!',
     text: 'Search for your dream job and apply with one click!'
   },
+  search: {
+    title: 'Search for Jobs',
+    text: 'Search for your dream job and apply with one click!'
+  },
   howItWorks: {
     title: 'How It Works',
     text: `👤 For Job Seekers:

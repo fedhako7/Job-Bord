@@ -14,8 +14,6 @@ import ProtectedRoutes from '../protectedRoutes/ProtectedRoutes'
 import NotFound from '../pages/notFound/NotFound'
 import Profile from '../components/profile/Profile'
 import Landing from '../pages/landing/Landing'
-import Header from '../components/header/Header'
-import Navbar from '../pages/landing/Landing'
 import Notifications from '../components/notifications/Notifications'
 
 
