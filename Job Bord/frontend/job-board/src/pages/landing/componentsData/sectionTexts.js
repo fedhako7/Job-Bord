@@ -25,10 +25,6 @@ Post your job in minutes and get matched with top talent. Easily find and hire t
     text: 'Job seekers can apply with one click, and employers can post jobs to connect with top talent. Sign up to get started!',
   },
 
-  about: {
-    title: 'About Us',
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut purus eget sapien.'
-  },
   contact: {
     title: 'Get in Touch',
     text: 'Have questions or need assistance? Reach out via our social links or send us a message directly!',

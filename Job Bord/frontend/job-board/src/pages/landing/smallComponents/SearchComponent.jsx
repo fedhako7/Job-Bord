@@ -3,7 +3,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import SearchIcon from '@mui/icons-material/Search';
 
-function SearchComponent({ handleSearch, searchRefs }) {
+function SearchComponent({ handleSearch, searchRefs, searchRef }) {
   const [dateFilter, setDateFilter] = useState(false)
   const [experienceFilter, setExperienceFilter] = useState(false)
   const [applicantNumberFilter, setApplicantNumberFilter] = useState(false)
@@ -17,7 +17,7 @@ function SearchComponent({ handleSearch, searchRefs }) {
           <input
             type="text"
             placeholder='Search...'
-            ref={searchRefs?.searchRef}
+            ref={searchRef}
             className=' min-w-60 pl-2  rounded-md md:w-96 md:min-h-10'
           />
           <button

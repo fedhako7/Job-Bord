@@ -1,25 +1,57 @@
-import React, { Component } from 'react'
+import React, { useRef, useState } from 'react'
 import hero_image from '../../assets/hero_image.webp'
-import { sectionTexts } from './sectionTexts'
-import Buttons from './buttons'
-import SearchComponent from './SearchComponent'
+import { sectionTexts } from './componentsData/sectionTexts'
 import FeaturedJobs from '../../components/job/FeaturedJobs'
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import MailIcon from '@mui/icons-material/Mail';
-import TelegramIcon from '@mui/icons-material/Telegram';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import PhoneIcon from '@mui/icons-material/Phone';
+import { linksData } from './componentsData/linksData'
+import { ButtonComponent, SearchComponent, Break, LinkComponent, SectionComponent } from './smallComponents/componentsExporter'
+import { useNavigate } from 'react-router-dom'
+import axiosInstance from '../../axios/Axios'
+import JobCard from '../../components/job/JobCard'
 
 
 function Landing() {
-  const links = [
-    [`Email`, `mailto:fedhasayelmachew@gmail.com`, MailIcon],
-    [`LinkedIn`, `https://www.linkedin.com/in/linkfedhako7/`,  LinkedInIcon ],
-    [`Telegram`, `https://t.me/fedhako77`,  TelegramIcon ],
-    [`gitHub`, `https://github.com/fedhako7/fedhako7`,  GitHubIcon ],
-    [`+2519542008`, `Phone`,  PhoneIcon ],
-  ]
+  // Constants and Variables
+  const navigate = useNavigate()
+  const [searchResult, setSearchResult] = useState([])
+  const searchRef = useRef('')
 
+  // Handle search
+  const handleSearch = async (e) => {
+    const title = searchRef.current.value
+    if ( !title ){
+      console.log(`No search keyword`)
+      return
+    }
+
+    try {
+      const result = await axiosInstance.get('/guest/search', { params: { title }})
+      setSearchResult(result.data?.search_jobs)
+      console.log(result)
+
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
+
+  // Handle click
+  const handleClick = (e) => {
+    const toDo = e.target?.dataset?.todo;
+    switch (toDo) {
+      case `sendMessage`:
+        console.log("Send message")
+
+        break;
+
+      case undefined:
+        navigate(e.target?.dataset?.navto, { state: { role: e.target?.dataset?.role } })
+
+      default:
+        break;
+    }
+
+  }
+
+  // Return
   return (
     <section className={` bg-[#8A9A5B] w-full `}>
 
@@ -34,8 +66,8 @@ function Landing() {
           <div className=' xl:textxl'>
             <p className=' text-center  mt-5 text-sm sm:text-base md:text-lg xl:text-xl'>Continue with Google</p>
             <div>
-              <Buttons buttonName={` 🛠️Find Jobs`} />
-              <Buttons buttonName={` 👨‍💼Hire Talent`} />
+              <ButtonComponent buttonName={` 🛠️Find Jobs`} handleClick={handleClick} navTo={`/register`} role={'Seeker'} />
+              <ButtonComponent buttonName={` 👨‍💼Hire Talent`} handleClick={handleClick} navTo={`/register`} role={`Employee`} />
             </div>
           </div>
         </div>
@@ -53,43 +85,55 @@ function Landing() {
 
       {/* Search Section */}
       <section>
-        <SectionsText section={sectionTexts.search} />
-        <div className={`max-w-[1200px] ml-auto mr-auto `}>
-          <SearchComponent />
+        <div>
+          <SectionComponent section={sectionTexts.search} />
+        </div>
+        {/* Search  */}
+        <div >
+          <div className={`max-w-[1200px] ml-auto mr-auto `}>
+            <SearchComponent handleSearch={handleSearch} searchRef={ searchRef }/>
+          </div>
+          {/* Search Results */}
+          <div>
+            { 
+              searchResult.map((job) =>
+                <JobCard job={job} key={job.job_id} />)
+            }
+          </div>
         </div>
       </section>
       <Break />
 
       {/* Featured Jobs */}
       <section>
-        <SectionsText section={sectionTexts.featuredJobs} />
+        <SectionComponent section={sectionTexts.featuredJobs} />
         <div className='  bg-blue-00'>
           <FeaturedJobs />
 
         </div>
-        <Buttons buttonName={`Login & See More`} />
+        <ButtonComponent buttonName={`Login & See More`} handleClick={handleClick} navTo={`/login`} />
       </section>
       <Break />
 
 
       {/* How it works */}
       <section>
-        <SectionsText section={sectionTexts.howItWorks} />
+        <SectionComponent section={sectionTexts.howItWorks} />
       </section>
       <Break />
 
       {/* Auths */}
       <section>
-        <SectionsText section={sectionTexts.auth} />
+        <SectionComponent section={sectionTexts.auth} />
         <div className=' flex flex-col md:flex-row md:justify-around md:items-end md:gap-5'>
           <div>
-            <Buttons buttonName={`Get Started`} />
+            <ButtonComponent buttonName={`Get Started`} handleClick={handleClick} navTo={`/register`} />
           </div>
           <div className=' mt-4 '>
             <p className=' -mb-2 italic  text-center '>
               Already have an account?
             </p>
-            <Buttons buttonName={`Log In`} />
+            <ButtonComponent buttonName={`Log In`} handleClick={handleClick} navTo={`/login`} />
           </div>
 
         </div>
@@ -97,14 +141,11 @@ function Landing() {
       </section>
       <Break />
 
-      {/* Feedback */}
-      <section> </section>
-
       {/* Contact Section */}
       <section className=' mb-6 '>
         <div className=' flex flex-col '>
           <div>
-            <SectionsText section={sectionTexts?.contact} />
+            <SectionComponent section={sectionTexts?.contact} />
           </div>
 
           <div className='flex m-4 p-4 justify-center self-center border-[1px] rounded-md border-gray-600 md:w-[500px]'>
@@ -124,7 +165,7 @@ function Landing() {
                 className=' min-w-60 min-h-20 pl-2 md:min-w-72 rounded-md'>
               </textarea>
               <div>
-                <Buttons buttonName={`Send message`} />
+                <ButtonComponent buttonName={`Send message`} handleClick={handleClick} toDo={`sendMessage`} />
               </div>
             </div>
           </div>
@@ -134,9 +175,9 @@ function Landing() {
             <p className=' italic '>Connect with us!</p>
             <div className='grid grid-cols-2 gap-3'>
               {
-                links.map((data, idx) => (
+                linksData.map((data, idx) => (
                   <LinkComponent
-                  key={idx}
+                    key={idx}
                     name={data[0]}
                     link={data[1]}
                     Icon={data[2]}
@@ -145,45 +186,10 @@ function Landing() {
               }
             </div>
           </div>
-
         </div>
       </section>
     </section>
   )
 }
-
-// Section Component
-const SectionsText = ({ section }) => {
-  return (
-    <div className={` flex-grow ml-4 pl-4 pr-4  text-center `}>
-      <h1 className='flx flex-grow text-4xl mb-3 xl:mb-5 sm:text-5xl'> {section?.title} </h1>
-      <p className=' flex flex-grow text-start text-lg xl:text-2xl whitespace-pre-line md:pl-6 pmd:pr-6'>
-        {section?.text}
-      </p>
-    </div>
-  )
-}
-
-// Line Break Component
-const Break = () => {
-  return (
-    <hr className=' m-7 border-black border-[1px]' />
-  )
-}
-
-//Links Component
-const LinkComponent = ({ link, name, Icon }) => {
-  return (
-    <div>
-      <a href={link}>
-        <>
-          <Icon/>
-          {name}
-        </>
-      </a>
-    </div>
-  )
-}
-
 
 export default Landing
