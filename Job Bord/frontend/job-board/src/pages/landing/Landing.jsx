@@ -4,8 +4,22 @@ import { sectionTexts } from './sectionTexts'
 import Buttons from './buttons'
 import SearchComponent from './SearchComponent'
 import FeaturedJobs from '../../components/job/FeaturedJobs'
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import MailIcon from '@mui/icons-material/Mail';
+import TelegramIcon from '@mui/icons-material/Telegram';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import PhoneIcon from '@mui/icons-material/Phone';
+
 
 function Landing() {
+  const links = [
+    [`Email`, `mailto:fedhasayelmachew@gmail.com`, MailIcon],
+    [`LinkedIn`, `https://www.linkedin.com/in/linkfedhako7/`,  LinkedInIcon ],
+    [`Telegram`, `https://t.me/fedhako77`,  TelegramIcon ],
+    [`gitHub`, `https://github.com/fedhako7/fedhako7`,  GitHubIcon ],
+    [`+2519542008`, `Phone`,  PhoneIcon ],
+  ]
+
   return (
     <section className={` bg-[#8A9A5B] w-full `}>
 
@@ -86,16 +100,53 @@ function Landing() {
       {/* Feedback */}
       <section> </section>
 
-      {/* Remove the following sections: */}
-      {/* About Section */}
-      <section className='flex justify-center itemscenter'>
-        <SectionsText section={sectionTexts?.about} />
-      </section>
-      <Break />
-
       {/* Contact Section */}
       <section className=' mb-6 '>
-        <SectionsText section={sectionTexts?.contact} />
+        <div className=' flex flex-col '>
+          <div>
+            <SectionsText section={sectionTexts?.contact} />
+          </div>
+
+          <div className='flex m-4 p-4 justify-center self-center border-[1px] rounded-md border-gray-600 md:w-[500px]'>
+            {/* Send message box */}
+            <div className='flex flex-col gap-4 p-3'>
+              <div className='flex flex-col gap-3'>
+                <input type="text" placeholder='Name'
+                  className=' min-h-9 min-w-56 pl-2 rounded-md '
+                />
+                <input type="email" placeholder='Email'
+                  className=' min-h-9 pl-2 rounded-md '
+                />
+              </div>
+              <textarea name="message"
+                id="message"
+                placeholder='Message'
+                className=' min-w-60 min-h-20 pl-2 md:min-w-72 rounded-md'>
+              </textarea>
+              <div>
+                <Buttons buttonName={`Send message`} />
+              </div>
+            </div>
+          </div>
+
+          {/* Social media links */}
+          <div className='flex flex-col min-w-60 m-4 p-4 gap-3 justify-center self-center border-[1px] rounded-md border-gray-600 md:w-[500px]'>
+            <p className=' italic '>Connect with us!</p>
+            <div className='grid grid-cols-2 gap-3'>
+              {
+                links.map((data, idx) => (
+                  <LinkComponent
+                  key={idx}
+                    name={data[0]}
+                    link={data[1]}
+                    Icon={data[2]}
+                  />
+                ))
+              }
+            </div>
+          </div>
+
+        </div>
       </section>
     </section>
   )
@@ -117,6 +168,20 @@ const SectionsText = ({ section }) => {
 const Break = () => {
   return (
     <hr className=' m-7 border-black border-[1px]' />
+  )
+}
+
+//Links Component
+const LinkComponent = ({ link, name, Icon }) => {
+  return (
+    <div>
+      <a href={link}>
+        <>
+          <Icon/>
+          {name}
+        </>
+      </a>
+    </div>
   )
 }
 

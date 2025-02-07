@@ -30,8 +30,8 @@ Post your job in minutes and get matched with top talent. Easily find and hire t
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut purus eget sapien.'
   },
   contact: {
-    title: 'Contact Us',
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut purus eget sapien.'
+    title: 'Get in Touch',
+    text: 'Have questions or need assistance? Reach out via our social links or send us a message directly!',
   }
 
 }
