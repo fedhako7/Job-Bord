@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import hero_image from '../../assets/hero_image.webp'
 import { sectionTexts } from './componentsData/sectionTexts'
 import FeaturedJobs from '../../components/job/FeaturedJobs'
@@ -13,22 +13,32 @@ function Landing() {
   // Constants and Variables
   const navigate = useNavigate()
   const [searchResult, setSearchResult] = useState([])
+  const [filterHidden, setFilterHidden] = useState(true)
+  const [filters, setFilters] = useState({
+    dateFilter: false,
+    experienceFilter: false,
+    applicantNumberFilter: false
+  })
+  let [filteredJobs, setFilteredJobs] = useState([])
   const searchRef = useRef('')
 
   // Handle search
   const handleSearch = async (e) => {
     const title = searchRef.current.value
-    if ( !title ){
+    if (!title) {
       console.log(`No search keyword`)
       return
     }
 
     try {
-      const result = await axiosInstance.get('/guest/search', { params: { title }})
-      setSearchResult(result.data?.search_jobs)
-      console.log(result)
+      const result = await axiosInstance.get('/guest/search', { params: { title } })
+      setSearchResult(result.data.search_jobs)
+      setFilteredJobs(result.data.search_jobs)
+      setFilterHidden(!result.data.search_jobs)
 
     } catch (error) {
+      setSearchResult([])
+      setFilterHidden(true)
       console.log(error.message)
     }
   }
@@ -38,7 +48,7 @@ function Landing() {
     const toDo = e.target?.dataset?.todo;
     switch (toDo) {
       case `sendMessage`:
-        console.log("Send message")
+        console.log("Implement send message")
 
         break;
 
@@ -48,8 +58,41 @@ function Landing() {
       default:
         break;
     }
+  }
+
+  // Handle filtering 
+  const handleFiltering = () => {
+    let filterJobs = searchResult
+
+    if (filters.dateFilter) {
+      const fromDate = filters.dateFilter.from
+      const toDate = filters.dateFilter.to
+    }
+    if (filters.experienceFilter) {
+      const fromExperience = filters.experienceFilter.from
+      const toExperience = filters.experienceFilter.to
+    }
+    if (filters.applicantNumberFilter) {
+      console.log(filters)
+      const fromApplicantNumber = filters.applicantNumberFilter.from
+      const toApplicantNumber = filters.applicantNumberFilter.to
+    }
+
+    setFilteredJobs(filterJobs)
+
 
   }
+
+
+  useEffect(() => {
+    handleFiltering()
+
+  }, [filters])
+
+  useEffect(() => {
+    console.log(filters)
+
+  }, [filters])
 
   // Return
   return (
@@ -85,17 +128,25 @@ function Landing() {
 
       {/* Search Section */}
       <section>
-        <div>
-          <SectionComponent section={sectionTexts.search} />
-        </div>
-        {/* Search  */}
-        <div >
-          <div className={`max-w-[1200px] ml-auto mr-auto `}>
-            <SearchComponent handleSearch={handleSearch} searchRef={ searchRef }/>
+        <div className={` flex flex-col items-center`}>
+          <div>
+            <SectionComponent section={sectionTexts.search} />
           </div>
+
+          {/* Search  */}
+          <div>
+            <SearchComponent
+              handleSearch={handleSearch}
+              searchRef={searchRef}
+              filterHidden={filterHidden}
+              setFilters={setFilters}
+              filters={filters}
+            />
+          </div>
+
           {/* Search Results */}
           <div>
-            { 
+            {
               searchResult.map((job) =>
                 <JobCard job={job} key={job.job_id} />)
             }
@@ -103,6 +154,7 @@ function Landing() {
         </div>
       </section>
       <Break />
+
 
       {/* Featured Jobs */}
       <section>
@@ -165,7 +217,10 @@ function Landing() {
                 className=' min-w-60 min-h-20 pl-2 md:min-w-72 rounded-md'>
               </textarea>
               <div>
-                <ButtonComponent buttonName={`Send message`} handleClick={handleClick} toDo={`sendMessage`} />
+                <ButtonComponent
+                  buttonName={`Send message`}
+                  handleClick={handleClick}
+                  toDo={`sendMessage`} />
               </div>
             </div>
           </div>

@@ -1,15 +1,21 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import SearchIcon from '@mui/icons-material/Search';
 
-function SearchComponent({ handleSearch, searchRefs, searchRef }) {
-  const [dateFilter, setDateFilter] = useState(false)
-  const [experienceFilter, setExperienceFilter] = useState(false)
-  const [applicantNumberFilter, setApplicantNumberFilter] = useState(false)
+function SearchComponent(
+  { handleSearch,
+    searchRefs,
+    searchRef,
+    filterHidden,
+    setFilters,
+    filters
+  }
+) {
 
+  // Return 
   return (
-    <div className=' max-w-[1000px] flex flex-col bg-[#4F7942] m-4 p-3'>
+    <div className=' max-w-[1000px] flex flex-col bg[#4F7942] m-4 p-3'>
 
       {/* Search input */}
       <div className=' max-w-[800px] flex justify-center'>
@@ -18,6 +24,7 @@ function SearchComponent({ handleSearch, searchRefs, searchRef }) {
             type="text"
             placeholder='Search...'
             ref={searchRef}
+            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
             className=' min-w-60 pl-2  rounded-md md:w-96 md:min-h-10'
           />
           <button
@@ -28,40 +35,42 @@ function SearchComponent({ handleSearch, searchRefs, searchRef }) {
         </div>
       </div>
 
-      <hr className=' h-[2px] bg-black mt-3 border-black ' />
+      <hr className={` hidden max-w-ful -ml-3 -mr-3 h-[1px] bg-black mt-3 border-black `} />
 
       {/* Filters */}
-      <div className=' p-3 '>
+      <div className={`${filterHidden && 'hidden'} p-3 `}>
         <p className='mb-4'>FILTER RESULTS</p>
-        <div className=' max-w-[600px] sm:flex sm:justify-between'>
+        <div className=' flex flex-col max-w-[600px]  gap-2 sm:flex-row '>
           {/* Date filter */}
           <FilterComponent
             name='Date'
             type='date'
+            filterName='dateFilter'
             ref={searchRefs?.dateRef}
-            filter={dateFilter}
-            setfilter={setDateFilter}
             from={new Date().toISOString().split('T')[0]}
+            setFilters={setFilters}
+            filter={filters.dateFilter}
           />
 
           {/* Experience filter */}
           <FilterComponent
             name='Experience'
             type='number'
-            ref={searchRefs?.experienceRef}
-            filter={experienceFilter}
-            setfilter={setExperienceFilter}
+            filterName='experienceFilter'
             from={0}
+            setFilters={setFilters}
+            filter={filters.experienceFilter}
+
           />
 
           {/* Applicant number filter */}
           <FilterComponent name='Applicant number'
             type='number'
-            ref={searchRefs?.applicantNumberRef}
-            filter={applicantNumberFilter}
-            setfilter={setApplicantNumberFilter}
+            filterName='applicantNumberFilter'
             from={0}
             to={100}
+            setFilters={setFilters}
+            filter={filters.applicantNumberFilter}
           />
         </div>
       </div>
@@ -72,14 +81,45 @@ function SearchComponent({ handleSearch, searchRefs, searchRef }) {
 export default SearchComponent
 
 
-const FilterComponent = ({ name, type, from, to, filter, setfilter, ref }) => {
+const FilterComponent = ({ name, type, from, to, filter, setFilters, filterName, ref }) => {
+  // Constants 
+  const fromRef = useRef()
+  const toRef = useRef()
+
+  // handleFilter
+  const handleFilter = (e) => {
+    const filter = e.target.dataset.filter
+    console.log(fromRef.current.value)
+    setFilters((prevFilters) => (
+      {
+        ...prevFilters, [filter]: prevFilters[filter] ? false : {
+          from: fromRef.current.value,
+          to: toRef.current.value
+        }
+      }
+    ))
+  }
+
+  const handleFrom = (e) => {
+    if (e.key == 'Enter'){
+      
+    }
+  }
+  const handleTo = (e) => {
+    if (e.key == 'Enter'){
+      
+    }
+  }
+
+  // Return 
   return (
     <div className=' mb-3 gap-3'>
 
       <div>
         <button
+          onClick={handleFilter}
+          data-filter={filterName}
           className=' flex min-w-32 bg-[#555D50] mb-2 p-2 pl-1 items-center rounded-md'
-          onClick={() => setfilter(!filter)}
         >
           {filter ?
             <CheckCircleIcon /> : <CircleOutlinedIcon />
@@ -94,8 +134,9 @@ const FilterComponent = ({ name, type, from, to, filter, setfilter, ref }) => {
             from:
           </span>
           <input
+            onKeyDown={handleFrom}
             type={type}
-            ref={ref || undefined}
+            ref={fromRef}
             min={type === 'number' ? 0 : '2025-01-01'}
             max={type === 'number' ? 20 : '2035-01-01'}
             defaultValue={from}
@@ -106,8 +147,9 @@ const FilterComponent = ({ name, type, from, to, filter, setfilter, ref }) => {
             to:
           </span>
           <input
+            onKeyDown={handleTo}
             type={type}
-            ref={ref || undefined}
+            ref={toRef}
             min={type === 'number' ? 0 : '2025-01-01'}
             max={type === 'number' ? 20 : '2035-01-01'}
             defaultValue={to ? to : from}
