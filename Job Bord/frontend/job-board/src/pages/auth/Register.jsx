@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import axios from '../../axios/Axios'
 import { useNavigate } from 'react-router-dom';
 import HeadingComponent from './smallComponents/HeadingComponent';
-import FieldComponent from './smallComponents/fieldComponent';
+import FieldComponent from './smallComponents/FieldComponent';
 import PassVisibility from './smallComponents/PassVisibility';
 import ErrorMessages from './smallComponents/ErrorMessages';
 import ButtonComponent from '../landing/smallComponents/ButtonComponent';
