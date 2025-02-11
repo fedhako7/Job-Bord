@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import axios from '../../axios/Axios'
 import { useNavigate } from 'react-router-dom';
 import { frequentDatas } from '../../contextProvider/ContextProvider'
-import FieldComponent from './smallComponents/fieldComponent';
+import FieldComponent from './smallComponents/FieldComponent';
 import ButtonComponent from '../landing/smallComponents/ButtonComponent';
 import HeadingComponent from './smallComponents/HeadingComponent';
 import PassVisibility from './smallComponents/PassVisibility';
