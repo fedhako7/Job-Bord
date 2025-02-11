@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import hero_image from '../../assets/hero_image.webp'
 import { sectionTexts } from './componentsData/sectionTexts'
 import FeaturedJobs from '../../components/job/FeaturedJobs'
@@ -14,12 +14,7 @@ function Landing() {
   const navigate = useNavigate()
   const [searchResult, setSearchResult] = useState([])
   const [filterHidden, setFilterHidden] = useState(true)
-  const [filters, setFilters] = useState({
-    dateFilter: false,
-    experienceFilter: false,
-    applicantNumberFilter: false
-  })
-  let [filteredJobs, setFilteredJobs] = useState([])
+  const [searchMessage, setSearchMessage] = useState('')
   const searchRef = useRef('')
 
   // Handle search
@@ -33,12 +28,13 @@ function Landing() {
     try {
       const result = await axiosInstance.get('/guest/search', { params: { title } })
       setSearchResult(result.data.search_jobs)
-      setFilteredJobs(result.data.search_jobs)
-      setFilterHidden(!result.data.search_jobs)
+      // setFilterHidden(false)
+      setSearchMessage(`Results for \`${title}\``)
 
     } catch (error) {
       setSearchResult([])
-      setFilterHidden(true)
+      // setFilterHidden(true)
+      setSearchMessage(`No jobs found for \`${title}\``)
       console.log(error.message)
     }
   }
@@ -56,43 +52,10 @@ function Landing() {
         navigate(e.target?.dataset?.navto, { state: { role: e.target?.dataset?.role } })
 
       default:
+        
         break;
     }
   }
-
-  // Handle filtering 
-  const handleFiltering = () => {
-    let filterJobs = searchResult
-
-    if (filters.dateFilter) {
-      const fromDate = filters.dateFilter.from
-      const toDate = filters.dateFilter.to
-    }
-    if (filters.experienceFilter) {
-      const fromExperience = filters.experienceFilter.from
-      const toExperience = filters.experienceFilter.to
-    }
-    if (filters.applicantNumberFilter) {
-      console.log(filters)
-      const fromApplicantNumber = filters.applicantNumberFilter.from
-      const toApplicantNumber = filters.applicantNumberFilter.to
-    }
-
-    setFilteredJobs(filterJobs)
-
-
-  }
-
-
-  useEffect(() => {
-    handleFiltering()
-
-  }, [filters])
-
-  useEffect(() => {
-    console.log(filters)
-
-  }, [filters])
 
   // Return
   return (
@@ -107,7 +70,7 @@ function Landing() {
           </p>
 
           <div className=' xl:textxl'>
-            <p className=' text-center  mt-5 text-sm sm:text-base md:text-lg xl:text-xl'>Continue with Google</p>
+            <p className=' text-center mt-5 text-white italic text-sm sm:text-base md:text-lg xl:text-xl'>Continue with Google</p>
             <div>
               <ButtonComponent buttonName={` 🛠️Find Jobs`} handleClick={handleClick} navTo={`/register`} role={'Seeker'} />
               <ButtonComponent buttonName={` 👨‍💼Hire Talent`} handleClick={handleClick} navTo={`/register`} role={`Employee`} />
@@ -133,22 +96,29 @@ function Landing() {
             <SectionComponent section={sectionTexts.search} />
           </div>
 
-          {/* Search  */}
+          {/* Search  component */}
           <div>
             <SearchComponent
               handleSearch={handleSearch}
               searchRef={searchRef}
               filterHidden={filterHidden}
-              setFilters={setFilters}
-              filters={filters}
             />
           </div>
 
           {/* Search Results */}
           <div>
+            <h2 className={` text-center text-2xl font-medium`}>
+              {searchMessage}
+            </h2>
             {
-              searchResult.map((job) =>
-                <JobCard job={job} key={job.job_id} />)
+              searchResult.length !== 0 &&
+              <>
+                <hr className=' w-full border-black ' />
+                {
+                  searchResult.map((job) =>
+                    <JobCard job={job} key={job.job_id} />)
+                }
+              </>
             }
           </div>
         </div>
@@ -182,7 +152,7 @@ function Landing() {
             <ButtonComponent buttonName={`Get Started`} handleClick={handleClick} navTo={`/register`} />
           </div>
           <div className=' mt-4 '>
-            <p className=' -mb-2 italic  text-center '>
+            <p className=' -mb-2 italic text-white text-center '>
               Already have an account?
             </p>
             <ButtonComponent buttonName={`Log In`} handleClick={handleClick} navTo={`/login`} />
