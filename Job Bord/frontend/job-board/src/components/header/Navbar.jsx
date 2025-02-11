@@ -40,7 +40,7 @@ function landingNavbar({ navData }) {
                   <li key={index} onClick={() => setIsOpen(false)} >
                     <NavLink to={data.link} className={({ isActive }) =>
                       `flex gap-1 items-center hover:text-white  hover:scale-105 transition-transform duration-300 ease-out ${isActive && 'text-white'}`}>
-                      <> {data.logo && < data.logo fontSize='medium' />} {data.name} </>
+                      <> {data.logo && < data.logo fontSize='small' />} {data.name} </>
                     </NavLink>
                   </li>
 
@@ -52,7 +52,7 @@ function landingNavbar({ navData }) {
         }
 
         {/* Tablet menu */}
-        <ul className={` hidden md:items-center justify-between md:flex lg:text-xl xl:text-2xl `}>
+        <ul className={` hidden md:items-center justify-between md:flex lg:text-lg xl:text-xl `}>
           {
             navData.map((data, index) => (
               <li key={index}>
@@ -60,7 +60,7 @@ function landingNavbar({ navData }) {
                   className={({ isActive }) => ` flex items-center hover:text-white
                   hover:scale-110 transition-transform duration-300 ease-out ${isActive && 'text-white scale-125'}`}
                   to={data.link}>
-                  <> {data.logo && < data.logo fontSize='large' />} {data.name} </>
+                  <> {data.logo && < data.logo fontSize='medium' />} {data.name} </>
                 </NavLink>
               </li>
             ))

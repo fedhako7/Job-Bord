@@ -98,7 +98,7 @@ function Register() {
 
           <FieldComponent
             type={'text'}
-            fieldPHolder='Company (Employer role only)'
+            fieldPHolder='Company (For Employers only)'
             fieldRef={companyRef}
             disabled={roleValue !== 'Employer'} />
 

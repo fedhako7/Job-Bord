@@ -52,7 +52,7 @@ function Landing() {
         navigate(e.target?.dataset?.navto, { state: { role: e.target?.dataset?.role } })
 
       default:
-        
+
         break;
     }
   }
@@ -128,19 +128,28 @@ function Landing() {
 
       {/* Featured Jobs */}
       <section>
-        <SectionComponent section={sectionTexts.featuredJobs} />
-        <div className='  bg-blue-00'>
-          <FeaturedJobs />
+        <div className={` flex flex-col items-center`}>
+          <div>
+            <SectionComponent section={sectionTexts.featuredJobs} />
+            <hr className=' w-full mt-1 border-black ' />
+          </div>
 
+          <div>
+            <FeaturedJobs />
+          </div>
+          <div className=' w-full mt-6 -mb-3'>
+            <ButtonComponent buttonName={`Login & See More`} handleClick={handleClick} navTo={`/login`} />
+          </div>
         </div>
-        <ButtonComponent buttonName={`Login & See More`} handleClick={handleClick} navTo={`/login`} />
       </section>
       <Break />
 
 
       {/* How it works */}
       <section>
-        <SectionComponent section={sectionTexts.howItWorks} />
+        <div className={` flex flex-col items-center`}>
+          <SectionComponent section={sectionTexts.howItWorks} />
+        </div>
       </section>
       <Break />
 
