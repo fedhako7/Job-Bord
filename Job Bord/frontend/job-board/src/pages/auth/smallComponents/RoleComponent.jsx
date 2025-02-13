@@ -10,7 +10,7 @@ const RoleComponent = ({ roleName, setRoleValue }) => {
         type="radio"
         name="userType"
         value={roleName}
-        className='mr-2 scale-150' /> {roleName === 'Seeker' ? 'Job Seeker' : roleName}
+        className='mr-2 scale-150' /> {roleName}
     </label>
   )
 }

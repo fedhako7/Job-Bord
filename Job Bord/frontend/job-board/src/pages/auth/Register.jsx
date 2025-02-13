@@ -7,6 +7,7 @@ import PassVisibility from './smallComponents/PassVisibility';
 import ErrorMessages from './smallComponents/ErrorMessages';
 import ButtonComponent from '../landing/smallComponents/ButtonComponent';
 import RoleComponent from './smallComponents/RoleComponent';
+import roles from './role';
 
 function Register() {
   // Constants and Variables
@@ -33,7 +34,6 @@ function Register() {
 
     // Check fields
     if (!fname || !lname || !email || !password || !roleValue) {
-      console.log(fname, lname, email, password, roleValue)
       return setFieldError('All fields are requered.')
     } else if (password && password.length < 8) {
       return setFieldError("Password length can't be less than 8 characters.")
@@ -101,12 +101,12 @@ function Register() {
             type={'text'}
             fieldPHolder='Company (For Employers only)'
             fieldRef={companyRef}
-            disabled={roleValue !== 'Employer'} />
+            disabled={roleValue !== roles.EMPLOYER} />
 
           <div className=' flex flex-col pl-2 gap-2 text-lg '>
             <p className=' font-medium'>Register As</p>
-            <RoleComponent roleName={'Seeker'} setRoleValue={setRoleValue} />
-            <RoleComponent roleName={'Employer'} setRoleValue={setRoleValue} />
+            <RoleComponent roleName={roles.SEEKER} setRoleValue={setRoleValue} />
+            <RoleComponent roleName={roles.EMPLOYER} setRoleValue={setRoleValue} />
           </div>
 
           {fieldError && <ErrorMessages errorMessage={fieldError} />}
