@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 function HeadingComponent( {heading, paragraph, navName, navTo}) {
   return (
-    <div>
+    <div className=' flex flex-col gap-2'>
       <h1 className=" text-2xl font-bold lg:text-3xl ">{heading}</h1>
       <p
         className=" text-gray-600 lg:text-xl">
@@ -15,7 +15,7 @@ function HeadingComponent( {heading, paragraph, navName, navTo}) {
           {navName}
         </Link>
       </p>
-      <hr className='mt-1 border-black'/>
+      <hr className=' border-black'/>
     </div>
   )
 }

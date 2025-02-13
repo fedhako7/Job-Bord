@@ -33,6 +33,7 @@ function Register() {
 
     // Check fields
     if (!fname || !lname || !email || !password || !roleValue) {
+      console.log(fname, lname, email, password, roleValue)
       return setFieldError('All fields are requered.')
     } else if (password && password.length < 8) {
       return setFieldError("Password length can't be less than 8 characters.")
@@ -89,7 +90,7 @@ function Register() {
           <div className='flex items-center'>
             <FieldComponent
               type={'Password'}
-              fieldRef={lnameRef}
+              fieldRef={passwordRef}
               showPass={showPass} />
             <PassVisibility
               showPass={showPass}

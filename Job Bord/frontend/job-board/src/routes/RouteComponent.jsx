@@ -15,6 +15,8 @@ import NotFound from '../pages/notFound/NotFound'
 import Profile from '../components/profile/Profile'
 import Landing from '../pages/landing/Landing'
 import Notifications from '../components/notifications/Notifications'
+import GoogleSignIn from '../pages/auth/GoogleSignIn'
+import GLogin from '../pages/auth/GLogin'
 
 
 function RouteComponent() {
@@ -25,6 +27,7 @@ function RouteComponent() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/landing" element={<Layout children={<Landing/>}/>} />
+        <Route path="/register/withgoogle" element={<Layout children={<GLogin/>}/>} />
 
         {/* Mutual pages */}
         <Route

@@ -72,8 +72,8 @@ function Landing() {
           <div className=' xl:textxl'>
             <p className=' text-center mt-5 text-white italic text-sm sm:text-base md:text-lg xl:text-xl'>Continue with Google</p>
             <div>
-              <ButtonComponent buttonName={` 🛠️Find Jobs`} handleClick={handleClick} navTo={`/register`} role={'Seeker'} />
-              <ButtonComponent buttonName={` 👨‍💼Hire Talent`} handleClick={handleClick} navTo={`/register`} role={`Employee`} />
+              <ButtonComponent buttonName={` 🛠️Find Jobs`} handleClick={handleClick} navTo={`/register/withgoogle`} role={'Seeker'} />
+              <ButtonComponent buttonName={` 👨‍💼Hire Talent`} handleClick={handleClick} navTo={`/register/withgoogle`} role={`Employee`} />
             </div>
           </div>
         </div>
