@@ -19,10 +19,10 @@ app.use(cors())
 app.use(express.json())
 
 // routes
-app.use('/auth',  authRoute)
-app.use('/users', authenticateToken,  usersRoute)
-app.use('/jobs',  authenticateToken, jobsRoute)
-app.use('/applications',  authenticateToken, applicationsRoute)
+app.use('/auth', authRoute)
+app.use('/users', authenticateToken, usersRoute)
+app.use('/jobs', authenticateToken, jobsRoute)
+app.use('/applications', authenticateToken, applicationsRoute)
 app.use('/guest', guestRoute)
 
 async function start() {
@@ -31,7 +31,7 @@ async function start() {
         app.listen(port)
         console.log("Database connected successfully")
         console.log(`Server is running on port http://localhost:${port}`);
-        
+
     } catch (error) {
         console.log(error)
     }

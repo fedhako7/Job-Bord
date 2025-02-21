@@ -4,14 +4,17 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
+    "express-session": "^1.18.1",
+    "google-auth-library": "^9.15.1",
     "http-status-codes": "^2.3.0",
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.11.4",
-    "nodemailer": "^6.9.16"
+    "nodemailer": "^6.9.16",
+    "passport": "^0.7.0",
+    "passport-google-oauth2": "^0.2.0"
   },
   "scripts": {
-    "as2" : "nodemon app.js"
+    "astuu": "nodemon app.js"
   }
-
 }

@@ -7,6 +7,7 @@ import ButtonComponent from '../landing/smallComponents/ButtonComponent';
 import HeadingComponent from './smallComponents/HeadingComponent';
 import PassVisibility from './smallComponents/PassVisibility';
 import ErrorMessages from './smallComponents/ErrorMessages';
+import GoogleAuth from './googleAuth/GoogleAuth';
 
 function Login() {
   // Constants and Variables
@@ -52,11 +53,7 @@ function Login() {
     }
   }
 
-
-  useEffect(() => 
-  console.log(emailRef.current.value)
-
-, [emailRef.current.value])
+  
   // Return
   return (
     <section className=" flex justify-center p-2 mt-14  ">
@@ -90,6 +87,7 @@ function Login() {
             type={'submit'}
             handleClick={handleLogin} />
         </form>
+        <GoogleAuth />
       </div>
     </section>
   );

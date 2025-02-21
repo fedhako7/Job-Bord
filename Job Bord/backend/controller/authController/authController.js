@@ -1,13 +1,17 @@
 const db = require('../../database/database')
 const statCodes = require('http-status-codes')
 const bcrypt = require("bcrypt")
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const roles = require('../constants/role');
 
 const register = async (req, res) => {
     const { fname, lname, email, role, password, company } = req.body;
 
     if (!fname || !lname || !email || !role || !password) {
         return res.status(statCodes.BAD_REQUEST).json({ msg: "Fill all required fields" });
+    }
+    if ((role !== roles.EMPLOYER) && (role !== roles.SEEKER)) {
+        return res.status(statCodes.BAD_REQUEST).json({ msg: "Invalid role" });
     }
     if (password.length < 8) {
         return res.status(statCodes.BAD_REQUEST).json({ msg: "Password must not be less than 8 characters" });
@@ -76,9 +80,10 @@ const checkUser = async (req, res) => {
     try {
         const [roleData] = await db.query("SELECT role FROM users WHERE user_id=?", [user_id])
         const role = roleData[0].role
-        if (role !== "Employer" && role !== "Job Seeker") {
-            return res.status(statCodes.UNAUTHORIZED).json({ msg: " Invalid role." })
-        }
+        console.log('[Check User Controller] Role:', role);
+        // if (role !== roles.EMPLOYER && role !== roles.SEEKER && role !== null) {
+        //     return res.status(statCodes.UNAUTHORIZED).json({ msg: " Invalid role.", role })
+        // }
         res.status(statCodes.OK).json({ msg: "User checked.", role, user })
 
     } catch (error) {

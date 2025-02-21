@@ -7,7 +7,7 @@ import { ButtonComponent, SearchComponent, Break, LinkComponent, SectionComponen
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axios/Axios'
 import JobCard from '../../components/job/JobCard'
-import GoogleSignIn from '../auth/GoogleSignIn'
+import GoogleAuth from '../auth/googleAuth/GoogleAuth'
 
 function Landing() {
   // Constants and Variables
@@ -72,9 +72,9 @@ function Landing() {
           <div className=' xl:textxl'>
             <p className=' text-center mt-5 text-white italic text-sm sm:text-base md:text-lg xl:text-xl'>Continue with Google</p>
             <div>
-              <GoogleSignIn />
-              <ButtonComponent buttonName={` 🛠️Find Jobs`} handleClick={handleClick} navTo={`/register/withgoogle`} role={'Seeker'} />
-              <ButtonComponent buttonName={` 👨‍💼Hire Talent`} handleClick={handleClick} navTo={`/register/withgoogle`} role={`Employee`} />
+              <GoogleAuth />
+              <ButtonComponent buttonName={` 🛠️Find Jobs`} handleClick={handleClick} navTo={`/withgoogle`} role={'Seeker'} />
+              <ButtonComponent buttonName={` 👨‍💼Hire Talent`} handleClick={handleClick} navTo={`/withgoogle`} role={`Employee`} />
             </div>
           </div>
         </div>

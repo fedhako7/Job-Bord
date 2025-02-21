@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../axios/Axios'
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import Register from '../pages/auth/Register'
 
 function ProtectedRoutes({children, allowedRoles = []}) {
@@ -11,14 +11,20 @@ function ProtectedRoutes({children, allowedRoles = []}) {
   const navigate = useNavigate()
 
   const checkUser = async () => {
+    if (!token || !user_id) {
+      setAuthenticated(false);
+      console.log('[ProtectedRoutes] No token or user ID');
+      return;
+    }
+
     try {
-        const response = await axiosInstance.get('/auth/check', { params:{ user_id }, headers: { authorization: 'Bearer ' + token } })
-        setUserRole(response?.data?.role)
-        setAuthenticated(true)
+      const response = await axiosInstance.get('/auth/check', { params: { user_id }, headers: { authorization: 'Bearer ' + token } })
+      setUserRole(response?.data?.role)
+      setAuthenticated(true)
     } catch (error) {
-        console.log(error)
-        setAuthenticated(false)
-        navigate("/login")
+      console.log(error)
+      setAuthenticated(false)
+      navigate("/login")
     }
   }
 
@@ -28,25 +34,15 @@ function ProtectedRoutes({children, allowedRoles = []}) {
       return;
     }
     if (token) {
-        checkUser()
+      checkUser()
     }
     else {
-        setAuthenticated(false)
-        navigate('/login')
+      setAuthenticated(false)
+      navigate('/login')
     }
   }, [token])
 
-  // useEffect(() => {
-  //   if ( (authenticated === false) || (authenticated && !allowedRoles.includes(userRole))) {
-  //     if (userRole){
-  //       navigate("/");
-  //     }else{
-  //       navigate("/landing");
-  //     }
-  //   }
-  // }, [authenticated, userRole, allowedRoles, navigate]);
-
-  if (authenticated === null){
+  if (authenticated === null) {
     return <div>Loading...</div>
   }
 
@@ -54,12 +50,12 @@ function ProtectedRoutes({children, allowedRoles = []}) {
     return null;
   }
 
-  return ( 
-  <>
-  {
-        authenticated ? children : null
-    }
-  </>
+  return (
+    <>
+      {
+        authenticated ? children : <Navigate to="/login" />
+      }
+    </>
   )
 }
 
