@@ -8,6 +8,7 @@ import ErrorMessages from './smallComponents/ErrorMessages';
 import ButtonComponent from '../landing/smallComponents/ButtonComponent';
 import RoleComponent from './smallComponents/RoleComponent';
 import roles from './role';
+import GoogleAuth from './googleAuth/GoogleAuth';
 
 function Register() {
   // Constants and Variables
@@ -61,8 +62,8 @@ function Register() {
 
   // Return
   return (
-    <section className=" flex justify-center p-2 mt-8 ">
-      <div className="flex flex-col max-w-full p-8 gap-6 bg-gray-300 rounded-lg">
+    <section className=" flex justify-center p-2 mt-5 ">
+      <div className="flex flex-col max-w-full p-8 pt-6 gap-4 bg-gray-300 rounded-lg">
         {/* Heading */}
         <HeadingComponent
           heading={'Create an Account'}
@@ -118,6 +119,10 @@ function Register() {
             isLoading={isLoading}
             buttonName={'Register'} />
         </form>
+        {/* Google Registration  */}
+        <div>
+          <GoogleAuth />
+        </div>
       </div>
     </section>
   );

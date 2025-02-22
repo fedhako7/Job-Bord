@@ -69,12 +69,11 @@ function Landing() {
             Search for your dream job and apply with one click!
           </p>
 
+          {/* Google registration */}
           <div className=' xl:textxl'>
-            <p className=' text-center mt-5 text-white italic text-sm sm:text-base md:text-lg xl:text-xl'>Continue with Google</p>
+            <p className=' text-center mt-5 mb-1 text-wite italic text-sm sm:text-base md:text-lg xl:text-xl'>Continue with Google</p>
             <div>
               <GoogleAuth />
-              <ButtonComponent buttonName={` 🛠️Find Jobs`} handleClick={handleClick} navTo={`/withgoogle`} role={'Seeker'} />
-              <ButtonComponent buttonName={` 👨‍💼Hire Talent`} handleClick={handleClick} navTo={`/withgoogle`} role={`Employee`} />
             </div>
           </div>
         </div>
@@ -157,8 +156,11 @@ function Landing() {
       {/* Auths */}
       <section>
         <SectionComponent section={sectionTexts.auth} />
-        <div className=' flex flex-col md:flex-row md:justify-around md:items-end md:gap-5'>
+        <div className=' flex flex-col md:flex-row md:justify-evenly md:items-end md:gap-5'>
           <div>
+            <p className=' -mb-2 italic text-white text-center '>
+              Create Account and continue
+            </p>
             <ButtonComponent buttonName={`Get Started`} handleClick={handleClick} navTo={`/register`} />
           </div>
           <div className=' mt-4 '>
@@ -167,7 +169,12 @@ function Landing() {
             </p>
             <ButtonComponent buttonName={`Log In`} handleClick={handleClick} navTo={`/login`} />
           </div>
-
+          <div className=' mt-4 '>
+            <p className=' mb-1 italic text-center '>
+              Continue with your Google account
+            </p>
+            <GoogleAuth />
+          </div>
         </div>
 
       </section>
