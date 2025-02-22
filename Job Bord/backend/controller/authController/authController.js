@@ -31,7 +31,7 @@ const register = async (req, res) => {
             [fname, lname, email, role, hash, company]
         );
 
-       res.status(statCodes.OK).json({ msg: "Registered successfully." });
+        res.status(statCodes.OK).json({ msg: "Registered successfully." });
 
 
     } catch (error) {
@@ -80,10 +80,9 @@ const checkUser = async (req, res) => {
     try {
         const [roleData] = await db.query("SELECT role FROM users WHERE user_id=?", [user_id])
         const role = roleData[0].role
-        console.log('[Check User Controller] Role:', role);
-        // if (role !== roles.EMPLOYER && role !== roles.SEEKER && role !== null) {
-        //     return res.status(statCodes.UNAUTHORIZED).json({ msg: " Invalid role.", role })
-        // }
+        if (role === null) {
+            return res.status(StatusCodes.OK).json({ msg: "Role not set, redirect to select-role", redirect: "/select-role" });
+        }
         res.status(statCodes.OK).json({ msg: "User checked.", role, user })
 
     } catch (error) {
@@ -97,16 +96,16 @@ const checkUser = async (req, res) => {
 
 
 const changePassword = async (req, res) => {
-    const { old_pass, new_pass, user_id } = req.body
+    const { old_pass, isPassSet, new_pass, user_id } = req.body
 
     if (!user_id) {
         return res.status(statCodes.BAD_REQUEST).json({ msg: "Error: User Id not provided." })
-    } else if (!old_pass) {
+    } else if (!old_pass && isPassSet) {
         return res.status(statCodes.BAD_REQUEST).json({ msg: "Error: old password not provided." })
     } else if (!new_pass) {
         return res.status(statCodes.BAD_REQUEST).json({ msg: "Error: new password not provided." })
     } else if (new_pass.length < 6) {
-        return res.status(statCodes.BAD_REQUEST).json({ msg: "New password must not be less than 6 characters" })
+        return res.status(statCodes.BAD_REQUEST).json({ msg: "New password must not be less than 8  characters" })
     }
 
     try {
@@ -114,9 +113,12 @@ const changePassword = async (req, res) => {
         if (user.length !== 1) {
             return res.status(statCodes.NOT_FOUND).json({ msg: "User not found." })
         }
-        const isMatch = await bcrypt.compare(old_pass, user[0].password)
-        if (!isMatch) {
-            return res.status(statCodes.UNAUTHORIZED).json({ msg: "Wrong old password." })
+
+        if (isPassSet === true) {
+            const isMatch = await bcrypt.compare(old_pass, user[0].password)
+            if (!isMatch) {
+                return res.status(statCodes.UNAUTHORIZED).json({ msg: "Wrong old password." })
+            }
         }
 
         const salt = await bcrypt.genSalt(10)
@@ -133,4 +135,26 @@ const changePassword = async (req, res) => {
     }
 }
 
-module.exports = { register, login, checkUser, changePassword }
+
+const CheckPassSet = async (req, res) => {
+    const { user_id } = req.query
+
+    if (!user_id) {
+        return res.status(statCodes.BAD_REQUEST).json({ msg: "[CheckPassSet] Error: User Id not provided." })
+    } 
+
+    try {
+        const [user] = await db.query("SELECT password FROM users WHERE user_id=?", [user_id])
+        if (user.length !== 1) {
+            return res.status(statCodes.NOT_FOUND).json({ msg: "User not found." })
+        }
+
+        res.status(statCodes.OK).json({ msg: "Password changed successfully", isPassSet: user[0].password ? true : false });
+
+    } catch (error) {
+        console.log(error)
+        return res.status(statCodes.INTERNAL_SERVER_ERROR).json({ msg: "Something went wrong, please try again." })
+    }
+}
+
+module.exports = { register, login, checkUser, changePassword, CheckPassSet }

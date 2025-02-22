@@ -58,7 +58,7 @@ function GoogleAuth() {
           <GoogleLogin
             onSuccess={handleSuccess}
             onError={handleFailure}
-            buttonText="Login with Google"
+            text="continue_with"
             className=" absolute font-medium"
             useOneTap // Optional: enables One Tap UI
           />
