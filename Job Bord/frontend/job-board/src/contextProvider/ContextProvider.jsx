@@ -5,7 +5,7 @@ function ContextProvider({ children }) {
 
   const [user_id, setUserId] = useState(() => localStorage.getItem("user_d") || null);
   const [isRoleSet, setIsRoleSet] = useState(undefined)
-  const val = { user_id, setUserId, isPassSet, setIsPassSet, isRoleSet, setIsRoleSet}
+  const val = { user_id, setUserId, isRoleSet, setIsRoleSet}
   
   // use effect to set user_id to local storage
   useEffect(() => {
