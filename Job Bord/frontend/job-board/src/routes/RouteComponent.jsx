@@ -47,14 +47,14 @@ function RouteComponent() {
           }
         />
 
-        <Route
+        {/* <Route
           path="/notification"
           element={
             <ProtectedRoutes allowedRoles={["Employer", "Job Seeker"]}>
               <Layout children={<Notifications />} />
             </ProtectedRoutes>
           }
-        />
+        /> */}
 
         {/* Employer Only pages */}
         <Route

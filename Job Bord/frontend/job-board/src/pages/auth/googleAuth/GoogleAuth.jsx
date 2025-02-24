@@ -60,7 +60,7 @@ function GoogleAuth() {
             onError={handleFailure}
             text="continue_with"
             className=" absolute font-medium"
-            useOneTap // Optional: enables One Tap UI
+            // useOneTap // Optional: enables One Tap UI
           />
         </div>
       </div>

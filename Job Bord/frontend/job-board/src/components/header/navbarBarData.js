@@ -15,11 +15,11 @@ const mutualData = [
     logo: HomeIcon,
     link: "/"
   },
-  {
-    name: "Notifications",
-    logo: NotificationsIcon,
-    link: "/notification"
-  },
+  // {
+  //   name: "Notifications",
+  //   logo: NotificationsIcon,
+  //   link: "/notification"
+  // },
   {
     name: "Profile",
     logo: PersonIcon,
@@ -59,7 +59,8 @@ export const seekerNavData = [
     link: "/apply/my"
   },
   mutualData[1],
-  mutualData[2] 
+  // mutualData[1],
+  // mutualData[2] 
 ]
 
 export const employerNavData = [
@@ -75,5 +76,6 @@ export const employerNavData = [
     link: "/job/post"
   },
   mutualData[1],
-  mutualData[2]
+  // mutualData[1],
+  // mutualData[2]
 ]
