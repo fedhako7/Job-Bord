@@ -15,6 +15,6 @@
     "passport-google-oauth2": "^0.2.0"
   },
   "scripts": {
-    "astuu": "nodemon app.js"
+    "start": "nodemon app.js"
   }
 }
