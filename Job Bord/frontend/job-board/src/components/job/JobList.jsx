@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import axiosInstance from "../../axios/Axios";
 import JList from "./JList";
+import SearchComponent from "../../pages/landing/smallComponents/SearchComponent";
 
 function JobList({ emp }) {
   const token = localStorage.getItem("token");
@@ -51,6 +52,7 @@ function JobList({ emp }) {
       setFromSearch(response?.data?.search_jobs ? true : false);
     } catch (error) {
       console.log(error);
+      setJobs([]);
       setDbError(error?.response?.data?.msg || error.message);
     }
   };
@@ -78,21 +80,17 @@ function JobList({ emp }) {
 
   return (
     <>
-      <div className="w-5/6 ml-auto mr-auto">
-        <div className="w-96 ml-auto mr-auto">
-          <input
-            className="h-11 w-96 pl-5 pb-1 border-yellow-500  border-2 rounded-xl text-md font-medium lg "
-            type="text"
-            placeholder="Search"
-            ref={searchRef}
-          />
-          <button
-            onClick={handleSearch}
-            className="h-11 w-16 bg-gray-800 -ml-16 self-center border-yellow-500 border-2 border-l-0 rounded-e-xl text-white "
-          >
-            <SearchIcon fontSize="large" />
-          </button>
-        </div>
+      <div className=" flex justify-center">
+          {/* Search  component */}
+          <div>
+            <SearchComponent
+              handleSearch={handleSearch}
+              searchRef={searchRef}
+              filterHidden={true}
+            />
+          </div>
+
+          {/* Search Results */}
         {dbError && (
           <p className=" text-center text-xl font-semibold font-mono  ">
             {dbError}
