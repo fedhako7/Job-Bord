@@ -50,7 +50,7 @@ function JCard({ job, emp, has_applied, from_detail }) {
       <p >Deadline: {formattedDate}</p>
 
       {/* buttons  */}
-      <div className={`flex justify-between font-sans `}>
+      <div className={`flex justify-around font-sans `}>
         {
           !emp &&
           <ButtonComponent

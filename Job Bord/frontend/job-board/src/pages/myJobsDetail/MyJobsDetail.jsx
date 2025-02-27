@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import ApplicantsList from '../../components/applicants/ApplicantsList'
 import { useLocation } from 'react-router-dom'
 import axiosInstance from '../../axios/Axios'
-import JobCard from '../../components/job/JobCard'
+import DetailCard from '../../components/job/DetailCard'
 
 function MyJobsDetail() {
   const token = localStorage.getItem("token")
@@ -36,7 +36,7 @@ function MyJobsDetail() {
   return (
     <div>
       <div className='flex w-5/6 ml-auto mr-auto mt-8 justify-between font-semibold lg:w-3/4 lg:mt-14'>
-        <p className='w-full pr-6 text-center text-green-600 text-4xl font-bold'> {title} </p>
+        <p className='w-full pr-6 text-center text-black text-4xl font-bold'> {title} </p>
       </div>
       <hr className='h-1 w-5/6 ml-auto mr-auto mt-3 mb-3 bg-black lg:w-3/4' />
 
@@ -45,11 +45,11 @@ function MyJobsDetail() {
       ) : dbError ? (
         <p className="text-center text-xl mt-6 text-red-500">{dbError}</p>
       ) : (
-        <JobCard job={job} emp={true} from_detail={true} />
+        <DetailCard job={job} emp={true} from_detail={true} />
       )}
 
       <div className='flex w-5/6 ml-auto mr-auto mt-8 justify-between font-semibold lg:w-3/4 lg:mt-14'>
-        <p className='w-full pr-6 text-center  text-4xl text-green-600'> Applicants List </p>
+        <p className='w-full pr-6 text-center  text-4xl text-black'> Applicants List </p>
       </div>
       <hr className='h-1 w-5/6 ml-auto mr-auto mt-3 mb-3 bg-black lg:w-3/4' />
       <ApplicantsList />
