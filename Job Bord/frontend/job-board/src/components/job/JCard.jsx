@@ -12,7 +12,7 @@ function JCard({ job, emp, has_applied, from_detail }) {
   const formatted_created_at = created_at.slice(0, 10);
 
   return (
-    <section className={` flex flex-col min-w-80 max-w-80 bg-gray-400 mx-auto px-6 py-4 text-sm font-serif rounded-md shadow-md`}>
+    <section className={` flex flex-col min-w-72 max-w-80 bg-gray-400 mx-auto px-6 py-4 text-sm font-serif rounded-md shadow-md sm:min-w-80`}>
       <div className={` flex mb-6 gap-3 items-center`}>
         {/* icon  */}
         <div className='flex w-9 h-9 bg-yellow-500 justify-center items-center rounded-md text-4xl'>
@@ -21,7 +21,7 @@ function JCard({ job, emp, has_applied, from_detail }) {
         <div className='texts '>
           <h2 className=' font-bold '>{title}</h2>
           <div className={` flex gap-3`}>
-            <p>{company} :</p>
+            <p>{company || "private client"} :</p>
             <p>{location}</p>
           </div>
         </div>
@@ -31,7 +31,7 @@ function JCard({ job, emp, has_applied, from_detail }) {
       <p className='mb-2 italic '>${salary}</p>
 
       {/* post date an applicant no.  */}
-      <div className={` flex w-3/4 mb-3 gap-8 justify-between  `}>
+      <div className={` flex w-3/4 mb-3 justify-between `}>
         <p>{formatted_created_at};</p>
         <p>{tot_app} applicants</p>
       </div>
