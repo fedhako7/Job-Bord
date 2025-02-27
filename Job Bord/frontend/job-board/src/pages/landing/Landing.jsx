@@ -6,8 +6,8 @@ import { linksData } from './componentsData/linksData'
 import { ButtonComponent, SearchComponent, Break, LinkComponent, SectionComponent } from './smallComponents/componentsExporter'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axios/Axios'
-import JobCard from '../../components/job/JobCard'
 import GoogleAuth from '../auth/googleAuth/GoogleAuth'
+import JList from '../../components/job/JList'
 
 function Landing() {
   // Constants and Variables
@@ -115,8 +115,7 @@ function Landing() {
               <>
                 <hr className=' w-full border-black ' />
                 {
-                  searchResult.map((job) =>
-                    <JobCard job={job} key={job.job_id} />)
+                  <JList jobs={searchResult} />
                 }
               </>
             }

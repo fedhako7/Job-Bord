@@ -11,8 +11,8 @@ function MyJobsDetail() {
   const title = location?.state?.title
 
   const [job, setJob] = useState()
-  const [loading, setLoading] = useState(true) 
-  const [dbError, setDbError] = useState("") 
+  const [loading, setLoading] = useState(true)
+  const [dbError, setDbError] = useState("")
 
   const fetchJob = async () => {
     try {
@@ -25,7 +25,7 @@ function MyJobsDetail() {
       console.log(error)
       setDbError(error?.response?.data?.msg || error.message)
     } finally {
-      setLoading(false) 
+      setLoading(false)
     }
   }
 
@@ -39,10 +39,10 @@ function MyJobsDetail() {
         <p className='w-full pr-6 text-center text-green-600 text-4xl font-bold'> {title} </p>
       </div>
       <hr className='h-1 w-5/6 ml-auto mr-auto mt-3 mb-3 bg-black lg:w-3/4' />
-      
-      {loading ? ( 
+
+      {loading ? (
         <p className="text-center text-xl mt-6">Fetching...</p>
-      ) : dbError ? ( 
+      ) : dbError ? (
         <p className="text-center text-xl mt-6 text-red-500">{dbError}</p>
       ) : (
         <JobCard job={job} emp={true} from_detail={true} />

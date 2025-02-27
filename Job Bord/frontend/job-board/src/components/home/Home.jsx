@@ -1,28 +1,27 @@
 import React, { useEffect, useState } from 'react'
-import JobCard from '../job/JobCard'
 import axiosInstance from '../../axios/Axios'
+import JList from '../job/JList'
 
 function Home() {
   const fname = localStorage.getItem("fname")
   const role = localStorage.getItem("role")
   const [empTopJobs, setEmpTopJobs] = useState([])
   const [recentJobs, setRecentJobs] = useState([])
-  const [appliedList, setAppliedList ] = useState(new Set())
+  const [appliedList, setAppliedList] = useState(new Set())
   const token = localStorage.getItem("token")
   const user_id = parseInt(localStorage.getItem('user_id'))
   const [dbError, setDbError] = useState('')
   const [fetching, setFetching] = useState(true)
 
-
   const fetchAppliedJobsId = async () => {
     try {
-         const res = await axiosInstance.get('/applications/isapplied', {params: { seeker_id: user_id }, headers: {authorization: "Bearer " + token}})
-         const appliedIds = new Set(res?.data?.applied_ids || [])
-         setAppliedList(appliedIds)
+      const res = await axiosInstance.get('/applications/isapplied', { params: { seeker_id: user_id }, headers: { authorization: "Bearer " + token } })
+      const appliedIds = new Set(res?.data?.applied_ids || [])
+      setAppliedList(appliedIds)
     } catch (error) {
-     console.log(error)
+      console.log(error)
     }
- }
+  }
 
   const fetchEmpTopJobs = async () => {
     try {
@@ -39,13 +38,13 @@ function Home() {
       setFetching(false)
     }
   }
- 
- const fetchRecentJobs = async () => {
-   try {
-     setFetching(true)
-     
-     const response = await axiosInstance.get("/jobs/recent", {
-       headers: { authorization: "Bearer " + token },
+
+  const fetchRecentJobs = async () => {
+    try {
+      setFetching(true)
+
+      const response = await axiosInstance.get("/jobs/recent", {
+        headers: { authorization: "Bearer " + token },
       })
       setRecentJobs(response?.data?.user_jobs)
     } catch (error) {
@@ -54,18 +53,17 @@ function Home() {
       setFetching(false)
     }
   }
-  
-  
+
   useEffect(() => {
     if (role === "Job Seeker") fetchAppliedJobsId()
   }, [])
 
   useEffect(() => {
     if (role === "Employer") fetchEmpTopJobs()
-      else if (role === "Job Seeker") fetchRecentJobs()
+    else if (role === "Job Seeker") fetchRecentJobs()
   }, [])
 
-return (
+  return (
     <div className=' pb-8'>
       <div className='flex w-5/6 ml-auto mr-auto pt-4 font-semibold lg:w-3/4 lg:mt-14'>
         <p className='w-full text-left text-xl underline'>{role.toLocaleUpperCase()}</p>
@@ -78,15 +76,9 @@ return (
             <p className='w-full text-center pr-6 text-4xl'>Recently Posted Jobs</p>
           </div>
           <hr className='h-1 w-5/6 ml-auto mr-auto mt-3 mb-3 bg-black lg:w-3/4' />
-
           {
-
-                recentJobs.map((job) =>
-                <JobCard job={job} key={job.job_id} has_applied={appliedList.has(job.job_id)} />)
-
-
+            <JList jobs={recentJobs} appliedList={appliedList} />
           }
-
         </div>
       )}
 
@@ -102,7 +94,7 @@ return (
             <div>
               {dbError && <div>Error: {dbError}</div>}
               {empTopJobs.length > 0 ? (
-                empTopJobs.map((job) => <JobCard job={job} key={job.job_id} emp={true} />)
+                <JList jobs={empTopJobs} emp={true} />
               ) : (
                 <div>No jobs available</div>
               )}

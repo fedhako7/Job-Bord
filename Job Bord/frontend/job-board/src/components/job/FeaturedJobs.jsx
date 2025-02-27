@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../axios/Axios'
-import JobCard from './JobCard'
+import JList from './JList'
 
 function FeaturedJobs() {  
   const [featuredJobs, setFeaturedJobs] = useState([])
@@ -21,8 +21,7 @@ function FeaturedJobs() {
   return (
       <div>
         {
-          featuredJobs.map((job) =>
-            <JobCard job={job} key={job.job_id} />)
+          <JList jobs={featuredJobs} />
         }
       </div>
   )

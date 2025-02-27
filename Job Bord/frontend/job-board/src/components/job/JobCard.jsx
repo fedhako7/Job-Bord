@@ -16,7 +16,6 @@ function JobCard({ job, emp, has_applied, from_detail }) {
             alert("You have already applied to this job. Update feature will be implemented soon!") :
             navigate("/apply", { state: { job_id, title } });
     }
-    
     const handleDetails = (e) => {
         navigate("/job/detail", { state: { title, job_id, emp } });
     }
@@ -87,9 +86,7 @@ function JobCard({ job, emp, has_applied, from_detail }) {
                                 </div>
                             }</>
                 }
-
             </div>
-
         </section>
     )
 }
