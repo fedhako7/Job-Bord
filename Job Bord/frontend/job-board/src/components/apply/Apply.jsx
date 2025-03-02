@@ -83,7 +83,7 @@ function Apply() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4">
       <form 
         onSubmit={handleSubmit}
         className="w-full max-w-2xl bg-white shadow-lg rounded-2xl p-8 mt-12 mb-12 transition-all duration-300 hover:shadow-xl"

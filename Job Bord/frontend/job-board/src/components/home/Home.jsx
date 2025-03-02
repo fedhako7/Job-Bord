@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../axios/Axios'
 import JList from '../job/JList'
+import PagesHeader from '../pagesHeader/PagesHeader'
+import roles from '../../pages/auth/role'
 
 function Home() {
   const fname = localStorage.getItem("fname")
@@ -55,43 +57,37 @@ function Home() {
   }
 
   useEffect(() => {
-    if (role === "Job Seeker") fetchAppliedJobsId()
+    if (role === roles.SEEKER) fetchAppliedJobsId()
   }, [])
 
   useEffect(() => {
-    if (role === "Employer") fetchEmpTopJobs()
-    else if (role === "Job Seeker") fetchRecentJobs()
+    if (role === roles.EMPLOYER) fetchEmpTopJobs()
+    else if (role === roles.SEEKER) fetchRecentJobs()
   }, [])
 
   return (
-    <div className=' pb-8'>
+    <div className=' pb-8 '>
       <div className='flex w-5/6 ml-auto mr-auto pt-4 font-semibold lg:w-3/4 lg:mt-14'>
         <p className='w-full text-left text-xl underline'>{role.toLocaleUpperCase()}</p>
         <p className='w-full text-right text-xl text-pink-800'>Welcome {fname}!</p>
       </div>
 
-      {role === "Job Seeker" && (
-        <div>
-          <div className='flex w-5/6 ml-auto mr-auto mt-8 justify-between font-semibold lg:w-3/4 lg:mt-14'>
-            <p className='w-full text-center pr-6 text-4xl'>Recently Posted Jobs</p>
-          </div>
-          <hr className='h-1 w-5/6 ml-auto mr-auto mt-3 mb-3 bg-black lg:w-3/4' />
+      {role === roles.SEEKER && (
+        <div className=' lg:mx-6 '>
+          <PagesHeader pageHeader={'Recently Posted Jobs'} />
           {
             <JList jobs={recentJobs} appliedList={appliedList} />
           }
         </div>
       )}
 
-      {role === "Employer" &&
+      {role === roles.EMPLOYER &&
         (fetching ? (
           <div>Fetching...</div>
         ) : (
           <div>
-            <div className='flex w-5/6 ml-auto mr-auto mt-8 justify-between font-semibold lg:w-3/4 lg:mt-14'>
-              <p className='w-full text-center pr-6 text-4xl'>Your Top Applied Jobs</p>
-            </div>
-            <hr className='h-1 w-5/6 ml-auto mr-auto mt-3 mb-3 bg-black lg:w-3/4' />
-            <div>
+            <PagesHeader pageHeader={'Your Top Applied Jobs'} />
+            <div className=' lg:mx-6 '>
               {dbError && <div>Error: {dbError}</div>}
               {empTopJobs.length > 0 ? (
                 <JList jobs={empTopJobs} emp={true} />
