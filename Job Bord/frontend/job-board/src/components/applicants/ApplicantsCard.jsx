@@ -45,10 +45,10 @@ function ApplicantsCard({ applicant, setRefresh }) {
                Download Resume
             </a>
           </p>
+          <p> <strong className='pr-3' >Cover letter:</strong> {cv}</p>
           <p> <strong className='pr-3' >Status:</strong> {status}</p>
           <p> <strong className='pr-3' >Email:</strong> {email}</p>
-          <p> <strong className='pr-3' >Date:</strong> {formattedDate}</p>
-          {show && <p> <strong className='pr-3' >CV:</strong> {cv}</p>}
+          {show && <p> <strong className='pr-3' >Date:</strong> {formattedDate}</p>}
           {show && <p> <strong className='pr-3' >Note:</strong> Note</p> }
 
           <div className='flex gap-5 lg:gap-8 lg:pt-8 '>

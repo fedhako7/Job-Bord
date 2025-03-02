@@ -19,6 +19,7 @@ app.use(cors())
 app.use(express.json())
 
 // routes
+app.use('/uploads', express.static('uploads'));
 app.use('/auth', authRoute)
 app.use('/users', authenticateToken, usersRoute)
 app.use('/jobs', authenticateToken, jobsRoute)

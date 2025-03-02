@@ -34,7 +34,7 @@ function ApplicantsList() {
                 <div>Fetching...</div>
             ) : (
                 <>
-                    <div>
+                    <div className=' mb-8'>
                         {dbError && <div>Error: {dbError}</div>}
 
                         {applicants.length > 0 ? (

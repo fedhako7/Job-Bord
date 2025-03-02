@@ -3,12 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { ClipLoader } from 'react-spinners';
 import axiosInstance from '../../axios/Axios';
 
-
 function Post() {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
     const [fieldError, setFieldError] = useState('');
     const [dbError, setDbError] = useState('');
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
     const titleRef = useRef();
     const descriptionRef = useRef();
     const locationRef = useRef();
@@ -24,17 +23,17 @@ function Post() {
 
         const title = titleRef.current.value;
         const description = descriptionRef.current.value;
-        const location = locationRef.current.value || '';
-        const deadline = deadlineRef.current.value || '';
+        const location = locationRef.current.value;
+        const deadline = deadlineRef.current.value;
         const salary = salaryRef.current.value || '';
         const responsibilities = responsibilitiesRef.current.value || '';
         const criteria = criteriaRef.current.value || '';
 
         if (!title || !description || !location || !deadline) {
-            return setFieldError('Fill all requered fields.');
+            return setFieldError('Please fill all required fields.');
         }
 
-        setIsLoading(true)
+        setIsLoading(true);
         try {
             await axiosInstance.post('/jobs', {
                 employer_id: empl_id,
@@ -47,106 +46,147 @@ function Post() {
                 criteria,
             }, { headers: { authorization: "Bearer " + token } });
 
-            setIsLoading(true)
-            alert('Job posted successfully!');
-            navigate('/job/my');
+            setTimeout(() => {
+                alert('Job posted successfully!');
+                navigate('/job/my');
+            }, 350);
         } catch (error) {
-            setIsLoading(false)
+            setIsLoading(false);
             console.log(error);
             setDbError(error.response?.data?.msg || error.message);
         }
     };
 
-    
     return (
-        <form
-            className="flex flex-col w-3/4 bg-gray-100 ml-auto mr-auto mt-16 p-6 gap-5 items-center border-2 border-gray-400 rounded-xl font-medium lg:text-lg"
-            onSubmit={handleSubmit}
-        >
-            <p className="mb-4 text-2xl text-gray-800">Post a New Job</p>
-            <p className="text-red-600 font-medium italic pr-28 lg:text-xl">* Required fields</p>
+        <div className="min-h-screen flex items-center justify-center p-4">
+            <form
+                onSubmit={handleSubmit}
+                className="w-full max-w-3xl bg-white shadow-lg rounded-2xl p-8 my-12 transition-all duration-300 hover:shadow-xl"
+            >
+                <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
+                    Post a New Job
+                </h2>
 
-            <div>
-                <span className="text-red-600 text-xl font-bold">*</span>
-                <input
-                    className="w-72 h-12 ml-1 border-2 border-gray-400 rounded-md pl-3 lg:w-80 lg:h-14"
-                    type="text"
-                    placeholder="Job Title"
-                    ref={titleRef}
-                />
-            </div>
+                <div className="space-y-6">
+                    {/* Job Title */}
+                    <div className="relative">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Job Title <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                            ref={titleRef}
+                            type="text"
+                            placeholder="Enter job title"
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 hover:border-gray-400"
+                        />
+                    </div>
 
+                    {/* Location */}
+                    <div className="relative">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Location <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                            ref={locationRef}
+                            type="text"
+                            placeholder="Location or 'Remote'"
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 hover:border-gray-400"
+                        />
+                    </div>
 
-            <div>
-                <span className="text-red-600 text-xl font-bold">*</span>
-                <input
-                    className="w-72 h-12 ml-1 border-2 border-gray-400 rounded-md pl-3 lg:w-80 lg:h-14"
-                    type="text"
-                    placeholder="Location/ Remote"
-                    ref={locationRef}
-                />
-            </div>
+                    {/* Salary */}
+                    <div className="relative">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Salary per month in $ (Optional)
+                        </label>
+                        <input
+                            ref={salaryRef}
+                            type="text"
+                            placeholder="e.g., 5000 - 6000"
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 hover:border-gray-400"
+                        />
+                    </div>
 
-            <div>
-                <input
-                    className="w-72 h-12 ml-1 border-2 border-gray-400 rounded-md pl-3 lg:w-80 lg:h-14"
-                    type="text"
-                    placeholder="Salary (Optional)"
-                    ref={salaryRef}
-                />
-            </div>
+                    {/* Deadline */}
+                    <div className="relative">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Deadline <span className="text-red-500">*</span>
+                        </label>
+                        <div className="relative">
+                            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none">
+                                📅
+                            </span>
+                            <input
+                                ref={deadlineRef}
+                                type="date"
+                                className="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 hover:border-gray-400 appearance-none"
+                            />
+                        </div>
+                    </div>
 
-            <div className="relative w-fit">
-                <span className="text-red-600 text-xl font-bold">*</span>
-                <input
-                    className="w-72 h-12 ml-1 pl-10 border-2 border-gray-400 rounded-md text-right lg:w-80 lg:h-14"
-                    type="date"
-                    ref={deadlineRef}
-                    
-                    title="Select the deadline"
-                />
-                <span className="absolute left-3 top-1/2 pl-1 transform -translate-y-1/2 text-gray-500">
-                    🗓 Deadline
-                </span>
-            </div>
+                    {/* Job Description */}
+                    <div className="relative">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Job Description <span className="text-red-500">*</span>
+                        </label>
+                        <textarea
+                            ref={descriptionRef}
+                            placeholder="Describe the job role and requirements"
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 resize-y min-h-[120px] hover:border-gray-400"
+                        />
+                    </div>
 
+                    {/* Responsibilities */}
+                    <div className="relative">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Responsibilities (Optional)
+                        </label>
+                        <textarea
+                            ref={responsibilitiesRef}
+                            placeholder="List key responsibilities"
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 resize-y min-h-[120px] hover:border-gray-400"
+                        />
+                    </div>
 
-            <div>
-                <span className="text-red-600 text-xl font-bold">*</span>
-                <textarea
-                    className="w-80 h-32 p-3 border-2 border-gray-400 rounded-xl focus:h-40 focus:w-96 lg:w-96"
-                    placeholder="Job Description"
-                    ref={descriptionRef}
-                ></textarea>
-            </div>
+                    {/* Criteria */}
+                    <div className="relative">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Criteria (Optional)
+                        </label>
+                        <textarea
+                            ref={criteriaRef}
+                            placeholder="Specify required qualifications or skills"
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 resize-y min-h-[120px] hover:border-gray-400"
+                        />
+                    </div>
 
-            <div>
-                <textarea
-                    className="w-80 h-32 p-3 border-2 border-gray-400 rounded-xl focus:h-40 focus:w-96 lg:w-96"
-                    placeholder="Responsibilities (Optional)"
-                    ref={responsibilitiesRef}
-                ></textarea>
-            </div>
+                    {/* Error Messages */}
+                    {(fieldError || dbError) && (
+                        <div className="text-red-600 text-sm italic text-center animate-pulse">
+                            {fieldError || dbError}
+                        </div>
+                    )}
 
-            <div>
-                <textarea
-                    className="w-80 h-32 p-3 border-2 border-gray-400 rounded-xl focus:h-40 focus:w-96 lg:w-96"
-                    placeholder="criteria (Optional)"
-                    ref={criteriaRef}
-                ></textarea>
-            </div>
-
-            {fieldError && <p className="text-red-600 italic animate-bounce">{fieldError}</p>}
-            {dbError && <p className="text-red-600 italic animate-bounce">{dbError}</p>}
-
-            <button className="w-40 h-10 bg-blue-800 rounded-md ">
-                {
-                    isLoading ?
-                    <> <ClipLoader size={20} /> Please wait...</>
-                    : <>Post Job</>
-                }
-            </button>
-        </form>
+                    {/* Submit Button */}
+                    <button
+                        disabled={isLoading}
+                        className={`w-full py-3 px-4 bg-indigo-600 text-white rounded-lg font-semibold transition-all duration-200
+              ${isLoading
+                                ? 'opacity-75 cursor-not-allowed'
+                                : 'hover:bg-indigo-700 hover:shadow-lg active:bg-indigo-800'}`}
+                    >
+                        {isLoading ? (
+                            <div className="flex items-center justify-center space-x-2">
+                                <ClipLoader size={20} color="#ffffff" />
+                                <span>Posting...</span>
+                            </div>
+                        ) : (
+                            'Post Job'
+                        )}
+                    </button>
+                </div>
+            </form>
+        </div>
     );
 }
 
