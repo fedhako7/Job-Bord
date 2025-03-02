@@ -28,16 +28,15 @@ const mutualData = [
 ]
 
 export const landingNavData = [
-  mutualData[0],
   {
-    name: "Services",
+    name: "How it works",
     logo: MiscellaneousServicesIcon,
-    link: "#services"
+    link: "#how-it-works"
   },
   {
-    name: "About",
+    name: "Join Us",
     logo: LightbulbIcon,
-    link: "#about"
+    link: "#join-us"
   },
   {
     name: "Contact",

@@ -72,7 +72,7 @@ function Landing() {
           <p className="text-lg md:text-xl lg:text-2xl text-white/90 max-w-lg mx-auto md:mx-0">
             Search for your dream job and apply with one click!
           </p>
-          <div className="space-y-3">
+          <div className="flex flex-col justify-center items-center gap-2 ">
             <p className="text-sm text-center md:text-base text-white/80 italic">Continue with Google</p>
             <GoogleAuth />
           </div>
@@ -87,7 +87,7 @@ function Landing() {
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-gray-100/50 rounded-lg"></div>
         </div>
       </section>
-      <Break />
+     { searchMessage && <Break /> }
 
       {/* Search Section */}
       <section className="container mx-auto px-4 py-8">

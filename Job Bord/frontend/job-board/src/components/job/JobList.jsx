@@ -8,7 +8,7 @@ function JobList({ emp }) {
   const user_id = parseInt(localStorage.getItem("user_id"));
   const [dbError, setDbError] = useState("");
   const [jobs, setJobs] = useState([]);
-  const [fromSearch, setFromSearch] = useState(false);
+  const [searchMessage, setSearchMessage] = useState('');
   const [fetching, setFetching] = useState(true);
   const searchRef = useRef("");
   const [appliedList, setAppliedList] = useState(new Set());
@@ -48,11 +48,13 @@ function JobList({ emp }) {
         }
       );
       setJobs(response.data.search_jobs);
-      setFromSearch(response?.data?.search_jobs ? true : false);
+      setSearchMessage(`Results for "${search}"`);
+
     } catch (error) {
       console.log(error);
       setJobs([]);
       setDbError(error?.response?.data?.msg || error.message);
+      setSearchMessage(`No results for "${search}"`);
     }
   };
 
@@ -90,19 +92,11 @@ function JobList({ emp }) {
         </div>
 
         {/* Search Results */}
-        {dbError && (
-          <p className=" text-center text-xl font-semibold font-mono  ">
-            {dbError}
-          </p>
-        )}
       </div>
-      {fromSearch && (
-        <div className="flex w-5/6 ml-auto mr-auto mt-8 justify-between font-semibold lg:w-3/4 lg:mt-14 ">
-          <p className="w-full text-center text-gray-600 text-4xl  pr-6">
-            {" "}
-            Your Search Results{" "}
-          </p>
-        </div>
+      { (
+        <h2 className="text-xl md:text-2xl font-semibold text-center text-white">
+          {searchMessage}
+        </h2>
       )}
 
       {fetching ? (
@@ -111,8 +105,8 @@ function JobList({ emp }) {
         <>
           {jobs.length > 0 ? (
             <JList jobs={jobs} emp={emp} appliedList={appliedList} />
-          ) : (
-            <div>No jobs available</div>
+          ) : ( !searchMessage &&
+            <div >No jobs available</div>
           )}
         </>
       )}

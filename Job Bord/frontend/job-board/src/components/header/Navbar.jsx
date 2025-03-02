@@ -52,7 +52,7 @@ function landingNavbar({ navData }) {
         }
 
         {/* Tablet menu */}
-        <ul className={` hidden md:items-center justify-between md:flex lg:text-lg xl:text-xl `}>
+        <ul className={` hidden mx-10 justify-between md:flex md:items-center lg:text-lg xl:text-xl `}>
           {
             navData.map((data, index) => (
               <li key={index}>
