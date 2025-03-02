@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ClipLoader } from 'react-spinners';
 import axiosInstance from '../../axios/Axios';
+import ButtonComponent from '../smallComponents/ButtonComponent'
 
 function Post() {
     const token = localStorage.getItem("token");
@@ -61,7 +61,7 @@ function Post() {
         <div className="min-h-screen flex items-center justify-center p-4">
             <form
                 onSubmit={handleSubmit}
-                className="w-full max-w-3xl bg-white shadow-lg rounded-2xl p-8 my-12 transition-all duration-300 hover:shadow-xl"
+                className="w-full max-w-3xl bg-white/90 shadow-lg rounded-2xl p-8 my-12 transition-all duration-300 hover:shadow-xl"
             >
                 <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
                     Post a New Job
@@ -168,22 +168,11 @@ function Post() {
                     )}
 
                     {/* Submit Button */}
-                    <button
-                        disabled={isLoading}
-                        className={`w-full py-3 px-4 bg-indigo-600 text-white rounded-lg font-semibold transition-all duration-200
-              ${isLoading
-                                ? 'opacity-75 cursor-not-allowed'
-                                : 'hover:bg-indigo-700 hover:shadow-lg active:bg-indigo-800'}`}
-                    >
-                        {isLoading ? (
-                            <div className="flex items-center justify-center space-x-2">
-                                <ClipLoader size={20} color="#ffffff" />
-                                <span>Posting...</span>
-                            </div>
-                        ) : (
-                            'Post Job'
-                        )}
-                    </button>
+                    <ButtonComponent
+                        isLoading={isLoading}
+                        buttonName={ isLoading ? 'Please wait..' : 'Post'}
+                        handleClick={handleSubmit}
+                    />
                 </div>
             </form>
         </div>

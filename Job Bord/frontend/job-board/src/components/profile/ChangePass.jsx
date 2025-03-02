@@ -3,6 +3,7 @@ import { profileMode } from "./Profile";
 import axiosInstance from "../../axios/Axios";
 import { ClipLoader } from 'react-spinners'
 import { childType } from "./childType";
+import ButtonComponent from "../smallComponents/ButtonComponent";
 
 
 const ChangePass = () => {
@@ -66,7 +67,7 @@ const ChangePass = () => {
   }, [])
   return (
     <section className="flex w-full flex-grow">
-      <div className="flex flex-col w-5/6 bg-white ml-auto mr-auto mt-4 gap-4 p-5 border-2 border-gray-400">
+      <div className="flex flex-col w-5/6 bg-white/40 ml-auto mr-auto mt-4 gap-4 p-5 border-2 border-gray-400">
 
         <div className=" ">
           <div className='flex h-12 bg-gray-300 justify-center items-center '>
@@ -91,15 +92,14 @@ const ChangePass = () => {
         {dbError && <p className='text-center italic bold text-red-600'>{dbError}</p>}
 
         <div className="flex gap-4 justify-around">
-
-          <button onClick={handlePass} className="w-36 h-12 bg-blue-800 rounded-md">
-            {
-              isLoading ?
-                <> <ClipLoader size={18} /> Please wait...</>
-                : <>Change Password</>
-            }
-          </button>
-          <button onClick={() => { setChild(childType.PROFILE_DATA) }} className="w-36 h-12 bg-blue-800 rounded-md"> Cancel </button>
+          <ButtonComponent
+            handleClick={handlePass}
+            buttonName={isLoading ? 'Please Wait...' : 'Change Password'}
+          />
+          <ButtonComponent
+            handleClick={() => { setChild(childType.PROFILE_DATA) }}
+            buttonName={'Cancel'}
+          />
         </div>
 
       </div>

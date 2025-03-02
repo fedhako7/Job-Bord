@@ -2,9 +2,10 @@ import React, { useContext, useEffect, useState } from "react";
 import { profileMode } from "./Profile";
 import axiosInstance from "../../axios/Axios";
 import { childType } from "./childType";
+import ButtonComponent from "../smallComponents/ButtonComponent";
 
 const ProfileData = () => {
-  const { child, setChild, profile, setProfile } = useContext( profileMode )
+  const { child, setChild, profile, setProfile } = useContext(profileMode)
   const token = localStorage.getItem("token")
   const user_id = parseInt(localStorage.getItem("user_id"))
   const role = parseInt(localStorage.getItem("role"))
@@ -14,10 +15,11 @@ const ProfileData = () => {
   const fetchProfile = async () => {
     try {
       const response = await axiosInstance.get("/users/profile", {
-        params: {user_id},
-        headers: {authorization: "Bearer " + token} })
-        setProfile(response?.data?.user)
-        setIsFetching(false)
+        params: { user_id },
+        headers: { authorization: "Bearer " + token }
+      })
+      setProfile(response?.data?.user)
+      setIsFetching(false)
 
     } catch (error) {
       setIsFetching(false)
@@ -35,7 +37,7 @@ const ProfileData = () => {
 
         <div className='flex flex-col'>
           <label className="text-lg text-gray-800 font-semibold">First name</label>
-          <p className="pl-3 mt-2 text-lg text-blue-800 font-sarif font-medium">{ profile.fname}</p>
+          <p className="pl-3 mt-2 text-lg text-blue-800 font-sarif font-medium">{profile.fname}</p>
         </div>
 
         <div className='flex flex-col'>
@@ -45,27 +47,26 @@ const ProfileData = () => {
 
         <div className='flex flex-col'>
           <label className="text-lg text-gray-800 font-semibold">Email</label>
-          <p className="pl-3 mt-2 text-lg text-blue-800 font-sarif font-medium">{ profile.email }</p>
+          <p className="pl-3 mt-2 text-lg text-blue-800 font-sarif font-medium">{profile.email}</p>
         </div>
-        
+
         {
           role === "Employer" &&
-        <div className='flex flex-col'>
-          <label className="text-lg text-gray-800 font-semibold">Company</label>
-          <p className="pl-3 mt-2 text-lg text-blue-800 font-sarif font-medium">{ profile.company }</p>
-        </div>
+          <div className='flex flex-col'>
+            <label className="text-lg text-gray-800 font-semibold">Company</label>
+            <p className="pl-3 mt-2 text-lg text-blue-800 font-sarif font-medium">{profile.company}</p>
+          </div>
         }
 
         <div className="flex gap-4 justify-around">
-          
-          <button onClick={() => { setChild(childType.UPDATE_PROFILE)}} className="w-36 h-12 bg-blue-800 rounded-md">
-            Update Profile
-          </button>
-
-          <button onClick={() => { setChild(childType.CHANGE_PASS)}} className="w-36 h-12 bg-blue-800 rounded-md">
-            Change password
-          </button>
-
+          <ButtonComponent
+            handleClick={() => { setChild(childType.UPDATE_PROFILE) }}
+            buttonName={'Update Profile'}
+          />
+          <ButtonComponent
+            handleClick={() => { setChild(childType.UPDATE_PROFILE) }}
+            buttonName={'Change Password'}
+          />
         </div>
 
       </div>

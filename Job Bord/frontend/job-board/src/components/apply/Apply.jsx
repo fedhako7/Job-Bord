@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
-import { ClipLoader } from 'react-spinners';
 import axiosInstance from '../../axios/Axios';
+import ButtonComponent from '../smallComponents/ButtonComponent';
 
 function Apply() {
   const token = localStorage.getItem("token");
@@ -84,9 +84,9 @@ function Apply() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
-      <form 
+      <form
         onSubmit={handleSubmit}
-        className="w-full max-w-2xl bg-white shadow-lg rounded-2xl p-8 mt-12 mb-12 transition-all duration-300 hover:shadow-xl"
+        className="w-full max-w-2xl bg-white/80 shadow-lg rounded-2xl p-8 mt-12 mb-12 transition-all duration-300 hover:shadow-xl"
       >
         <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
           Apply as <span className="text-indigo-600">{fname}</span>
@@ -139,22 +139,11 @@ function Apply() {
           )}
 
           {/* Submit Button */}
-          <button
-            disabled={isLoading}
-            className={`w-full py-3 px-4 bg-indigo-600 text-white rounded-lg font-semibold transition-all duration-200
-              ${isLoading 
-                ? 'opacity-75 cursor-not-allowed' 
-                : 'hover:bg-indigo-700 hover:shadow-lg active:bg-indigo-800'}`}
-          >
-            {isLoading ? (
-              <div className="flex items-center justify-center space-x-2">
-                <ClipLoader size={20} color="#ffffff" />
-                <span>Submitting...</span>
-              </div>
-            ) : (
-              'Submit Application'
-            )}
-          </button>
+          <ButtonComponent
+            handleClick={handleSubmit}
+            buttonName={'Submit'}
+            isLoading={isLoading}
+          />
         </div>
       </form>
     </div>
