@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import axiosInstance from '../../axios/Axios';
 
 function ApplicationCard({ app }) {
@@ -125,4 +125,4 @@ function ApplicationCard({ app }) {
   );
 }
 
-export default ApplicationCard;
+export default memo(ApplicationCard);
