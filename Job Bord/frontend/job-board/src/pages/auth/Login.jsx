@@ -3,7 +3,7 @@ import axios from '../../axios/Axios'
 import { useNavigate } from 'react-router-dom';
 import { frequentDatas } from '../../contextProvider/ContextProvider'
 import FieldComponent from './smallComponents/FieldComponent';
-import ButtonComponent from '../landing/smallComponents/ButtonComponent';
+import ButtonComponent from '../../components/smallComponents/ButtonComponent';
 import HeadingComponent from './smallComponents/HeadingComponent';
 import PassVisibility from './smallComponents/PassVisibility';
 import ErrorMessages from './smallComponents/ErrorMessages';

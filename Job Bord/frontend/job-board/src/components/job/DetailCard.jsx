@@ -1,10 +1,12 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
-import ButtonComponent from '../../pages/landing/smallComponents/ButtonComponent';
+import ButtonComponent from '../../components/smallComponents/ButtonComponent';
+import roles from '../../pages/auth/role';
 
 
 function DetailCard({ job, emp, has_applied }) {
   const navigate = useNavigate()
+  const isRoleSeeker = localStorage.getItem('role') === roles.SEEKER
   const { job_id, title, fname, lname, description, location, deadline, } = job
   const { salary, company, applicants: tot_app, created_at, responsibilities, criteria } = job
   const date = new Date(deadline);
@@ -34,9 +36,12 @@ function DetailCard({ job, emp, has_applied }) {
         <TitleAndDetails title='Description' detail={description} flex_col={true} />
         <TitleAndDetails title='Responsibilities' detail={responsibilities} flex_col={true} />
         <TitleAndDetails title='Criterias' detail={criteria} flex_col={true} />
-        <div className={` flex ${emp && 'hidden'} justify-center `}>
-          <ButtonComponent buttonName='Apply Now' onClick={handleApply} />
-        </div>
+        {
+          isRoleSeeker &&
+          <div className={` flex justify-center `}>
+            <ButtonComponent buttonName='Apply Now' handleClick={handleApply} />
+          </div>
+        }
       </div>
     </section>
   )
@@ -55,4 +60,3 @@ const TitleAndDetails = ({ title, detail, flex_col }) => {
 }
 
 export default DetailCard
-

@@ -1,9 +1,9 @@
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import SearchIcon from '@mui/icons-material/Search';
 
-function SearchComponent( {handleSearch, searchRef, filterHidden} ) {
+function SearchComponent({ handleSearch, searchRef, filterHidden }) {
 
   // Return 
   return (
@@ -60,7 +60,6 @@ function SearchComponent( {handleSearch, searchRef, filterHidden} ) {
   )
 }
 
-export default SearchComponent
 
 
 const FilterComponent = ({ name, type, from, to }) => {
@@ -112,3 +111,6 @@ const FilterComponent = ({ name, type, from, to }) => {
     </div>
   )
 }
+
+
+export default SearchComponent

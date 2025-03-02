@@ -73,7 +73,7 @@ function Landing() {
             Search for your dream job and apply with one click!
           </p>
           <div className="space-y-3">
-            <p className="text-sm md:text-base text-white/80 italic">Continue with Google</p>
+            <p className="text-sm text-center md:text-base text-white/80 italic">Continue with Google</p>
             <GoogleAuth />
           </div>
         </div>

@@ -1,6 +1,6 @@
 import React from 'react'
 import ApiIcon from '@mui/icons-material/ApiOutlined';
-import ButtonComponent from '../../pages/landing/smallComponents/ButtonComponent';
+import ButtonComponent from '../smallComponents/ButtonComponent';
 import { useNavigate } from 'react-router-dom';
 
 function JCard({ job, emp, has_applied, from_detail }) {

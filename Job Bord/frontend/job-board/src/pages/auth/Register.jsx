@@ -5,7 +5,7 @@ import HeadingComponent from './smallComponents/HeadingComponent';
 import FieldComponent from './smallComponents/FieldComponent';
 import PassVisibility from './smallComponents/PassVisibility';
 import ErrorMessages from './smallComponents/ErrorMessages';
-import ButtonComponent from '../landing/smallComponents/ButtonComponent';
+import ButtonComponent from '../../components/smallComponents/ButtonComponent';
 import RoleComponent from './smallComponents/RoleComponent';
 import roles from './role';
 import GoogleAuth from './googleAuth/GoogleAuth';

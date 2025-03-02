@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import SearchIcon from "@mui/icons-material/Search";
 import axiosInstance from "../../axios/Axios";
 import JList from "./JList";
-import SearchComponent from "../../pages/landing/smallComponents/SearchComponent";
+import SearchComponent from "../smallComponents/SearchComponent";
 
 function JobList({ emp }) {
   const token = localStorage.getItem("token");
@@ -81,16 +80,16 @@ function JobList({ emp }) {
   return (
     <>
       <div className=" flex justify-center">
-          {/* Search  component */}
-          <div>
-            <SearchComponent
-              handleSearch={handleSearch}
-              searchRef={searchRef}
-              filterHidden={true}
-            />
-          </div>
+        {/* Search  component */}
+        <div>
+          <SearchComponent
+            handleSearch={handleSearch}
+            searchRef={searchRef}
+            filterHidden={true}
+          />
+        </div>
 
-          {/* Search Results */}
+        {/* Search Results */}
         {dbError && (
           <p className=" text-center text-xl font-semibold font-mono  ">
             {dbError}
