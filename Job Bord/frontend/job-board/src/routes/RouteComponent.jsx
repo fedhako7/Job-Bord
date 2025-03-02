@@ -16,6 +16,7 @@ import Profile from '../components/profile/Profile'
 import Landing from '../pages/landing/Landing'
 import Notifications from '../components/notifications/Notifications'
 import SelectRole from '../pages/selectRole/SelectRole'
+import roles from '../pages/auth/role'
 
 
 function RouteComponent() {
@@ -32,7 +33,7 @@ function RouteComponent() {
         <Route
           path="/"
           element={
-            <ProtectedRoutes allowedRoles={["Employer", "Job Seeker"]}>
+            <ProtectedRoutes allowedRoles={[roles.EMPLOYER, roles.SEEKER]}>
               <Layout children={<Home />} />
             </ProtectedRoutes>
           }
@@ -41,7 +42,7 @@ function RouteComponent() {
         <Route
           path="/profile"
           element={
-            <ProtectedRoutes allowedRoles={["Employer", "Job Seeker"]}>
+            <ProtectedRoutes allowedRoles={[roles.EMPLOYER, roles.SEEKER]}>
               <Layout children={<Profile />} />
             </ProtectedRoutes>
           }
@@ -50,7 +51,7 @@ function RouteComponent() {
         {/* <Route
           path="/notification"
           element={
-            <ProtectedRoutes allowedRoles={["Employer", "Job Seeker"]}>
+            <ProtectedRoutes allowedRoles={[roles.EMPLOYER, roles.SEEKER]}>
               <Layout children={<Notifications />} />
             </ProtectedRoutes>
           }
@@ -60,7 +61,7 @@ function RouteComponent() {
         <Route
           path="/job/my"
           element={
-            <ProtectedRoutes allowedRoles={["Employer"]}>
+            <ProtectedRoutes allowedRoles={[roles.EMPLOYER]}>
               <Layout children={<MyJobs />} />
             </ProtectedRoutes>
           }
@@ -69,7 +70,7 @@ function RouteComponent() {
         <Route
           path="/job/detail"
           element={
-            <ProtectedRoutes allowedRoles={["Employer"]}>
+            <ProtectedRoutes allowedRoles={[roles.EMPLOYER, roles.SEEKER]}>
               <Layout children={<MyJobsDetail />} />
             </ProtectedRoutes>
           }
@@ -78,7 +79,7 @@ function RouteComponent() {
         <Route
           path="/job/post"
           element={
-            <ProtectedRoutes allowedRoles={["Employer"]}>
+            <ProtectedRoutes allowedRoles={[roles.EMPLOYER]}>
               <Layout children={<Post />} />
             </ProtectedRoutes>
           }
@@ -88,7 +89,7 @@ function RouteComponent() {
         <Route
           path="/apply"
           element={
-            <ProtectedRoutes allowedRoles={["Job Seeker"]}>
+            <ProtectedRoutes allowedRoles={[roles.SEEKER]}>
               <Layout children={<Apply />} />
             </ProtectedRoutes>
           }
@@ -97,7 +98,7 @@ function RouteComponent() {
         <Route
           path="/apply/my"
           element={
-            <ProtectedRoutes allowedRoles={["Job Seeker"]}>
+            <ProtectedRoutes allowedRoles={[roles.SEEKER]}>
               <Layout children={<MyApplications />} />
             </ProtectedRoutes>
           }
@@ -106,7 +107,7 @@ function RouteComponent() {
         <Route
           path="/job"
           element={
-            <ProtectedRoutes allowedRoles={["Job Seeker"]}>
+            <ProtectedRoutes allowedRoles={[roles.SEEKER]}>
               <Layout children={<Jobs />} />
             </ProtectedRoutes>
           }
@@ -116,7 +117,7 @@ function RouteComponent() {
         <Route
           path="*"
           element={
-            <ProtectedRoutes allowedRoles={["Employer", "Job Seeker"]}>
+            <ProtectedRoutes allowedRoles={[roles.EMPLOYER, roles.SEEKER]}>
               <Layout children={<NotFound />} />
             </ProtectedRoutes>
           }

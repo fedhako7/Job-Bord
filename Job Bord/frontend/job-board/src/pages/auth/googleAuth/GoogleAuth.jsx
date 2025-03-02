@@ -4,7 +4,7 @@ import axiosInstance from '../../../axios/Axios';
 import { useNavigate } from 'react-router-dom';
 import roles from '../role';
 
-// Client ID from .env (ensure it's set in your Vite env file)
+// Client ID from .env
 const CLIENT_ID = import.meta.env.VITE_CLIENT_ID;
 
 function GoogleAuth() {
@@ -53,16 +53,16 @@ function GoogleAuth() {
 
   return (
     <GoogleOAuthProvider clientId={CLIENT_ID}>
-      <div className=' w-full flex justify-center'>
-        <div className='h-10 bg-white px-6 w-full max-w-[250px] border-2 border-black rounded-md  truncate md:max-w-[300px] text-sm sm:text-base md:text-lg xl:text-xl'>
-          <GoogleLogin
-            onSuccess={handleSuccess}
-            onError={handleFailure}
-            text="continue_with"
-            className=" absolute font-medium"
-            // useOneTap // Optional: enables One Tap UI
+      <div className=' flex justify-center '>
+      <div className=' max-w-[] '>
+        <GoogleLogin
+          onSuccess={handleSuccess}
+          onError={handleFailure}
+          text="continue_with"
+          className=" absolute  font-medium "
+          // useOneTap // Optional: enables One Tap UI
           />
-        </div>
+          </div>
       </div>
 
     </GoogleOAuthProvider>
