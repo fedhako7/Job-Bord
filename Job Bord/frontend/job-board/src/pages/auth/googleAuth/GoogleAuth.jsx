@@ -9,6 +9,8 @@ const CLIENT_ID = import.meta.env.VITE_CLIENT_ID;
 
 function GoogleAuth() {
   const navigate = useNavigate();
+  console.log("Client ID:", import.meta.env.VITE_CLIENT_ID);
+  
   const handleSuccess = async (credentialResponse) => {
     console.log('[Google Auth Success] Full Response:', credentialResponse);
 
@@ -54,15 +56,15 @@ function GoogleAuth() {
   return (
     <GoogleOAuthProvider clientId={CLIENT_ID}>
       <div className=' flex justify-center '>
-      <div className=' max-w-[] '>
-        <GoogleLogin
-          onSuccess={handleSuccess}
-          onError={handleFailure}
-          text="continue_with"
-          className=" absolute  font-medium "
+        <div className=' max-w-[] '>
+          <GoogleLogin
+            onSuccess={handleSuccess}
+            onError={handleFailure}
+            text="continue_with"
+            className=" absolute  font-medium "
           // useOneTap // Optional: enables One Tap UI
           />
-          </div>
+        </div>
       </div>
 
     </GoogleOAuthProvider>
