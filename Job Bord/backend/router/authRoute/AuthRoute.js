@@ -9,7 +9,7 @@ route.post('/login', login)
 route.post('/google', googleAuthController)
 route.post('/set-role', setRoleController)
 route.get('/check', authenticateToken, checkUser)
-route.put('/change', authenticateToken, changePassword)
+route.post('/change', authenticateToken, changePassword)
 route.get('/check-pass-set', CheckPassSet)
 
 
