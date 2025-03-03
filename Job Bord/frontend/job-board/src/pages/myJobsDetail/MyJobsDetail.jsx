@@ -44,8 +44,6 @@ function MyJobsDetail() {
 
       {loading ? (
         <p className="text-center text-xl mt-6">Fetching...</p>
-      ) : dbError ? (
-        <p className="text-center text-xl mt-6 text-red-500">{dbError}</p>
       ) : (
         <DetailCard job={job} from_detail={true} />
       )}

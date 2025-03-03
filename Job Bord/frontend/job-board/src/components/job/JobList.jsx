@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import axiosInstance from "../../axios/Axios";
 import JList from "./JList";
 import SearchComponent from "../smallComponents/SearchComponent";
+import DataNotFound from "../dataNotFound/DataNotFound";
 
 function JobList({ emp }) {
   const token = localStorage.getItem("token");
@@ -90,10 +91,9 @@ function JobList({ emp }) {
             filterHidden={true}
           />
         </div>
-
         {/* Search Results */}
       </div>
-      { (
+      {(
         <h2 className="text-xl md:text-2xl font-semibold text-center text-white">
           {searchMessage}
         </h2>
@@ -105,8 +105,13 @@ function JobList({ emp }) {
         <>
           {jobs.length > 0 ? (
             <JList jobs={jobs} emp={emp} appliedList={appliedList} />
-          ) : ( !searchMessage &&
-            <div >No jobs available</div>
+          ) : (!searchMessage &&
+            <DataNotFound
+              title={'No job postings found'}
+              cto={'Start posting jobs to see them here.'}
+              link={'post job'}
+              to={'/job/post'}
+            />
           )}
         </>
       )}

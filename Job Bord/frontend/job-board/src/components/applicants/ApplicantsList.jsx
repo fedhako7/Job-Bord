@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import axiosInstance from '../../axios/Axios';
 import { useLocation } from 'react-router-dom';
 import ApplicantsCard from './ApplicantsCard';
+import DataNotFound from '../dataNotFound/DataNotFound';
 
 function ApplicantsList() {
     const token = localStorage.getItem("token")
     const location = useLocation()
     const job_id = location?.state?.job_id
     const [applicants, setApplicants] = useState([]);
-    const [dbError, setDbError] = useState('');
     const [refresh, setRefresh] = useState(false)
     const [fetching, setFetching] = useState(true);
 
@@ -19,7 +19,7 @@ function ApplicantsList() {
             setApplicants(response?.data?.app_data || []);
         } catch (error) {
             console.error(error);
-            setDbError(error.response?.data?.msg || error.message);
+            console.log(error.response?.data?.msg || error.message);
         } finally {
             setFetching(false);
         }
@@ -35,14 +35,12 @@ function ApplicantsList() {
             ) : (
                 <>
                     <div className=' mb-8'>
-                        {dbError && <div>Error: {dbError}</div>}
-
                         {applicants.length > 0 ? (
                             applicants.map((app) => (
                                 <ApplicantsCard applicant={app} key={app.application_id} setRefresh={setRefresh} />
                             ))
                         ) : (
-                            <div>No applications available</div>
+                            <DataNotFound title={'No applicants available.'} />
                         )}
                     </div>
                 </>

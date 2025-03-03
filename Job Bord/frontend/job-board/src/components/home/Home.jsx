@@ -3,6 +3,7 @@ import axiosInstance from '../../axios/Axios'
 import JList from '../job/JList'
 import PagesHeader from '../pagesHeader/PagesHeader'
 import roles from '../../pages/auth/role'
+import DataNotFound from '../dataNotFound/DataNotFound'
 
 function Home() {
   const fname = localStorage.getItem("fname")
@@ -35,7 +36,7 @@ function Home() {
       })
       setEmpTopJobs(response?.data?.user_jobs)
     } catch (error) {
-      setDbError(error.response?.data?.msg || error.message)
+      console.log(error.response?.data?.msg || error.message)
     } finally {
       setFetching(false)
     }
@@ -50,7 +51,7 @@ function Home() {
       })
       setRecentJobs(response?.data?.user_jobs)
     } catch (error) {
-      setDbError(error.response?.data?.msg || error.message)
+      console.log(error.response?.data?.msg || error.message)
     } finally {
       setFetching(false)
     }
@@ -76,7 +77,9 @@ function Home() {
         <div className=' lg:mx-6 '>
           <PagesHeader pageHeader={'Recently Posted Jobs'} />
           {
-            <JList jobs={recentJobs} appliedList={appliedList} />
+            recentJobs.length !== 0
+              ? <JList jobs={recentJobs} appliedList={appliedList} />
+              : <DataNotFound title={'Oops... '} cto={'No jobs found.'} />
           }
         </div>
       )}
@@ -88,11 +91,15 @@ function Home() {
           <div>
             <PagesHeader pageHeader={'Your Top Applied Jobs'} />
             <div className=' lg:mx-6 '>
-              {dbError && <div>Error: {dbError}</div>}
               {empTopJobs.length > 0 ? (
                 <JList jobs={empTopJobs} emp={true} />
               ) : (
-                <div>No jobs available</div>
+                <DataNotFound
+                  title={'No job postings found'}
+                  cto={'Start posting jobs to see them here.'}
+                  link={'post job'}
+                  to={'/job/post'}
+                />
               )}
             </div>
           </div>
