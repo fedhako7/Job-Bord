@@ -3,72 +3,83 @@ import { profileMode } from "./Profile";
 import axiosInstance from "../../axios/Axios";
 import { childType } from "./childType";
 import ButtonComponent from "../smallComponents/ButtonComponent";
+import roles from '../../pages/auth/role';
 
 const ProfileData = () => {
-  const { child, setChild, profile, setProfile } = useContext(profileMode)
-  const token = localStorage.getItem("token")
-  const user_id = parseInt(localStorage.getItem("user_id"))
-  const role = parseInt(localStorage.getItem("role"))
-  const [dbError, setDbError] = useState('')
-  const [isFetching, setIsFetching] = useState(false)
+  const { child, setChild, profile, setProfile } = useContext(profileMode);
+  const token = localStorage.getItem("token");
+  const user_id = parseInt(localStorage.getItem("user_id"));
+  const role = localStorage.getItem("role");
+  const [dbError, setDbError] = useState('');
+  const [isFetching, setIsFetching] = useState(false);
 
   const fetchProfile = async () => {
     try {
+      setIsFetching(true);
       const response = await axiosInstance.get("/users/profile", {
         params: { user_id },
-        headers: { authorization: "Bearer " + token }
-      })
-      setProfile(response?.data?.user)
-      setIsFetching(false)
-
+        headers: { authorization: "Bearer " + token },
+      });
+      setProfile(response?.data?.user);
+      setIsFetching(false);
     } catch (error) {
-      setIsFetching(false)
-      setDbError(error.response?.data?.msg || error.message)
-      console.log(error)
+      setIsFetching(false);
+      setDbError(error.response?.data?.msg || error.message);
+      console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchProfile()
-  }, [child])
+    fetchProfile();
+  }, [child]);
+
   return (
-    <section className="flex w-full flex-grow ">
+    <section className="flex w-full flex-grow">
       <div className="flex flex-col w-5/6 bg-white ml-auto mr-auto mt-4 mb-6 gap-4 p-5 border-2 border-gray-400">
+        {dbError && (
+          <p className="text-center italic text-red-600 font-bold">{dbError}</p>
+        )}
 
-        <div className='flex flex-col'>
+        <div className="flex flex-col">
           <label className="text-lg text-gray-800 font-semibold">First name</label>
-          <p className="pl-3 mt-2 text-lg text-blue-800 font-sarif font-medium">{profile.fname}</p>
+          <p className="pl-3 mt-2 text-lg text-blue-800 font-serif font-medium">
+            {profile.fname}
+          </p>
         </div>
 
-        <div className='flex flex-col'>
+        <div className="flex flex-col">
           <label className="text-lg text-gray-800 font-semibold">Last name</label>
-          <p className="pl-3 mt-2 text-lg text-blue-800 font-sarif font-medium">{profile.lname}</p>
+          <p className="pl-3 mt-2 text-lg text-blue-800 font-serif font-medium">
+            {profile.lname}
+          </p>
         </div>
 
-        <div className='flex flex-col'>
+        <div className="flex flex-col">
           <label className="text-lg text-gray-800 font-semibold">Email</label>
-          <p className="pl-3 mt-2 text-lg text-blue-800 font-sarif font-medium">{profile.email}</p>
+          <p className="pl-3 mt-2 text-lg text-blue-800 font-serif font-medium">
+            {profile.email}
+          </p>
         </div>
 
-        {
-          role === "Employer" &&
-          <div className='flex flex-col'>
+        {role === roles.EMPLOYER && (
+          <div className="flex flex-col">
             <label className="text-lg text-gray-800 font-semibold">Company</label>
-            <p className="pl-3 mt-2 text-lg text-blue-800 font-sarif font-medium">{profile.company}</p>
+            <p className="pl-3 mt-2 text-lg text-blue-800 font-serif font-medium">
+              {profile.company}
+            </p>
           </div>
-        }
+        )}
 
         <div className="flex gap-4 justify-around">
           <ButtonComponent
-            handleClick={() => { setChild(childType.UPDATE_PROFILE) }}
-            buttonName={'Update Profile'}
+            handleClick={() => setChild(childType.UPDATE_PROFILE)}
+            buttonName="Update Profile"
           />
           <ButtonComponent
-            handleClick={() => { setChild(childType.UPDATE_PROFILE) }}
-            buttonName={'Change Password'}
+            handleClick={() => setChild(childType.CHANGE_PASS)}
+            buttonName="Change Password"
           />
         </div>
-
       </div>
     </section>
   );
