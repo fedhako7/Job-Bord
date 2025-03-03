@@ -24,14 +24,14 @@ function RouteComponent() {
     <>
       <Routes>
         {/* Public pages */}
+        <Route path="/" element={<Layout children={<Landing/>}/>} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/landing" element={<Layout children={<Landing/>}/>} />
         <Route path="/select-role" element={<SelectRole/>} />
 
         {/* Mutual pages */}
         <Route
-          path="/"
+          path="/home"
           element={
             <ProtectedRoutes allowedRoles={[roles.EMPLOYER, roles.SEEKER]}>
               <Layout children={<Home />} />

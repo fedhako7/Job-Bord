@@ -13,7 +13,7 @@ const mutualData = [
   {
     name: "Home",
     logo: HomeIcon,
-    link: "/"
+    link: "/home"
   },
   // {
   //   name: "Notifications",

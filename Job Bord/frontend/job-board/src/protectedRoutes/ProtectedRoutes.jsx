@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import axiosInstance from '../axios/Axios'
 import { Navigate, useNavigate } from 'react-router-dom'
 import Register from '../pages/auth/Register'
+import Login from '../pages/auth/Login'
+import Landing from '../pages/landing/Landing'
 
 function ProtectedRoutes({children, allowedRoles = []}) {
   const token = localStorage.getItem("token")
@@ -29,7 +31,7 @@ function ProtectedRoutes({children, allowedRoles = []}) {
   }
 
   useEffect(() => {
-    if (children?.type === Register ) {
+    if ([Register, Login, Landing].includes(children?.type)) {
       setAuthenticated(true);
       return;
     }

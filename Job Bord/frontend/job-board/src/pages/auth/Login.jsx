@@ -44,7 +44,7 @@ function Login() {
       localStorage.setItem("fname", data.fname)
       setUserId(data.user_id)
       setIsLoading(false)
-      navigate("/")
+      navigate("/home")
 
     } catch (error) {
       setIsLoading(false)

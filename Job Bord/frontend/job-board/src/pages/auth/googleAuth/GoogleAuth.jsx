@@ -34,11 +34,11 @@ function GoogleAuth() {
 
       if (role === roles.EMPLOYER || role === roles.SEEKER) {
         localStorage.setItem('role', role);
-        navigate('/');
+        navigate('/home');
       } else if (!role || role === null) {
         navigate('/select-role');
       } else {
-        navigate('/landing');
+        navigate('/');
       }
 
       // Redirect or update state (e.g., with useNavigate)
