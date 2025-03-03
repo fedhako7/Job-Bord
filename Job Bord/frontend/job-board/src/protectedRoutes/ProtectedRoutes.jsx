@@ -5,7 +5,7 @@ import Register from '../pages/auth/Register'
 import Login from '../pages/auth/Login'
 import Landing from '../pages/landing/Landing'
 
-function ProtectedRoutes({children, allowedRoles = []}) {
+function ProtectedRoutes({ children, allowedRoles = [] }) {
   const token = localStorage.getItem("token")
   const user_id = parseInt(localStorage.getItem("user_id"))
   const [authenticated, setAuthenticated] = useState(null)
@@ -25,13 +25,17 @@ function ProtectedRoutes({children, allowedRoles = []}) {
       setAuthenticated(true)
     } catch (error) {
       console.log(error)
-      setAuthenticated(false)
-      navigate("/login")
+      if (children === Landing) {
+        setAuthenticated(true)
+      } else {
+        setAuthenticated(false)
+        navigate("/login")
+      }
     }
   }
 
   useEffect(() => {
-    if ([Register, Login, Landing].includes(children?.type)) {
+    if ([Register, Login].includes(children?.type)) {
       setAuthenticated(true);
       return;
     }
@@ -39,8 +43,12 @@ function ProtectedRoutes({children, allowedRoles = []}) {
       checkUser()
     }
     else {
-      setAuthenticated(false)
-      navigate('/login')
+      if (children === Landing) {
+        setAuthenticated(true)
+      } else {
+        setAuthenticated(false)
+        navigate('/login')
+      }
     }
   }, [token])
 
@@ -49,7 +57,7 @@ function ProtectedRoutes({children, allowedRoles = []}) {
   }
 
   if (authenticated && !allowedRoles.includes(userRole)) {
-    return null;
+    return <div className=' flex '> Not allowed for current role.</div>;
   }
 
   return (
