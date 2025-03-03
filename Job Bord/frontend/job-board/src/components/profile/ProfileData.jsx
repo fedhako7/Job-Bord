@@ -33,7 +33,7 @@ const ProfileData = () => {
   }, [child])
   return (
     <section className="flex w-full flex-grow ">
-      <div className="flex flex-col w-5/6 bg-white ml-auto mr-auto mt-4 gap-4 p-5 border-2 border-gray-400">
+      <div className="flex flex-col w-5/6 bg-white ml-auto mr-auto mt-4 mb-6 gap-4 p-5 border-2 border-gray-400">
 
         <div className='flex flex-col'>
           <label className="text-lg text-gray-800 font-semibold">First name</label>
