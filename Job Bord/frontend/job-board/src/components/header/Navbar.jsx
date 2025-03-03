@@ -46,7 +46,7 @@ function landingNavbar({ navData }) {
 
                 ))
               }
-              <button onClick={handleLogout} className='bg-blue-800 w-1/2 rounded-sm hover:scale-105 hover:text-white '> { role ? <>Log out </> : <>Log in</> } </button>
+              <button onClick={handleLogout} className=' h-10 bg-blue-800 w-1/2 rounded-md hover:scale-105 hover:text-white '> { role ? <>Log out </> : <>Log in</> } </button>
             </>
           </ul>
         }

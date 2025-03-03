@@ -9,10 +9,9 @@ const CLIENT_ID = import.meta.env.VITE_CLIENT_ID;
 
 function GoogleAuth() {
   const navigate = useNavigate();
-  console.log("Client ID:", import.meta.env.VITE_CLIENT_ID);
   
   const handleSuccess = async (credentialResponse) => {
-    console.log('[Google Auth Success] Full Response:', credentialResponse);
+    console.log('[Google Auth Success] Full Response:', 'credentialResponse accessed');
 
     const { credential } = credentialResponse;
     const userData = {
@@ -26,7 +25,7 @@ function GoogleAuth() {
         headers: { 'Content-Type': 'application/json' },
       });
 
-      console.log('[Google Auth Success] Backend Response:', backendResponse.data);
+      console.log('[Google Auth Success] Backend Response:', 'backendResponse accessed');
 
       const { token, user_id, fname, role } = backendResponse.data;
       localStorage.setItem('token', token);
