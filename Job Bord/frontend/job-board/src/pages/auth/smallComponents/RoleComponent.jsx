@@ -1,17 +1,19 @@
 import React from "react"
 
-const RoleComponent = ({ roleName, setRoleValue }) => {
+const RoleComponent = ({ onChange, value }) => {
 
   // Return 
   return (
-    <label className='flex pl-4'>
-      <input
-        onChange={() => { setRoleValue(roleName) }}
-        type="radio"
-        name="userType"
-        value={roleName}
-        className='mr-2 scale-150' /> {roleName}
-    </label>
+    <>
+      <label className='flex pl-4'>
+        <input
+          onChange={onChange}
+          type="radio"
+          name="userType"
+          value={value}
+          className='mr-2 scale-150' /> {value}
+      </label>
+    </>
   )
 }
 

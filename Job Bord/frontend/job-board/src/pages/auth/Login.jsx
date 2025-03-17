@@ -5,7 +5,6 @@ import { frequentDatas } from '../../contextProvider/ContextProvider'
 import FieldComponent from './smallComponents/FieldComponent';
 import ButtonComponent from '../../components/smallComponents/ButtonComponent';
 import HeadingComponent from './smallComponents/HeadingComponent';
-import PassVisibility from './smallComponents/PassVisibility';
 import ErrorMessages from './smallComponents/ErrorMessages';
 import GoogleAuth from './googleAuth/GoogleAuth';
 
@@ -13,30 +12,60 @@ function Login() {
   // Constants and Variables
   const { setUserId } = useContext(frequentDatas)
   const navigate = useNavigate()
-  const [showPass, setShowPass] = useState(false)
-  const [fieldError, setFieldError] = useState('')
-  const [dbError, setDbError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const emailRef = useRef('')
-  const passwordRef = useRef('')
+  const [values, setValues] = useState({ email: '', password: '' })
+  const [errors, setErrors] = useState({ email: '', password: '', general: '' });
+
+  // Input change handlers 
+  const handleEmailChange = (e) => {
+    const email = e.target.value;
+    setValues((prev) => ({ ...prev, email: email }))
+    if (!email) {
+      setErrors((prev) => ({ ...prev, email: 'Email required' }));
+    } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+      setErrors((prev) => ({ ...prev, email: "Invalid email format" }));
+    } else {
+      setErrors((prev) => ({ ...prev, email: '' }));
+    }
+  };
+
+  const handlePasswordChange = (e) => {
+    const password = e.target.value;
+    setValues((prev) => ({ ...prev, password: password }))
+    if (!password) {
+      setErrors((prev) => ({ ...prev, password: 'Password required' }));
+    } else if (password.length < 6) {
+      setErrors((prev) => ({ ...prev, password: 'Password must be at 6 characters' }));
+    } else {
+      setErrors((prev) => ({ ...prev, password: '' }));
+    }
+  };
 
   // Handle login
   const handleLogin = async (e) => {
     e.preventDefault()
-    setDbError(''), setFieldError('')
-    const currEmail = emailRef.current.value
-    const currPassword = passwordRef.current.value
-    if (!currEmail || !currPassword) {
-      return setFieldError('All fields are required.')
-    } if (currPassword && currPassword.length < 8) {
-      return setFieldError("Password length can't be less than 8 characters.")
+
+    let tempErrors = { ...errors };
+
+    if (!values.email) {
+      tempErrors.email = 'Email required';
+    }
+    if (!values.password) {
+      tempErrors.password = 'Password required';
+    }
+  
+    setErrors(tempErrors);
+  
+    // Ensure we return if there are any errors
+    if (tempErrors.email || tempErrors.password) {
+      return setErrors((prev) => ({ ...prev, general: 'Please fix the errors before submitting.' }));
     }
 
     try {
       setIsLoading(true)
       const { data } = await axios.post("/auth/login", {
-        email: currEmail,
-        password: currPassword,
+        email: values.email,
+        password: values.password,
       })
       localStorage.setItem("token", data.token)
       localStorage.setItem("user_id", data.user_id)
@@ -48,12 +77,12 @@ function Login() {
 
     } catch (error) {
       setIsLoading(false)
-      setDbError(error.response?.data?.msg || error.message)
+      setErrors((prev) => ({ ...prev, general: error.response?.data?.msg || error.message }));
       console.log(error)
     }
   }
 
-  
+
   // Return
   return (
     <section className=" flex justify-center p-2 mt-14  ">
@@ -70,16 +99,19 @@ function Login() {
           onSubmit={handleLogin}
           className=" flex flex-col gap-5 ">
           {/* Email and Password */}
-          <FieldComponent type={'Email'} fieldRef={emailRef} />
-          <div className='flex items-center'>
-            <FieldComponent
-              type={'Password'}
-              fieldRef={passwordRef}
-              showPass={showPass} />
-            <PassVisibility showPass={showPass} setShowPass={setShowPass} />
-          </div>
-          {fieldError && <ErrorMessages errorMessage={fieldError} />}
-          {dbError && <ErrorMessages errorMessage={dbError} />}
+          <FieldComponent
+            type={'Email'}
+            onChange={handleEmailChange}
+            value={values.email}
+            error={errors.email}
+          />
+          <FieldComponent
+            type={'Password'}
+            onChange={handlePasswordChange}
+            value={values.password}
+            error={errors.password}
+          />
+          {errors.general && <ErrorMessages errorMessage={errors.general} />}
           {/* Submit Button */}
           <ButtonComponent
             buttonName={'Login'}
