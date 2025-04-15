@@ -1,5 +1,6 @@
 # Job Board
-![Landing page](https://github.com/user-attachments/assets/60c8d7f8-0361-46c0-8132-a48c1513eff5)
+![Employer Home Page](https://github.com/user-attachments/assets/499eed82-7716-4b2c-91e9-26b06121cf91)
+
 
 
 ## Overview
