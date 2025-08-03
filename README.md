@@ -1,4 +1,7 @@
 # Job Board
+![Employer Home Page](https://github.com/user-attachments/assets/499eed82-7716-4b2c-91e9-26b06121cf91)
+
+
 
 ## Overview
 Job Board is a full-stack web application that connects employers with job seekers. Employers can post job openings, while job seekers can search and apply for positions effortlessly. The platform provides a seamless experience with a user-friendly interface and secure authentication.
@@ -26,6 +29,29 @@ Job Board is a full-stack web application that connects employers with job seeke
 - **MySQL**: For structured data storage
 - **JWT & Google OAuth 2.0**: For authentication security
 - **Nodemailer**: For email confirmation
+
+## Screenshots
+
+### Job Lists
+
+![Job lists](https://github.com/user-attachments/assets/53b8e34b-bbfa-49eb-93d7-110bebad3ed8)
+
+
+### Employer Dashboard
+
+![Employer Home Page](https://github.com/user-attachments/assets/0d04e7fe-d019-4f88-97b4-bb23d2b3ae9f)
+
+
+### Login Page
+
+![Login Page](https://github.com/user-attachments/assets/dd00e2f4-873c-4519-9267-82575b862f2b)
+
+
+### Seeker Application History
+
+![Seeker application history - detail](https://github.com/user-attachments/assets/3c563e9d-381a-44ea-8ff1-ccef0326850b)
+
+
 
 ## Installation & Setup
 ### Prerequisites
